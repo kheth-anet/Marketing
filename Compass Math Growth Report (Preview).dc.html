@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&amp;display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: rgb(226,230,236); font-family: "Lato", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; color: rgb(53,59,71); }
+  a { color: rgb(0,120,163); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+</style>
+</helmet>
+<div style="display:flex; flex-direction:column; align-items:center; width:100%; max-width:1600px; margin:0 auto; background:rgb(255,255,255);" data-screen-label="Math Growth Report">
+  <div style="align-self:stretch; background:rgb(255,255,255); display:flex; flex-direction:column; gap:16px; padding:32px 64px;">
+
+    <!-- MAIN NAV -->
+    <div style="align-self:stretch; display:flex; flex-direction:column; gap:8px;">
+      <div style="display:flex; flex-direction:row; gap:16px; justify-content:flex-end; align-items:center;">
+        <span style="font-size:16px; color:rgb(53,59,71);">Welcome, Alicia</span>
+        <a href="#">Log Out</a>
+      </div>
+      <div style="display:flex; flex-direction:row; gap:24px; align-items:flex-end;">
+        <img src="assets/myanet-logo.png" alt="myANet" style="width:140px; height:49px; object-fit:contain; flex-shrink:0;">
+        <span style="font-weight:700; font-size:36px; line-height:28px; color:rgb(53,59,71); white-space:nowrap;">ANet Demo School</span>
+        <a href="#">Change Selection</a>
+      </div>
+      <div style="display:flex; flex-direction:row; align-items:flex-end; border-bottom:1px solid rgb(213,217,226); background:rgb(255,255,255);">
+        <div style="padding:14px 15.75px;"><span style="font-size:16px; white-space:nowrap; color:rgb(53,59,71);">Dashboard</span></div>
+        <div style="padding:15px 16px; border-bottom:2px solid #247EA7;"><span style="font-size:16px; white-space:nowrap; color:#227EA7; font-weight:600;">Performance</span></div>
+        <div style="padding:14px 15.75px;"><span style="font-size:16px; white-space:nowrap; color:rgb(53,59,71);">Standards</span></div>
+        <div style="padding:14px 15.75px;"><span style="font-size:16px; white-space:nowrap; color:rgb(53,59,71);">Assessments</span></div>
+        <div style="padding:14px 15.75px;"><span style="font-size:16px; white-space:nowrap; color:rgb(53,59,71);">Quiz Tool</span></div>
+        <div style="padding:14px 15.75px;"><span style="font-size:16px; white-space:nowrap; color:rgb(53,59,71);">Assignments</span></div>
+        <div style="padding:14px 15.75px;"><span style="font-size:16px; white-space:nowrap; color:rgb(53,59,71);">Students</span></div>
+        <div style="padding:14px 15.75px;"><span style="font-size:16px; white-space:nowrap; color:rgb(53,59,71);">Users</span></div>
+      </div>
+    </div>
+
+    <div style="display:flex; flex-direction:row; gap:16px; align-items:flex-start; align-self:stretch;">
+
+      <!-- SIDEBAR -->
+      <div style="width:260px; flex-shrink:0; border-radius:4px; background:rgb(255,255,255); outline:1px solid rgb(213,217,226); display:flex; flex-direction:column; padding:3.5px; gap:2px; align-self:flex-start;">
+        <div style="padding:6px 8px 2px; display:flex; flex-direction:row; align-items:center; gap:8px;"><span style="width:14px; height:14px; flex-shrink:0; color:rgb(148,163,184); display:inline-flex;"><svg viewBox="0 0 14 14" width="100%" height="100%"><rect x="0" y="0" width="1.273" height="14" rx="0.636" fill="currentColor"></rect><rect x="0" y="12.727" width="14" height="1.273" rx="0.636" fill="currentColor"></rect><rect x="2.97" y="6.364" width="1.273" height="4.666" rx="0.636" fill="currentColor"></rect><rect x="5.939" y="2.97" width="1.273" height="8.06" rx="0.636" fill="currentColor"></rect><rect x="8.909" y="6.364" width="1.273" height="4.666" rx="0.636" fill="currentColor"></rect><rect x="11.879" y="2.97" width="1.273" height="8.06" rx="0.636" fill="currentColor"></rect></svg></span><span style="font-weight:700; font-size:16px; color:rgb(53,59,71);">Performance Reports</span></div>
+        <a href="Compass Math Teacher Report.dc.html" style="border-radius:4px; padding:7px 10px; text-decoration:none;" style-hover="background:rgb(246,247,249);"><span style="font-size:16px; color:rgb(53,59,71);">Math Teacher Report</span></a>
+        <a href="Compass Math Teacher Report (Preview).dc.html" style="border-radius:4px; padding:7px 10px; text-decoration:none;" style-hover="background:rgb(246,247,249);"><span style="font-size:16px; color:rgb(53,59,71);">Math Teacher Report (Preview)</span></a>
+        <div style="border-radius:4px; background:rgb(68,78,96); padding:7px 10px;"><span style="font-size:16px; color:rgb(255,255,255);">Math Growth Report (Preview)</span></div>
+        <div style="padding:7px 10px;"><span style="font-size:16px; color:rgb(53,59,71);">ELA</span></div>
+        <div style="padding:6px 8px 2px; display:flex; flex-direction:row; align-items:center; gap:8px;"><span style="width:14px; height:14px; flex-shrink:0; color:rgb(148,163,184); display:inline-flex;"><svg viewBox="0 0 14 14" width="100%" height="100%"><path d="M 2.292 14 L 2.291 14 C 1.679 14 1.104 13.761 0.671 13.328 C -0.223 12.434 -0.224 10.981 0.669 10.088 L 5.076 5.681 C 4.672 4.13 5.111 2.456 6.244 1.323 C 7.388 0.179 9.069 -0.268 10.629 0.159 C 10.835 0.215 10.996 0.376 11.05 0.584 C 11.105 0.791 11.045 1.011 10.894 1.162 L 8.933 3.122 L 9.351 4.649 L 10.877 5.066 L 12.837 3.106 C 12.989 2.956 13.209 2.894 13.416 2.951 C 13.622 3.005 13.785 3.166 13.841 3.372 C 14.267 4.932 13.821 6.612 12.677 7.757 C 11.544 8.889 9.869 9.325 8.318 8.924 L 3.911 13.33 C 3.479 13.762 2.904 14 2.292 14 Z M 9.145 1.214 C 8.381 1.282 7.65 1.614 7.092 2.172 C 6.18 3.085 5.884 4.417 6.32 5.652 C 6.397 5.869 6.342 6.113 6.179 6.276 L 1.518 10.937 C 1.093 11.362 1.094 12.054 1.52 12.48 C 1.726 12.686 2 12.8 2.292 12.8 L 2.292 12.8 C 2.584 12.8 2.857 12.686 3.063 12.482 L 7.724 7.821 C 7.888 7.657 8.13 7.602 8.348 7.679 C 9.584 8.113 10.917 7.821 11.829 6.908 C 12.387 6.349 12.719 5.618 12.787 4.854 L 11.48 6.161 C 11.328 6.313 11.105 6.372 10.897 6.316 L 8.704 5.717 C 8.5 5.661 8.34 5.501 8.284 5.297 L 7.684 3.104 C 7.627 2.896 7.686 2.673 7.838 2.521 L 9.145 1.214 Z" fill="currentColor" fill-rule="evenodd"></path></svg></span><span style="font-weight:700; font-size:16px; color:rgb(53,59,71);">Tools and Resources</span></div>
+        <div style="padding:7px 10px;"><span style="font-size:16px; color:rgb(53,59,71);">Manage Custom Groups</span></div>
+        <div style="padding:7px 10px;"><span style="font-size:16px; color:rgb(53,59,71);">Data Export</span></div>
+        <div style="padding:7px 10px;"><span style="font-size:16px; color:rgb(53,59,71);">Helpful Resources</span></div>
+      </div>
+
+      <!-- GRAY CONTAINER -->
+      <div style="flex-grow:1; min-width:0; border-radius:4px; background:rgb(246,247,249); display:flex; flex-direction:row; padding:16px; align-items:flex-start;">
+        <div style="flex-grow: 1; min-width: 0; border-radius: 4px; background: rgb(255,255,255); display: flex; flex-direction: column; padding: 24px 0; align-items: flex-start; gap: 32px">
+
+          <!-- HEADER + FILTERS -->
+          <div style="align-self:stretch; display:flex; flex-direction:column; gap:16px; padding:0 16px;">
+            <div ref="{{ filterRef }}" style="display:flex; flex-direction:row; gap:8px; align-items:flex-end; flex-wrap:wrap; position:relative; z-index:20;">
+              <div style="display:flex; flex-direction:column; gap:6px; width:190px; position:relative;">
+                <span style="font-size:14px; color:rgb(103,112,125);">School</span>
+                <div onClick="{{ toggleSchool }}" style="height:37px; border:1px solid rgb(213,217,226); border-radius:6px; display:flex; align-items:center; justify-content:space-between; gap:8px; padding:0 10px; font-size:16px; background:rgb(255,255,255); cursor:pointer;" style-hover="border-color:rgb(34,126,167);"><span style="color:rgb(53,59,71); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ schoolText }}</span><span style="width:11px; height:11px; flex-shrink:0; color:rgb(109,109,109); display:inline-flex;"><svg viewBox="0 0 14 14" width="100%" height="100%"><path d="M 1.28 0.22 C 0.987 -0.073 0.513 -0.073 0.22 0.22 C -0.073 0.513 -0.073 0.987 0.22 1.28 L 5.22 6.28 C 5.513 6.573 5.987 6.573 6.28 6.28 L 11.28 1.28 C 11.573 0.987 11.573 0.513 11.28 0.22 C 10.987 -0.073 10.513 -0.073 10.22 0.22 L 5.75 4.689 L 1.28 0.22 Z" fill="currentColor" transform="matrix(1 0 0 1 1.25 3.75)"></path></svg></span></div>
+                <sc-if value="{{ schoolOpen }}">
+                  <div style="position:absolute; top:65px; left:0; width:240px; background:rgb(255,255,255); border:1px solid rgb(213,217,226); border-radius:6px; box-shadow:0 6px 16px rgba(0,0,0,0.14); z-index:40; padding:4px 0;">
+                    <sc-for list="{{ schoolOptions }}" as="o" hint-placeholder-count="5">
+                      <div onClick="{{ o.onClick }}" style="padding:8px 12px; font-size:16px; color:rgb(53,59,71); cursor:pointer;" style-hover="background:rgb(246,247,249);">{{ o.label }}</div>
+                    </sc-for>
+                  </div>
+                </sc-if>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:6px; width:140px; position:relative;">
+                <span style="font-size:14px; color:rgb(103,112,125);">Grade</span>
+                <div onClick="{{ toggleGrade }}" style="height:37px; border:1px solid rgb(213,217,226); border-radius:6px; display:flex; align-items:center; justify-content:space-between; gap:8px; padding:0 10px; font-size:16px; background:rgb(255,255,255); cursor:pointer;" style-hover="border-color:rgb(34,126,167);"><span style="color:rgb(53,59,71); white-space:nowrap;">{{ gradeText }}</span><span style="width:11px; height:11px; flex-shrink:0; color:rgb(109,109,109); display:inline-flex;"><svg viewBox="0 0 14 14" width="100%" height="100%"><path d="M 1.28 0.22 C 0.987 -0.073 0.513 -0.073 0.22 0.22 C -0.073 0.513 -0.073 0.987 0.22 1.28 L 5.22 6.28 C 5.513 6.573 5.987 6.573 6.28 6.28 L 11.28 1.28 C 11.573 0.987 11.573 0.513 11.28 0.22 C 10.987 -0.073 10.513 -0.073 10.22 0.22 L 5.75 4.689 L 1.28 0.22 Z" fill="currentColor" transform="matrix(1 0 0 1 1.25 3.75)"></path></svg></span></div>
+                <sc-if value="{{ gradeOpen }}">
+                  <div style="position:absolute; top:65px; left:0; width:170px; max-height:280px; overflow:auto; background:rgb(255,255,255); border:1px solid rgb(213,217,226); border-radius:6px; box-shadow:0 6px 16px rgba(0,0,0,0.14); z-index:40; padding:4px 0;">
+                    <sc-for list="{{ gradeOptions }}" as="o" hint-placeholder-count="8">
+                      <div onClick="{{ o.onClick }}" style="padding:8px 12px; font-size:16px; color:rgb(53,59,71); cursor:pointer;" style-hover="background:rgb(246,247,249);">{{ o.label }}</div>
+                    </sc-for>
+                  </div>
+                </sc-if>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:6px; width:150px; position:relative;">
+                <span style="font-size:14px; color:rgb(103,112,125);">Cycle</span>
+                <div onClick="{{ toggleCycle }}" style="height:37px; border:1px solid rgb(213,217,226); border-radius:6px; display:flex; align-items:center; justify-content:space-between; gap:8px; padding:0 10px; font-size:16px; background:rgb(255,255,255); cursor:pointer;" style-hover="border-color:rgb(34,126,167);"><span style="color:rgb(53,59,71); white-space:nowrap;">{{ cycleText }}</span><span style="width:11px; height:11px; flex-shrink:0; color:rgb(109,109,109); display:inline-flex;"><svg viewBox="0 0 14 14" width="100%" height="100%"><path d="M 1.28 0.22 C 0.987 -0.073 0.513 -0.073 0.22 0.22 C -0.073 0.513 -0.073 0.987 0.22 1.28 L 5.22 6.28 C 5.513 6.573 5.987 6.573 6.28 6.28 L 11.28 1.28 C 11.573 0.987 11.573 0.513 11.28 0.22 C 10.987 -0.073 10.513 -0.073 10.22 0.22 L 5.75 4.689 L 1.28 0.22 Z" fill="currentColor" transform="matrix(1 0 0 1 1.25 3.75)"></path></svg></span></div>
+                <sc-if value="{{ cycleOpen }}">
+                  <div style="position:absolute; top:65px; left:0; width:180px; background:rgb(255,255,255); border:1px solid rgb(213,217,226); border-radius:6px; box-shadow:0 6px 16px rgba(0,0,0,0.14); z-index:40; padding:4px 0;">
+                    <sc-for list="{{ cycleOptions }}" as="o" hint-placeholder-count="3">
+                      <div onClick="{{ o.onClick }}" style="padding:8px 12px; font-size:16px; color:rgb(53,59,71); cursor:pointer;" style-hover="background:rgb(246,247,249);">{{ o.label }}</div>
+                    </sc-for>
+                  </div>
+                </sc-if>
+              </div>
+              <div onClick="{{ openDemo }}" style="height: 37px; border: 1px solid #227EA7; border-radius: 6px; color: #227EA7; padding: 0 16px; display: flex; align-items: center; gap: 8px; font-size: 16px; cursor: pointer; user-select: none; font-weight: 600" style-hover="background:rgb(240,247,251);">Demographic Filters<span style="display:{{ demoBadgeShow }}; min-width:20px; height:20px; border-radius:999px; background:#227EA7; color:rgb(255,255,255); font-size:13px; font-weight:700; align-items:center; justify-content:center; padding:0 6px;">{{ demoCount }}</span></div>
+              <div onClick="{{ applyView }}" style="height:37px; border-radius:6px; background:#227EA7; color:rgb(255,255,255); padding:0 18px; display:flex; align-items:center; font-size:16px; cursor:pointer; user-select:none;" style-hover="background:rgb(27,101,134);">View</div>
+              <div style="height:37px; display:flex; align-items:center; padding:0 6px;"><a href="#" onClick="{{ resetFilters }}" style="font-size:16px; font-weight:700; white-space:nowrap;">Reset Filters</a></div>
+            </div>
+            <div style="align-self:stretch; height:1px; background:rgb(213,217,226);"></div>
+          </div>
+
+          <!-- TITLE -->
+          <div style="align-self:stretch; padding:0 16px; display:flex; flex-direction:row; gap:12px; align-items:center;">
+            <span style="font-weight:700; font-size:30px; line-height:100%; color:rgb(53,59,71);">Math Growth Report</span>
+            <span style="flex-shrink:0; display:inline-flex; align-items:center; background:rgb(253,246,205); color:rgb(133,100,4); border:1px solid rgb(240,207,72); border-radius:999px; padding:4px 14px; font-size:14px; font-weight:700; letter-spacing:0.02em;">Preview</span>
+          </div>
+
+          <div style="align-self:stretch; display:flex; flex-direction:column; gap:40px;">
+
+            <!-- CURRENT GROWTH -->
+            <div style="align-self:stretch; display:flex; flex-direction:column; gap:16px; padding:0 16px;">
+              <span style="font-weight:700; font-size:22px; line-height:100%; color:rgb(53,59,71);">Current Growth</span>
+              <div style="align-self:stretch; display:grid; grid-template-columns:repeat(3, 1fr); gap:8px;">
+                <div style="border-radius:6px; background:rgb(246,247,249); box-shadow:inset 0 0 0 1px rgb(213,217,226); display:flex; flex-direction:column; gap:10px; padding:16px;">
+                  <div style="display:flex; flex-direction:row; gap:8px; align-items:center;"><span style="width:12px; height:12px; flex-shrink:0; background:rgb(173,75,140);"></span><span style="font-size: 14px; color: rgb(53,59,71); font-weight: 700">Below growth expectations</span></div>
+                  <span style="font-size:14px; line-height:1.5; color:rgb(109,109,109); text-wrap:pretty;">Student is <strong>not progressing</strong> as expected for someone who began the year where they did. Their End of Year Percentile Projection is lower than it was before.</span>
+                </div>
+                <div style="border-radius:6px; background:rgb(246,247,249); box-shadow:inset 0 0 0 1px rgb(213,217,226); display:flex; flex-direction:column; gap:10px; padding:16px;">
+                  <div style="display:flex; flex-direction:row; gap:8px; align-items:center;"><span style="width:12px; height:12px; flex-shrink:0; background:rgb(34,126,167);"></span><span style="font-size:14px; color:rgb(53,59,71);"><b>Meeting growth expectations</b></span></div>
+                  <span style="font-size:14px; line-height:1.5; color:rgb(109,109,109); text-wrap:pretty;">Student is <strong>progressing</strong> as expected for someone who began the year where they did. Their End of Year Percentile Projection is the same as it was before.</span>
+                </div>
+                <div style="border-radius:6px; background:rgb(246,247,249); box-shadow:inset 0 0 0 1px rgb(213,217,226); display:flex; flex-direction:column; gap:10px; padding:16px;">
+                  <div style="display:flex; flex-direction:row; gap:8px; align-items:center;"><span style="width:12px; height:12px; flex-shrink:0; background:rgb(0,150,94);"></span><span style="font-size:14px; color:rgb(53,59,71);"><b>Exceeding growth expectations</b></span></div>
+                  <span style="font-size:14px; line-height:1.5; color:rgb(109,109,109); text-wrap:pretty;">Student is <strong>progressing more</strong> than expected for someone who began the year where they did. Their End of Year Percentile Projection is higher than before.</span>
+                </div>
+              </div>
+
+              <div style="align-self:stretch; border-radius:6px; box-shadow:inset 0 0 0 1px rgb(213,217,226); display:flex; flex-direction:column; gap:32px; padding:16px 24px;">
+                <div style="display:flex; flex-direction:row; gap:8px; align-items:center;">
+                  <span style="font-size:14px; line-height:100%; color:rgb(53,59,71); white-space:nowrap;">Group by</span>
+                  <div style="display:flex; flex-direction:row; height:33px; border-radius:4px; background:rgb(236,238,242); padding:4px;">
+                    <div onClick="{{ setGrowthSchool }}" style="min-width:74px; border-radius:4px; padding:0 10.5px; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:500; line-height:100%; cursor:pointer; user-select:none; background:{{ growthSchoolBg }}; color:{{ growthSchoolFg }};">School</div>
+                    <div onClick="{{ setGrowthGrade }}" style="min-width:74px; border-radius:4px; padding:0 10.5px; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:500; line-height:100%; cursor:pointer; user-select:none; background:{{ growthGradeBg }}; color:{{ growthGradeFg }};">Grade</div>
+                  </div>
+                </div>
+
+                <div style="align-self:stretch; display:flex; flex-direction:column; gap:24px;">
+                  <sc-for list="{{ growthRows }}" as="r" hint-placeholder-count="4">
+                    <div style="align-self:stretch; display:flex; flex-direction:row; gap:16px; align-items:center;">
+                      <div style="width:200px; flex-shrink:0; display:flex; flex-direction:column; gap:4px; justify-content:center;">
+                        <span style="font-weight:700; font-size:16px; line-height:100%; color:rgb(53,59,71);">{{ r.name }}</span>
+                        <span style="font-size:13px; line-height:100%; color:rgb(109,109,109);">Students Assessed: {{ r.assessed }}</span>
+                      </div>
+                      <div style="flex-grow:1; min-width:0; display:flex; flex-direction:column; gap:8px; justify-content:center;">
+                        <div style="align-self:stretch; height:16px; overflow:hidden; border-radius:4px; background:rgb(246,247,249); display:flex; flex-direction:row; gap:4px;">
+                          <div style="flex-grow:{{ r.below }}; display:{{ r.belowShow }}; background:rgb(173,75,140); border-radius:4px 0 0 4px;"></div>
+                          <div style="flex-grow:{{ r.meeting }}; display:{{ r.meetingShow }}; background:rgb(34,126,167); border-radius:0;"></div>
+                          <div style="flex-grow:{{ r.exceeding }}; display:{{ r.exceedingShow }}; background:rgb(0,150,94); border-radius:0 4px 4px 0;"></div>
+                        </div>
+                        <div style="align-self:stretch; display:flex; flex-direction:row; gap:24px; align-items:center;">
+                          <div style="display:flex; flex-direction:row; gap:8px; align-items:center;"><span style="width:12px; height:12px; flex-shrink:0; background:rgb(173,75,140);"></span><span style="font-size:14px; line-height:100%; color:rgb(53,59,71);">{{ r.belowLabel }}</span></div>
+                          <div style="display:flex; flex-direction:row; gap:8px; align-items:center;"><span style="width:12px; height:12px; flex-shrink:0; background:rgb(34,126,167);"></span><span style="font-size:14px; line-height:100%; color:rgb(53,59,71);">{{ r.meetingLabel }}</span></div>
+                          <div style="display:flex; flex-direction:row; gap:8px; align-items:center;"><span style="width:12px; height:12px; flex-shrink:0; background:rgb(0,150,94);"></span><span style="font-size:14px; line-height:100%; color:rgb(53,59,71);">{{ r.exceedingLabel }}</span></div>
+                        </div>
+                      </div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </div>
+
+            <!-- EYP -->
+            <div style="align-self:stretch; display:flex; flex-direction:column; gap:16px; padding:0 16px;">
+              <span style="font-weight:700; font-size:22px; line-height:100%; color:rgb(53,59,71);">End of Year Percentile Projection (EYP)</span>
+              <div style="align-self:stretch; border-radius:6px; box-shadow:inset 0 0 0 1px rgb(213,217,226); display:flex; flex-direction:column; gap:32px; padding:24px 16px;">
+                <div style="display:flex; flex-direction:row; gap:8px; align-items:center;">
+                  <span style="font-size:14px; line-height:100%; color:rgb(53,59,71); white-space:nowrap;">Group by</span>
+                  <div style="display:flex; flex-direction:row; height:33px; border-radius:4px; background:rgb(236,238,242); padding:4px;">
+                    <div onClick="{{ setEypSchool }}" style="min-width:74px; border-radius:4px; padding:0 10.5px; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:500; line-height:100%; cursor:pointer; user-select:none; background:{{ eypSchoolBg }}; color:{{ eypSchoolFg }};">School</div>
+                    <div onClick="{{ setEypGrade }}" style="min-width:74px; border-radius:4px; padding:0 10.5px; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:500; line-height:100%; cursor:pointer; user-select:none; background:{{ eypGradeBg }}; color:{{ eypGradeFg }};">Grade</div>
+                  </div>
+                </div>
+
+                <div style="align-self:stretch; display:flex; flex-direction:column; overflow-x:auto;">
+                  <div style="align-self:stretch; display:flex; flex-direction:row; border-bottom:1px solid rgb(213,217,226);">
+                    <div style="flex:0 0 auto; width:min(228px, 34%); min-width:0; height:41px; display:flex; align-items:center; padding:10.5px 14px;"></div>
+                    <div style="flex:1; min-width:0; height:41px; display:flex; align-items:center; padding:10.5px 14px;"><span style="font-weight:700; font-size:16px; color:rgb(53,59,71);">≤ 25th</span></div>
+                    <div style="flex:1; min-width:0; height:41px; display:flex; align-items:center; padding:10.5px 14px;"><span style="font-weight:700; font-size:16px; color:rgb(53,59,71);">25-49th</span></div>
+                    <div style="flex:1; min-width:0; height:41px; display:flex; align-items:center; padding:10.5px 14px;"><span style="font-weight:700; font-size:16px; color:rgb(53,59,71);">50-79th</span></div>
+                    <div style="flex:1; min-width:0; height:41px; display:flex; align-items:center; padding:10.5px 14px;"><span style="font-weight:700; font-size:16px; color:rgb(53,59,71);">≥ 80th</span></div>
+                  </div>
+                  <sc-for list="{{ eypRows }}" as="r" hint-placeholder-count="4">
+                    <div style="align-self:stretch; display:flex; flex-direction:row; border-bottom:1px solid rgb(213,217,226);">
+                      <div style="flex:0 0 auto; width:min(228px, 34%); min-width:0; min-height:61px; display:flex; flex-direction:column; gap:4px; justify-content:center; padding:10.5px 14px;">
+                        <span style="font-weight:700; font-size:16px; line-height:100%; color:rgb(53,59,71);">{{ r.name }}</span>
+                        <span style="font-size:13px; line-height:100%; color:rgb(109,109,109);">Students Assessed: {{ r.assessed }}</span>
+                      </div>
+                      <div style="flex:1; min-width:0; min-height:61px; display:flex; align-items:center; padding:10.5px 14px;"><span style="font-size:16px; color:rgb(53,59,71);">{{ r.q1 }}</span></div>
+                      <div style="flex:1; min-width:0; min-height:61px; display:flex; align-items:center; padding:10.5px 14px;"><span style="font-size:16px; color:rgb(53,59,71);">{{ r.q2 }}</span></div>
+                      <div style="flex:1; min-width:0; min-height:61px; display:flex; align-items:center; padding:10.5px 14px;"><span style="font-size:16px; color:rgb(53,59,71);">{{ r.q3 }}</span></div>
+                      <div style="flex:1; min-width:0; min-height:61px; display:flex; align-items:center; padding:10.5px 14px;"><span style="font-size:16px; color:rgb(53,59,71);">{{ r.q4 }}</span></div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <sc-if value="{{ demoOpen }}">
+    <div onClick="{{ closeDemo }}" style="position:fixed; inset:0; background:rgba(15,23,42,0.45); z-index:200; display:flex; align-items:center; justify-content:center; padding:24px;">
+      <div onClick="{{ stopClose }}" style="width:100%; max-width:1080px; background:rgb(255,255,255); border-radius:8px; box-shadow:0 24px 60px rgba(0,0,0,0.25); display:flex; flex-direction:column;">
+        <div style="display:flex; flex-direction:row; align-items:center; justify-content:center; position:relative; padding:20px 24px; border-bottom:1px solid rgb(213,217,226);">
+          <span style="font-weight:700; font-size:22px; color:rgb(53,59,71);">Demographic Filters</span>
+          <div onClick="{{ closeDemo }}" style="position:absolute; right:20px; top:18px; width:28px; height:28px; display:flex; align-items:center; justify-content:center; color:rgb(53,59,71); cursor:pointer; border-radius:4px;" style-hover="background:rgb(246,247,249);"><svg viewBox="0 0 16 16" width="16" height="16"><path d="M1.5 1.5 L14.5 14.5 M14.5 1.5 L1.5 14.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg></div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:24px; padding:24px; border-bottom:1px solid rgb(213,217,226);">
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <span style="font-size:15px; color:rgb(103,112,125);">English Language Learning</span>
+            <sc-for list="{{ ellOptions }}" as="o" hint-placeholder-count="3">
+              <div onClick="{{ o.onClick }}" style="display:flex; flex-direction:row; align-items:center; gap:12px; cursor:pointer; user-select:none;">
+                <span style="width:22px; height:22px; flex-shrink:0; border-radius:999px; border:2px solid {{ o.ring }}; display:flex; align-items:center; justify-content:center; background:rgb(255,255,255);"><span style="width:11px; height:11px; border-radius:999px; background:{{ o.dot }};"></span></span>
+                <span style="font-size:16px; color:rgb(53,59,71);">{{ o.label }}</span>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <span style="font-size:15px; color:rgb(103,112,125);">Students Supported by IEP</span>
+            <sc-for list="{{ iepOptions }}" as="o" hint-placeholder-count="3">
+              <div onClick="{{ o.onClick }}" style="display:flex; flex-direction:row; align-items:center; gap:12px; cursor:pointer; user-select:none;">
+                <span style="width:22px; height:22px; flex-shrink:0; border-radius:999px; border:2px solid {{ o.ring }}; display:flex; align-items:center; justify-content:center; background:rgb(255,255,255);"><span style="width:11px; height:11px; border-radius:999px; background:{{ o.dot }};"></span></span>
+                <span style="font-size:16px; color:rgb(53,59,71);">{{ o.label }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="height: 20px; display: none"></div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:1493},&quot;showSampleData&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Data&quot;}}">
+const SCHOOLS = [
+  { name: "ANet Demo School", assessed: 512, below: 10, meeting: 85, exceeding: 5, q: [16, 29, 41, 14] },
+  { name: "Bold Thinking Academy", assessed: 438, below: 0, meeting: 100, exceeding: 0, q: [11, 26, 44, 19] },
+  { name: "Center Communities School", assessed: 389, below: 0, meeting: 96, exceeding: 4, q: [31, 36, 28, 5] },
+  { name: "Drive Results Charter", assessed: 476, below: 4, meeting: 96, exceeding: 0, q: [24, 34, 34, 8] }
+].sort((a, b) => a.name.localeCompare(b.name));
+const GRADES = [
+  { name: "Grade 2", assessed: 268, below: 8, meeting: 90, exceeding: 2, q: [11, 29, 47, 13] },
+  { name: "Grade 3", assessed: 274, below: 5, meeting: 90, exceeding: 5, q: [10, 22, 43, 25] },
+  { name: "Grade 4", assessed: 261, below: 10, meeting: 90, exceeding: 0, q: [38, 34, 23, 5] },
+  { name: "Grade 5", assessed: 249, below: 7, meeting: 90, exceeding: 3, q: [22, 33, 36, 9] },
+  { name: "Grade 6", assessed: 243, below: 5, meeting: 90, exceeding: 5, q: [9, 24, 44, 23] },
+  { name: "Grade 7", assessed: 231, below: 6, meeting: 91, exceeding: 3, q: [14, 31, 43, 12] },
+  { name: "Grade 8", assessed: 289, below: 10, meeting: 90, exceeding: 0, q: [35, 35, 25, 5] }
+];
+
+function norm(parts) {
+  const total = parts.reduce((a, b) => a + b, 0) || 1;
+  const scaled = parts.map(p => p <= 0 ? 0 : Math.max(1, Math.round((p / total) * 100)));
+  let big = 0;
+  scaled.forEach((v, i) => { if (v > scaled[big]) big = i; });
+  scaled[big] += 100 - scaled.reduce((a, b) => a + b, 0);
+  return scaled;
+}
+
+// Grade-level detail for a given school: the network grade pattern weighted by
+// that school's own profile, renormalized to 100%.
+// Fit per-grade distributions so their enrollment-weighted average equals the
+// school-level total the report shows. `tilts` gives each grade's relative
+// lean per category; the solver rescales categories until the average matches.
+function fitToTotal(tilts, weights, target) {
+  const cats = target.length;
+  const scale = target.map(t => t > 0 ? 1 : 0);
+  let out = tilts.map(() => target.slice());
+  for (let pass = 0; pass < 60; pass++) {
+    out = tilts.map(t => {
+      const raw = t.map((v, c) => Math.max(0, v * scale[c] * target[c]));
+      const sum = raw.reduce((a, b) => a + b, 0) || 1;
+      return raw.map(v => (v / sum) * 100);
+    });
+    const wTotal = weights.reduce((a, b) => a + b, 0) || 1;
+    for (let c = 0; c < cats; c++) {
+      if (target[c] <= 0) { scale[c] = 0; continue; }
+      const avg = out.reduce((a, row, i) => a + row[c] * weights[i], 0) / wTotal;
+      if (avg > 0.0001) scale[c] *= target[c] / avg;
+    }
+  }
+  return out;
+}
+
+function tiltsFor(key, cycle, greenBoostIdx) {
+  const avg = GRADES.reduce((a, g) => a + (Array.isArray(g[key]) ? 0 : g[key]), 0) / GRADES.length;
+  return GRADES.map(g => {
+    if (key === "q") return g.q.map(v => v);
+    return g[key] / (avg || 1);
+  });
+}
+
+// Per-grade growth/EYP for one school at one cycle, anchored to that school's total.
+function gradeRowsFor(school, cycle, total) {
+  const boost = cycle === "Milestone 8" ? 2.2 : cycle === "Milestone 5" ? 1.6 : 1;
+  const soft = v => v > 0 ? v + 0.5 : 0; // authored zeros stay zero through the fit
+  const growthTilts = GRADES.map(g => {
+    const green = GREEN_GROWTH_GRADES.indexOf(g.name) !== -1 ? boost : 1;
+    return [soft(g.below), g.meeting, soft(g.exceeding) * green];
+  });
+  const eypTilts = GRADES.map(g => g.q.map(soft));
+  const gTotal = GRADES.reduce((a, g) => a + g.assessed, 0);
+  const weights = GRADES.map(g => g.assessed);
+  let left = school.assessed;
+  const counts = GRADES.map((g, i) => {
+    if (i === GRADES.length - 1) return left;
+    const n = Math.round(school.assessed * (g.assessed / gTotal));
+    left -= n;
+    return n;
+  });
+  const growth = fitToTotal(growthTilts, weights, [total.below, total.meeting, total.exceeding]);
+  const eyp = fitToTotal(eypTilts, weights, total.q);
+  return GRADES.map((g, i) => {
+    const [below, meeting, exceeding] = norm(growth[i]);
+    return {
+      name: g.name,
+      assessed: counts[i],
+      below, meeting, exceeding,
+      q: norm(eyp[i])
+    };
+  });
+}
+
+// Later cycles reflect more instructional time: growth shifts out of "below"
+// toward "meeting"/"exceeding", and EYP shifts into the higher bands.
+// Grades where the exceeding (green) share actually grows across cycles;
+// everywhere else the gains land in "meeting".
+const GREEN_GROWTH_GRADES = ["Grade 3", "Grade 6"];
+
+const CYCLES = {
+  "Milestone 2": { growth: [1, 1, 1], green: [1, 1, 1], eyp: [1, 1, 1, 1] },
+  "Milestone 5": { growth: [0.74, 1.28, 0.92], green: [0.78, 1.02, 1.22], eyp: [0.84, 1.02, 1.1, 1.04] },
+  "Milestone 8": { growth: [0.55, 1.45, 0.88], green: [0.6, 1.0, 1.5], eyp: [0.66, 1.0, 1.24, 1.12] }
+};
+
+function applyCycle(row, cycle, greenGrowth) {
+  const c = CYCLES[cycle] || CYCLES["Milestone 2"];
+  const g = greenGrowth ? c.green : c.growth;
+  const [below, meeting, exceeding] = norm([
+    row.below * g[0], row.meeting * g[1], row.exceeding * g[2]
+  ]);
+  return Object.assign({}, row, {
+    below, meeting, exceeding,
+    q: norm(row.q.map((v, i) => v * c.eyp[i]))
+  });
+}
+
+// Hand-set school totals for specific cycles (override the modeled numbers).
+const SCHOOL_CYCLE_OVERRIDES = {
+  "ANet Demo School": {
+    "Milestone 5": { below: 9, meeting: 86, exceeding: 5 },
+    "Milestone 8": { below: 2, meeting: 93, exceeding: 5 }
+  },
+  "Bold Thinking Academy": {
+    "Milestone 8": { below: 0, meeting: 100, exceeding: 0 }
+  },
+  "Center Communities School": {
+    "Milestone 5": { below: 0, meeting: 93, exceeding: 7 },
+    "Milestone 8": { below: 0, meeting: 90, exceeding: 10 }
+  },
+  "Drive Results Charter": {
+    "Milestone 5": { below: 4, meeting: 90, exceeding: 6 },
+    "Milestone 8": { below: 4, meeting: 80, exceeding: 16 }
+  }
+};
+
+// Demographic subgroups: enrollment share plus how each subgroup's growth and
+// EYP distributions lean relative to the all-students picture.
+const DEMOGRAPHICS = {
+  ell: {
+    "All": { share: 1, growth: [1, 1, 1], eyp: [1, 1, 1, 1] },
+    "ELL": { share: 0.18, growth: [1.25, 0.99, 0.88], eyp: [1.7, 1.2, 0.62, 0.32] },
+    "Non-ELL": { share: 0.82, growth: [0.96, 1.0, 1.02], eyp: [0.86, 0.96, 1.08, 1.14] }
+  },
+  iep: {
+    "All": { share: 1, growth: [1, 1, 1], eyp: [1, 1, 1, 1] },
+    "Students supported by IEP\u2019s": { share: 0.14, growth: [1.3, 0.98, 0.86], eyp: [1.9, 1.16, 0.56, 0.26] },
+    "Students not supported by IEP\u2019s": { share: 0.86, growth: [0.95, 1.0, 1.02], eyp: [0.89, 0.98, 1.06, 1.11] }
+  }
+};
+
+// ELL and IEP identification overlap heavily in practice, so intersecting the
+// two subgroups keeps a realistic floor instead of multiplying independent shares.
+const OVERLAP = {
+  "ELL|Students supported by IEP\u2019s": 0.05,
+  "ELL|Students not supported by IEP\u2019s": 0.13,
+  "Non-ELL|Students supported by IEP\u2019s": 0.09,
+  "Non-ELL|Students not supported by IEP\u2019s": 0.73
+};
+
+function demoFactor(ell, iep) {
+  const a = DEMOGRAPHICS.ell[ell] || DEMOGRAPHICS.ell.All;
+  const b = DEMOGRAPHICS.iep[iep] || DEMOGRAPHICS.iep.All;
+  const both = OVERLAP[ell + "|" + iep];
+  return {
+    share: both != null ? both : a.share * b.share,
+    growth: a.growth.map((v, i) => v * b.growth[i]),
+    eyp: a.eyp.map((v, i) => v * b.eyp[i]),
+    active: a.share !== 1 || b.share !== 1
+  };
+}
+
+// A harder-served subgroup can show "below growth" even where the all-students
+// row is 0%, so lift the lower bands slightly rather than scaling zero by zero.
+function applyDemo(total, f) {
+  if (!f.active) return total;
+  const bump = m => m > 1 ? (m - 1) * 5 : 0;
+  const [below, meeting, exceeding] = norm([
+    total.below * f.growth[0] + bump(f.growth[0]) * 0.4,
+    total.meeting * f.growth[1],
+    total.exceeding * f.growth[2]
+  ]);
+  return Object.assign({}, total, {
+    below, meeting, exceeding,
+    q: norm(total.q.map((v, i) => v * f.eyp[i] + bump(f.eyp[i])))
+  });
+}
+
+function radio(active) {
+  return {
+    ring: active ? "rgb(23,116,153)" : "rgb(148,163,184)",
+    dot: active ? "rgb(23,116,153)" : "transparent"
+  };
+}
+
+class Component extends DCLogic {
+  state = {
+    growthBy: "School", eypBy: "School",
+    school: "All Schools", pendingSchool: "All Schools", schoolOpen: false,
+    grade: "All Grades", pendingGrade: "All Grades", gradeOpen: false,
+    cycle: "Milestone 2", pendingCycle: "Milestone 2", cycleOpen: false,
+    demoOpen: false,
+    ell: "All", iep: "All",
+    draftEll: "All", draftIep: "All"
+  };
+
+  filterRef = React.createRef();
+
+  componentDidMount() {
+    this._away = e => {
+      const el = this.filterRef.current;
+      if (el && !el.contains(e.target) && (this.state.schoolOpen || this.state.gradeOpen || this.state.cycleOpen)) {
+        this.setState({ schoolOpen: false, gradeOpen: false, cycleOpen: false });
+      }
+    };
+    document.addEventListener("mousedown", this._away, true);
+    window.addEventListener("blur", this._away);
+
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener("mousedown", this._away, true);
+    window.removeEventListener("blur", this._away);
+  }
+
+  // A school's displayed totals for the active cycle (hand-set override wins).
+  demo() { return demoFactor(this.state.ell, this.state.iep); }
+
+  schoolTotal(school) {
+    const cycle = this.state.cycle;
+    const modeled = applyCycle(school, cycle, false);
+    const ov = (SCHOOL_CYCLE_OVERRIDES[school.name] || {})[cycle];
+    const f = this.demo();
+    const total = applyDemo(Object.assign({}, modeled, ov || {}), f);
+    return Object.assign(total, { assessed: Math.round(school.assessed * f.share) });
+  }
+
+  scaled(school) {
+    const f = this.demo();
+    return Object.assign({}, school, { assessed: Math.round(school.assessed * f.share) });
+  }
+
+  rows(by) {
+    const sel = SCHOOLS.find(s => s.name === this.state.school);
+    const g = this.state.grade;
+    const pick = rs => g === "All Grades" ? rs : rs.filter(r => r.name === g);
+
+    if (sel) {
+      const total = this.schoolTotal(sel);
+      const grades = gradeRowsFor(this.scaled(sel), this.state.cycle, total);
+      if (by === "Grade") return pick(grades);
+      if (g === "All Grades") return [total];
+      const row = grades.find(r => r.name === g);
+      return row ? [Object.assign({}, row, { name: sel.name })] : [];
+    }
+
+    const totals = SCHOOLS.map(s => this.schoolTotal(s));
+    if (by === "School") {
+      if (g === "All Grades") return totals;
+      return SCHOOLS.map((s, i) => {
+        const row = gradeRowsFor(this.scaled(s), this.state.cycle, totals[i]).find(r => r.name === g);
+        return Object.assign({}, row, { name: s.name });
+      });
+    }
+
+    // Network view by grade: sum each school's fitted grade rows.
+    const per = SCHOOLS.map((s, i) => gradeRowsFor(this.scaled(s), this.state.cycle, totals[i]));
+    const merged = GRADES.map((gr, gi) => {
+      const rows = per.map(p => p[gi]);
+      const assessed = rows.reduce((a, r) => a + r.assessed, 0) || 1;
+      const wavg = key => rows.reduce((a, r) => a + r[key] * r.assessed, 0) / assessed;
+      const [below, meeting, exceeding] = norm([wavg("below"), wavg("meeting"), wavg("exceeding")]);
+      const q = norm([0, 1, 2, 3].map(qi =>
+        rows.reduce((a, r) => a + r.q[qi] * r.assessed, 0) / assessed));
+      return { name: gr.name, assessed, below, meeting, exceeding, q };
+    });
+    return pick(merged);
+  }
+
+  chip(active) {
+    return {
+      bg: active ? "rgb(34,126,167)" : "transparent",
+      fg: active ? "rgb(255,255,255)" : "rgb(100,116,139)",
+      weight: "500"
+    };
+  }
+
+  renderVals() {
+    const gs = this.chip(this.state.growthBy === "School");
+    const gg = this.chip(this.state.growthBy === "Grade");
+    const es = this.chip(this.state.eypBy === "School");
+    const eg = this.chip(this.state.eypBy === "Grade");
+    const showData = this.props.showSampleData ?? true;
+    const demoCount = (this.state.draftEll !== "All" ? 1 : 0) + (this.state.draftIep !== "All" ? 1 : 0);
+    const src = showData ? this.rows(this.state.growthBy) : [];
+    const esrc = showData ? this.rows(this.state.eypBy) : [];
+    return {
+      growthRows: src.map(r => ({
+        name: r.name, assessed: r.assessed,
+        below: r.below, meeting: r.meeting, exceeding: r.exceeding,
+        belowShow: r.below > 0 ? "block" : "none",
+        meetingShow: r.meeting > 0 ? "block" : "none",
+        exceedingShow: r.exceeding > 0 ? "block" : "none",
+        belowLabel: r.below + "%", meetingLabel: r.meeting + "%", exceedingLabel: r.exceeding + "%"
+      })),
+      eypRows: esrc.map(r => ({
+        name: r.name, assessed: r.assessed,
+        q1: r.q[0] + "%", q2: r.q[1] + "%", q3: r.q[2] + "%", q4: r.q[3] + "%"
+      })),
+      growthSchoolBg: gs.bg, growthSchoolFg: gs.fg, growthSchoolWeight: gs.weight,
+      growthGradeBg: gg.bg, growthGradeFg: gg.fg, growthGradeWeight: gg.weight,
+      eypSchoolBg: es.bg, eypSchoolFg: es.fg, eypSchoolWeight: es.weight,
+      eypGradeBg: eg.bg, eypGradeFg: eg.fg, eypGradeWeight: eg.weight,
+      setGrowthSchool: () => this.setState({ growthBy: "School" }),
+      setGrowthGrade: () => this.setState({ growthBy: "Grade" }),
+      setEypSchool: () => this.setState({ eypBy: "School" }),
+      setEypGrade: () => this.setState({ eypBy: "Grade" }),
+      filterRef: this.filterRef,
+      demoOpen: this.state.demoOpen,
+      demoCount: demoCount,
+      demoBadgeShow: demoCount > 0 ? "inline-flex" : "none",
+      openDemo: () => this.setState({
+        demoOpen: true, schoolOpen: false, gradeOpen: false, cycleOpen: false
+      }),
+      closeDemo: () => this.setState({ demoOpen: false }),
+      resetFilters: e => {
+        e.preventDefault();
+        this.setState({
+          school: "All Schools", pendingSchool: "All Schools", schoolOpen: false,
+          grade: "All Grades", pendingGrade: "All Grades", gradeOpen: false,
+          cycle: "Milestone 2", pendingCycle: "Milestone 2", cycleOpen: false,
+          demoOpen: false, ell: "All", iep: "All", draftEll: "All", draftIep: "All"
+        });
+      },
+      stopClose: e => e.stopPropagation(),
+      ellOptions: ["All", "ELL", "Non-ELL"].map(label => Object.assign(
+        { label, onClick: () => this.setState({ draftEll: label }) },
+        radio(this.state.draftEll === label))),
+      iepOptions: ["All", "Students supported by IEP\u2019s", "Students not supported by IEP\u2019s"].map(label => Object.assign(
+        { label, onClick: () => this.setState({ draftIep: label }) },
+        radio(this.state.draftIep === label))),
+      schoolText: this.state.pendingSchool,
+      schoolOpen: this.state.schoolOpen,
+      toggleSchool: () => this.setState(s => ({ schoolOpen: !s.schoolOpen, gradeOpen: false, cycleOpen: false })),
+      schoolOptions: ["All Schools"].concat(SCHOOLS.map(s => s.name)).map(label => ({
+        label, onClick: () => this.setState({ pendingSchool: label, schoolOpen: false })
+      })),
+      gradeText: this.state.pendingGrade,
+      gradeOpen: this.state.gradeOpen,
+      toggleGrade: () => this.setState(s => ({ gradeOpen: !s.gradeOpen, schoolOpen: false, cycleOpen: false })),
+      gradeOptions: ["All Grades"].concat(GRADES.map(g => g.name)).map(label => ({
+        label, onClick: () => this.setState({ pendingGrade: label, gradeOpen: false })
+      })),
+      cycleText: this.state.pendingCycle,
+      cycleOpen: this.state.cycleOpen,
+      toggleCycle: () => this.setState(s => ({ cycleOpen: !s.cycleOpen, schoolOpen: false, gradeOpen: false })),
+      cycleOptions: Object.keys(CYCLES).map(label => ({
+        label, onClick: () => this.setState({ pendingCycle: label, cycleOpen: false })
+      })),
+      applyView: () => this.setState(s => ({
+        school: s.pendingSchool, grade: s.pendingGrade, cycle: s.pendingCycle,
+        ell: s.draftEll, iep: s.draftIep,
+        schoolOpen: false, gradeOpen: false, cycleOpen: false
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>

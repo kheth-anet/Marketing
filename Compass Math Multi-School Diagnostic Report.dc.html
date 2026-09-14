@@ -67,78 +67,142 @@
           <!-- HEADER -->
           <div style="align-self:stretch; display:flex; flex-direction:column; gap:8px;">
             <span style="font-weight:700; font-size:30px; line-height:1.15; color:rgb(53,59,71);">Math Multi-School Diagnostic Report</span>
-            <span style="font-size:14px; color:rgb(109,109,109);">Last updated: Month DD, YYYY</span>
-            <span style="font-size:16px; line-height:1.45; color:rgb(53,59,71); text-wrap:pretty;">This report provides district-level insights using aggregated diagnostic data from Compass Math assessments. Multi-school leaders can compare overall distributions and identify schools and grades that need extra support with grade-level learning components—discrete skills within a standard.</span>
+            <span style="font-size:14px; color:rgb(109,109,109);">Last updated: 11/8/26</span>
+            <span style="font-size: 16px; line-height: 1.45; color: rgb(53,59,71); text-wrap: pretty; display: none">This report provides district-level insights using aggregated diagnostic data from Compass Math assessments. Multi-school leaders can compare overall distributions and identify schools and grades that need extra support with grade-level learning components—discrete skills within a standard.</span>
           </div>
 
           <!-- LEGEND CARDS -->
           <div style="align-self:stretch; display:flex; flex-direction:row; gap:16px; align-items:stretch;">
             <div style="flex:1; border-radius:4px; box-shadow:inset 0 0 0 1px rgb(213,217,226); padding:14px 16px; display:flex; flex-direction:row; gap:12px; align-items:center;">
               <span style="width:11px; height:11px; flex-shrink:0; background:rgb(9,124,90);"></span>
-              <span style="font-size:16px; line-height:1.35; color:rgb(53,59,71);">Percent of students that are likely to be successful with key learning components during instruction</span>
+              <span style="font-size: 15px; line-height: 1.35; color: rgb(53,59,71)">Percent of students that are likely to be successful with key learning components during instruction</span>
             </div>
             <div style="flex:1; border-radius:4px; box-shadow:inset 0 0 0 1px rgb(213,217,226); padding:14px 16px; display:flex; flex-direction:row; gap:12px; align-items:center;">
               <span style="width:11px; height:11px; flex-shrink:0; background:rgb(182,74,141);"></span>
-              <span style="font-size:16px; line-height:1.35; color:rgb(53,59,71);">Percent of students that are likely to need extra support with key learning components during instruction</span>
+              <span style="font-size: 15px; line-height: 1.35; color: rgb(53,59,71)">Percent of students that are likely to need extra support with key learning components during instruction</span>
             </div>
           </div>
 
           <!-- TABS -->
           <div style="align-self:stretch; display:flex; flex-direction:row; align-items:flex-end; border-bottom:1px solid rgb(213,217,226);">
-            <div onClick="{{ pickOverall }}" style="padding:10px 4px 12px; margin-right:24px; border-bottom:3px solid {{ tabOverallBorder }}; cursor:pointer;"><span style="font-size:18px; font-weight:{{ tabOverallWeight }}; color:{{ tabOverallColor }};">Overall Distributions</span></div>
-            <div onClick="{{ pickBreakdown }}" style="padding:10px 4px 12px; border-bottom:3px solid {{ tabBreakdownBorder }}; cursor:pointer;"><span style="font-size:18px; font-weight:{{ tabBreakdownWeight }}; color:{{ tabBreakdownColor }};">Breakdown by Learning Component</span></div>
+            <div onClick="{{ pickOverall }}" style="padding:10px 4px 12px; margin-right:24px; border-bottom:3px solid {{ tabOverallBorder }}; cursor:pointer;"><span style="font-size: 16px; font-weight: {{ tabOverallWeight }}; color: {{ tabOverallColor }}">Overall Distributions</span></div>
+            <div onClick="{{ pickBreakdown }}" style="padding:10px 4px 12px; border-bottom:3px solid {{ tabBreakdownBorder }}; cursor:pointer;"><span style="font-size: 16px; font-weight: {{ tabBreakdownWeight }}; color: {{ tabBreakdownColor }}">Breakdown by Learning Component</span></div>
           </div>
 
           <!-- FILTERS -->
           <div style="align-self:stretch; display:flex; flex-direction:row; flex-wrap:wrap; gap:12px; row-gap:12px; align-items:flex-end;">
-            <div style="display:flex; flex-direction:column; gap:6px; width:130px;">
+            <div ref="{{ filterRef }}" style="display: flex; flex-direction: column; gap: 6px; width: 190px; position: relative">
               <span style="font-size:14px; color:rgb(103,112,125);">School</span>
-              <div style="height:37px; border:1px solid rgb(213,217,226); border-radius:6px; display:flex; align-items:center; justify-content:space-between; padding:0 10px; font-size:16px; cursor:pointer; background:rgb(255,255,255);" style-hover="border-color:rgb(34,126,167);">
-                <span style="color:rgb(53,59,71);">All Schools</span>
-                <span style="width:11px; height:11px; color:rgb(109,109,109); display:inline-flex;"><svg viewBox="0 0 14 14" width="100%" height="100%"><path d="M 1.28 0.22 C 0.987 -0.073 0.513 -0.073 0.22 0.22 C -0.073 0.513 -0.073 0.987 0.22 1.28 L 5.22 6.28 C 5.513 6.573 5.987 6.573 6.28 6.28 L 11.28 1.28 C 11.573 0.987 11.573 0.513 11.28 0.22 C 10.987 -0.073 10.513 -0.073 10.22 0.22 L 5.75 4.689 L 1.28 0.22 Z" fill="currentColor" transform="matrix(1 0 0 1 1.25 3.75)"></path></svg></span>
+              <div onClick="{{ toggleSchool }}" style="height:37px; border:1px solid rgb(213,217,226); border-radius:6px; display:flex; align-items:center; justify-content:space-between; padding:0 10px; font-size:16px; cursor:pointer; background:rgb(255,255,255);" style-hover="border-color:rgb(34,126,167);">
+                <span title="{{ schoolText }}" style="color:rgb(53,59,71); min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ schoolText }}</span>
+                <span style="width:11px; height:11px; flex-shrink:0; margin-left:8px; color:rgb(109,109,109); display:inline-flex;"><svg viewBox="0 0 14 14" width="100%" height="100%"><path d="M 1.28 0.22 C 0.987 -0.073 0.513 -0.073 0.22 0.22 C -0.073 0.513 -0.073 0.987 0.22 1.28 L 5.22 6.28 C 5.513 6.573 5.987 6.573 6.28 6.28 L 11.28 1.28 C 11.573 0.987 11.573 0.513 11.28 0.22 C 10.987 -0.073 10.513 -0.073 10.22 0.22 L 5.75 4.689 L 1.28 0.22 Z" fill="currentColor" transform="matrix(1 0 0 1 1.25 3.75)"></path></svg></span>
               </div>
+              <sc-if value="{{ schoolOpen }}">
+                <div style="position:absolute; top:65px; left:0; width:240px; background:rgb(255,255,255); border:1px solid rgb(213,217,226); border-radius:6px; box-shadow:0 6px 16px rgba(0,0,0,0.14); z-index:60; padding:4px 0;">
+                  <sc-for list="{{ schoolOptions }}" as="o" hint-placeholder-count="4">
+                    <div onClick="{{ o.onClick }}" style="padding:8px 12px; font-size:16px; color:rgb(53,59,71); cursor:pointer;" style-hover="background:rgb(246,247,249);">{{ o.label }}</div>
+                  </sc-for>
+                </div>
+              </sc-if>
             </div>
-            <div style="display:flex; flex-direction:column; gap:6px; width:125px;">
+            <div ref="{{ gradeRef }}" style="display:flex; flex-direction:column; gap:6px; width:125px; position:relative;">
               <span style="font-size:14px; color:rgb(103,112,125);">Grade</span>
-              <div style="height:37px; border:1px solid rgb(213,217,226); border-radius:6px; display:flex; align-items:center; justify-content:space-between; padding:0 10px; font-size:16px; cursor:pointer; background:rgb(255,255,255);" style-hover="border-color:rgb(34,126,167);">
-                <span style="color:rgb(53,59,71);">All Grades</span>
-                <span style="width:11px; height:11px; color:rgb(109,109,109); display:inline-flex;"><svg viewBox="0 0 14 14" width="100%" height="100%"><path d="M 1.28 0.22 C 0.987 -0.073 0.513 -0.073 0.22 0.22 C -0.073 0.513 -0.073 0.987 0.22 1.28 L 5.22 6.28 C 5.513 6.573 5.987 6.573 6.28 6.28 L 11.28 1.28 C 11.573 0.987 11.573 0.513 11.28 0.22 C 10.987 -0.073 10.513 -0.073 10.22 0.22 L 5.75 4.689 L 1.28 0.22 Z" fill="currentColor" transform="matrix(1 0 0 1 1.25 3.75)"></path></svg></span>
+              <div onClick="{{ toggleGrade }}" style="height:37px; border:1px solid rgb(213,217,226); border-radius:6px; display:flex; align-items:center; justify-content:space-between; padding:0 10px; font-size:16px; cursor:pointer; background:rgb(255,255,255);" style-hover="border-color:rgb(34,126,167);">
+                <span title="{{ gradeText }}" style="color:rgb(53,59,71); min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ gradeText }}</span>
+                <span style="width:11px; height:11px; flex-shrink:0; margin-left:8px; color:rgb(109,109,109); display:inline-flex;"><svg viewBox="0 0 14 14" width="100%" height="100%"><path d="M 1.28 0.22 C 0.987 -0.073 0.513 -0.073 0.22 0.22 C -0.073 0.513 -0.073 0.987 0.22 1.28 L 5.22 6.28 C 5.513 6.573 5.987 6.573 6.28 6.28 L 11.28 1.28 C 11.573 0.987 11.573 0.513 11.28 0.22 C 10.987 -0.073 10.513 -0.073 10.22 0.22 L 5.75 4.689 L 1.28 0.22 Z" fill="currentColor" transform="matrix(1 0 0 1 1.25 3.75)"></path></svg></span>
               </div>
+              <sc-if value="{{ gradeOpen }}">
+                <div style="position:absolute; top:65px; left:0; width:170px; max-height:280px; overflow:auto; background:rgb(255,255,255); border:1px solid rgb(213,217,226); border-radius:6px; box-shadow:0 6px 16px rgba(0,0,0,0.14); z-index:60; padding:4px 0;">
+                  <sc-for list="{{ gradeOptions }}" as="o" hint-placeholder-count="8">
+                    <div onClick="{{ o.onClick }}" style="padding:8px 12px; font-size:16px; color:rgb(53,59,71); cursor:pointer;" style-hover="background:rgb(246,247,249);">{{ o.label }}</div>
+                  </sc-for>
+                </div>
+              </sc-if>
             </div>
-            <div style="height:37px; border:1px solid rgb(34,126,167); border-radius:6px; padding:0 14px; display:flex; align-items:center; font-weight:700; font-size:16px; color:rgb(34,126,167); cursor:pointer; user-select:none;" style-hover="background:rgb(240,248,251);">Demographic Filters</div>
-            <div style="height:37px; background:rgb(34,126,167); border-radius:6px; padding:0 20px; display:flex; align-items:center; font-weight:700; font-size:16px; color:rgb(255,255,255); cursor:pointer; user-select:none;" style-hover="background:rgb(27,101,134);">View</div>
-            <div style="height:37px; display:flex; align-items:center; padding:0 6px;"><a href="#" style="font-size:16px; font-weight:700; white-space:nowrap;">Reset Filters</a></div>
+            <div onClick="{{ openDemo }}" style="height:37px; border:1px solid rgb(34,126,167); border-radius:6px; padding:0 14px; display:flex; align-items:center; font-weight:700; font-size:16px; color:rgb(34,126,167); cursor:pointer; gap:8px; user-select:none; white-space:nowrap;" style-hover="background:rgb(240,248,251);">Demographic Filters<span style="display:{{ demoBadgeShow }}; min-width:20px; height:20px; border-radius:999px; background:#227EA7; color:rgb(255,255,255); font-size:13px; font-weight:700; align-items:center; justify-content:center; padding:0 6px;">{{ demoCount }}</span></div>
+            <div onClick="{{ applyFilters }}" style="height:37px; background:rgb(34,126,167); border-radius:6px; padding:0 20px; display:flex; align-items:center; font-weight:700; font-size:16px; color:rgb(255,255,255); cursor:pointer; user-select:none;" style-hover="background:rgb(27,101,134);">View</div>
+            <div style="height:37px; display:flex; align-items:center; padding:0 6px;"><a href="#" onClick="{{ resetFilters }}" style="font-size:16px; font-weight:700; white-space:nowrap;">Reset Filters</a></div>
           </div>
 
           <div style="align-self:stretch; height:1px; background:rgb(213,217,226);"></div>
 
+          <sc-if value="{{ isBreakdown }}" hint-placeholder-val="{{ true }}">
+            <div style="align-self:stretch; display:flex; flex-direction:column; gap:24px;">
+              <span style="font-weight:700; font-size:22px; color:rgb(53,59,71);">Breakdown by Learning Component</span>
+
+              <div style="align-self:stretch; border-radius:4px; box-shadow:inset 0 0 0 1px rgb(213,217,226); overflow:hidden; display:flex; flex-direction:column;">
+                <sc-for list="{{ lcRows }}" as="lc" hint-placeholder-count="10">
+                  <div style="align-self:stretch; border-bottom:1px solid rgb(213,217,226); padding:16px; display:flex; flex-direction:row; gap:24px; align-items:center;">
+                    <span style="flex:1 1 auto; max-width:378px; min-width:0; font-size:16px; line-height:1.35; color:rgb(53,59,71); text-wrap:pretty;">{{ lc.text }}</span>
+                    <div style="flex:1 1 240px; min-width:200px; display:flex; flex-direction:column; gap:8px; justify-content:center;">
+                      <div style="height:16px; overflow:hidden; border-radius:4px; background:rgb(246,247,249); display:flex; flex-direction:row; gap:4px;">
+                        <div style="width:{{ lc.pct }}; background:rgb(4,120,87); border-radius:4px 0 0 4px;"></div>
+                        <div style="flex:1; background:rgb(173,75,140); border-radius:0 4px 4px 0;"></div>
+                      </div>
+                      <div style="display:flex; flex-direction:row; justify-content:space-between; align-items:flex-start;">
+                        <div style="display:flex; flex-direction:row; gap:8px; align-items:center;">
+                          <span style="width:12px; height:12px; flex-shrink:0; background:rgb(4,120,87);"></span>
+                          <span style="font-size:14px; line-height:100%; color:rgb(53,59,71); white-space:nowrap;">{{ lc.greenText }}</span>
+                        </div>
+                        <div style="display:flex; flex-direction:row; gap:8px; align-items:center;">
+                          <span style="width:12px; height:12px; flex-shrink:0; background:rgb(173,75,140);"></span>
+                          <span style="font-size:14px; line-height:100%; color:rgb(53,59,71); white-space:nowrap;">{{ lc.purpleText }}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+
+              <div style="align-self:stretch; display:flex; flex-direction:row; justify-content:center; align-items:center; gap:4px; padding:7px 14px;">
+                <sc-for list="{{ pagerNav }}" as="b" hint-placeholder-count="2">
+                  <div onClick="{{ b.onClick }}" style="width:40px; height:40px; border-radius:4px; display:flex; align-items:center; justify-content:center; color:rgb(100,116,139); cursor:pointer; user-select:none;" style-hover="background:rgb(246,247,249);"><span style="font-size:15px; line-height:100%;">{{ b.glyph }}</span></div>
+                </sc-for>
+                <sc-for list="{{ pagerPages }}" as="p" hint-placeholder-count="5">
+                  <div onClick="{{ p.onClick }}" style="width:40px; height:40px; border-radius:4px; display:flex; align-items:center; justify-content:center; font-size:15px; font-weight:{{ p.weight }}; color:{{ p.color }}; background:{{ p.bg }}; cursor:pointer; user-select:none;">{{ p.label }}</div>
+                </sc-for>
+                <sc-for list="{{ pagerNavEnd }}" as="b" hint-placeholder-count="2">
+                  <div onClick="{{ b.onClick }}" style="width:40px; height:40px; border-radius:4px; display:flex; align-items:center; justify-content:center; color:rgb(100,116,139); cursor:pointer; user-select:none;" style-hover="background:rgb(246,247,249);"><span style="font-size:15px; line-height:100%;">{{ b.glyph }}</span></div>
+                </sc-for>
+                <div style="width: 64px; height: 33px; margin-left: 4px; border: 1px solid rgb(213,217,226); border-radius: 6px; display: none; align-items: center; justify-content: space-between; padding: 0 8px; font-size: 14px; color: rgb(53,59,71); background: rgb(255,255,255)">
+                  <span>10</span>
+                  <span style="width:10px; height:10px; color:rgb(109,109,109); display:inline-flex;"><svg viewBox="0 0 14 14" width="100%" height="100%"><path d="M 1.28 0.22 C 0.987 -0.073 0.513 -0.073 0.22 0.22 C -0.073 0.513 -0.073 0.987 0.22 1.28 L 5.22 6.28 C 5.513 6.573 5.987 6.573 6.28 6.28 L 11.28 1.28 C 11.573 0.987 11.573 0.513 11.28 0.22 C 10.987 -0.073 10.513 -0.073 10.22 0.22 L 5.75 4.689 L 1.28 0.22 Z" fill="currentColor" transform="matrix(1 0 0 1 1.25 3.75)"></path></svg></span>
+                </div>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ isOverall }}" hint-placeholder-val="{{ true }}">
           <span style="font-weight:700; font-size:22px; color:rgb(53,59,71);">Overall Distributions</span>
 
           <!-- OVERALL BAR CARD -->
           <div style="align-self:stretch; border-radius:4px; box-shadow:inset 0 0 0 1px rgb(213,217,226); padding:24px; display:flex; flex-direction:column; gap:16px;">
-            <span style="font-size:16px; color:rgb(53,59,71); text-align:center;">{{ overallHeadline }}</span>
-            <div style="align-self:stretch; display:flex; flex-direction:row; height:14px; overflow:hidden; border-radius:2px;">
-              <div style="width:50%; background:rgb(9,124,90);"></div>
-              <div style="flex:1; background:rgb(182,74,141);"></div>
+            <div style="align-self:stretch; display:flex; flex-direction:row; gap:8px; justify-content:center; align-items:center;">
+              <span style="font-size:16px; color:rgb(53,59,71); text-align:center;">{{ overallHeadline }}</span>
+              <span onClick="{{ openInfo }}" style="width:14px; height:14px; flex-shrink:0; color:rgb(53,59,71); cursor:pointer; display:inline-flex; transition:color 0.15s;" style-hover="color:rgb(34,126,167);"><svg viewBox="0 0 14 14" width="100%" height="100%"><path d="M 7 0 C 3.134 0 0 3.134 0 7 C 0 10.866 3.134 14 7 14 C 10.866 14 14 10.866 14 7 C 14 3.134 10.866 0 7 0 Z M 7 1.167 C 10.222 1.167 12.833 3.778 12.833 7 C 12.833 10.222 10.222 12.833 7 12.833 C 3.778 12.833 1.167 10.222 1.167 7 C 1.167 3.778 3.778 1.167 7 1.167 Z M 7 2.917 C 5.605 2.917 4.472 4.049 4.472 5.444 C 4.472 5.767 4.733 6.028 5.056 6.028 C 5.378 6.028 5.639 5.767 5.639 5.444 C 5.639 4.694 6.25 4.083 7 4.083 C 7.75 4.083 8.361 4.694 8.361 5.444 C 8.361 6.195 7.75 6.806 7 6.806 C 6.678 6.806 6.417 7.067 6.417 7.389 L 6.417 8.167 C 6.417 8.489 6.678 8.75 7 8.75 C 7.322 8.75 7.583 8.489 7.583 8.167 L 7.583 7.905 C 8.71 7.641 9.528 6.63 9.528 5.444 C 9.528 4.049 8.395 2.917 7 2.917 Z M 7 9.528 C 6.572 9.528 6.222 9.878 6.222 10.306 C 6.222 10.733 6.572 11.083 7 11.083 C 7.428 11.083 7.778 10.733 7.778 10.306 C 7.778 9.878 7.428 9.528 7 9.528 Z" fill="currentColor" fill-rule="nonzero"></path></svg></span>
+            </div>
+            <div style="align-self:stretch; height:16px; overflow:hidden; border-radius:4px; background:rgb(246,247,249); display:flex; flex-direction:row; gap:4px;">
+              <div style="width:{{ overallPct }}; background:rgb(9,124,90); border-radius:4px 0 0 4px;"></div>
+              <div style="flex:1; background:rgb(182,74,141); border-radius:0 4px 4px 0;"></div>
             </div>
             <div style="align-self:stretch; display:flex; flex-direction:row; justify-content:space-between; align-items:center;">
               <div style="display:flex; flex-direction:row; gap:8px; align-items:center;">
                 <span style="width:10px; height:10px; flex-shrink:0; background:rgb(9,124,90);"></span>
-                <span style="font-size:15px; color:rgb(53,59,71);">X% of students (X) are likely to be successful</span>
+                <span style="font-size:15px; color:rgb(53,59,71);">{{ overallGreenText }}</span>
               </div>
               <div style="display:flex; flex-direction:row; gap:8px; align-items:center;">
                 <span style="width:10px; height:10px; flex-shrink:0; background:rgb(182,74,141);"></span>
-                <span style="font-size:15px; color:rgb(53,59,71);">X% of students (X) are likely to need extra support</span>
+                <span style="font-size:15px; color:rgb(53,59,71);">{{ overallPurpleText }}</span>
               </div>
             </div>
           </div>
 
           <!-- GROUP BY -->
           <div style="display:flex; flex-direction:row; gap:12px; align-items:center;">
-            <span style="font-size:16px; color:rgb(53,59,71);">Group by</span>
-            <div style="display:flex; flex-direction:row; gap:0; border-radius:4px; overflow:hidden; background:rgb(233,236,240);">
-              <div onClick="{{ pickSchool }}" style="padding:8px 16px; font-size:16px; font-weight:{{ schoolWeight }}; background:{{ schoolBg }}; color:{{ schoolColor }}; cursor:pointer; user-select:none;">School</div>
-              <div onClick="{{ pickGrade }}" style="padding:8px 16px; font-size:16px; font-weight:{{ gradeWeight }}; background:{{ gradeBg }}; color:{{ gradeColor }}; cursor:pointer; user-select:none;">Grade</div>
+            <span style="font-size:14px; line-height:100%; color:rgb(53,59,71); white-space:nowrap;">Group by</span>
+            <div style="display:flex; flex-direction:row; height:33px; border-radius:4px; background:rgb(236,238,242); padding:4px;">
+              <div onClick="{{ pickSchool }}" style="min-width:74px; border-radius:4px; padding:0 10.5px; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:500; line-height:100%; cursor:pointer; user-select:none; background:{{ schoolBg }}; color:{{ schoolColor }};">School</div>
+              <div onClick="{{ pickGrade }}" style="min-width:74px; border-radius:4px; padding:0 10.5px; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:500; line-height:100%; cursor:pointer; user-select:none; background:{{ gradeBg }}; color:{{ gradeColor }};">Grade</div>
             </div>
           </div>
 
@@ -146,26 +210,30 @@
           <div style="align-self:stretch; border-radius:4px; box-shadow:inset 0 0 0 1px rgb(213,217,226); padding:24px; display:flex; flex-direction:column; gap:20px;">
             <sc-for list="{{ rows }}" as="r" hint-placeholder-count="7">
               <div style="display:flex; flex-direction:row; gap:24px; align-items:center;">
-                <span style="width:150px; flex-shrink:0; text-align:right; font-weight:700; font-size:16px; color:rgb(53,59,71);">{{ r.label }}</span>
+                <div style="width:200px; flex-shrink:0; display:flex; flex-direction:column; gap:4px;">
+                  <span style="text-align:left; font-weight:700; font-size:16px; color:rgb(53,59,71);">{{ r.label }}</span>
+                  <span style="text-align:left; font-size:14px; color:rgb(103,112,125);">{{ r.assessedText }}</span>
+                </div>
                 <div style="flex:1; min-width:0; display:flex; flex-direction:column; gap:6px;">
-                  <div style="display:flex; flex-direction:row; height:14px; overflow:hidden; border-radius:2px;">
-                    <div style="width:{{ r.pct }}; background:rgb(9,124,90);"></div>
-                    <div style="flex:1; background:rgb(182,74,141);"></div>
+                  <div style="height:16px; overflow:hidden; border-radius:4px; background:rgb(246,247,249); display:flex; flex-direction:row; gap:4px;">
+                    <div style="width:{{ r.pct }}; background:rgb(9,124,90); border-radius:4px 0 0 4px;"></div>
+                    <div style="flex:1; background:rgb(182,74,141); border-radius:0 4px 4px 0;"></div>
                   </div>
                   <div style="display:flex; flex-direction:row; justify-content:space-between; align-items:center;">
                     <div style="display:flex; flex-direction:row; gap:8px; align-items:center;">
                       <span style="width:10px; height:10px; flex-shrink:0; background:rgb(9,124,90);"></span>
-                      <span style="font-size:15px; color:rgb(53,59,71);">X% (X)</span>
+                      <span style="font-size:15px; color:rgb(53,59,71);">{{ r.greenText }}</span>
                     </div>
                     <div style="display:flex; flex-direction:row; gap:8px; align-items:center;">
                       <span style="width:10px; height:10px; flex-shrink:0; background:rgb(182,74,141);"></span>
-                      <span style="font-size:15px; color:rgb(53,59,71);">X% (X)</span>
+                      <span style="font-size:15px; color:rgb(53,59,71);">{{ r.purpleText }}</span>
                     </div>
                   </div>
                 </div>
               </div>
             </sc-for>
           </div>
+          </sc-if>
 
         </div>
       </div>
@@ -180,37 +248,387 @@
     <span style="font-size:14px; color:rgb(109,109,109);">© 2026 The Achievement Network, Ltd. All Rights Reserved.</span>
     <img src="assets/myanet-logo.png" alt="ANet" style="height:28px; object-fit:contain; margin-left:auto;">
   </div>
+
+  <sc-if value="{{ infoOpen }}">
+    <div onClick="{{ closeInfo }}" style="position:fixed; inset:0; z-index:210; background:rgba(0,0,0,0.24); display:flex; align-items:center; justify-content:center; padding:40px;">
+      <div onClick="{{ stopClose }}" style="width: 720px; max-width: 100%; background: rgb(255,255,255); border-radius: 8px; border: 1px dashed rgb(213,217,226); box-shadow: 0 12px 32px rgba(0,0,0,0.18); padding: 40px; display: flex; flex-direction: column; gap: 24px; border-style: solid">
+        <div style="display:flex; flex-direction:row; align-items:flex-start; justify-content:space-between; gap:16px;">
+          <span style="font-weight:700; font-size:30px; color:rgb(35,39,46); line-height:1.15;">Understanding Your Diagnostic Data</span>
+          <span onClick="{{ closeInfo }}" style="width:20px; height:20px; flex-shrink:0; color:rgb(103,112,125); cursor:pointer; margin-top:6px; display:inline-flex; transition:color 0.15s;" style-hover="color:rgb(35,39,46);"><svg viewBox="0 0 14 14" width="100%" height="100%"><path d="M 0.212 0.212 C 0.495 -0.071 0.953 -0.071 1.235 0.212 L 5.5 4.477 L 9.765 0.212 C 10.047 -0.071 10.505 -0.071 10.788 0.212 C 11.071 0.495 11.071 0.953 10.788 1.235 L 6.523 5.5 L 10.788 9.765 C 11.071 10.047 11.071 10.505 10.788 10.788 C 10.505 11.071 10.047 11.071 9.765 10.788 L 5.5 6.523 L 1.235 10.788 C 0.953 11.071 0.495 11.071 0.212 10.788 C -0.071 10.505 -0.071 10.047 0.212 9.765 L 4.477 5.5 L 0.212 1.235 C -0.071 0.953 -0.071 0.495 0.212 0.212 Z" fill="currentColor" transform="matrix(1 0 0 1 1.5 1.5)"></path></svg></span>
+        </div>
+        <span style="font-size:18px; color:rgb(53,59,71); line-height:1.5;">Unlike traditional diagnostics that measure what students currently know, ANet's Diagnostic predicts how students will perform after they've have been taught the material.</span>
+        <span style="font-size:18px; color:rgb(53,59,71); line-height:1.5;">Each cycle predicts performance on the main learning components (building blocks of standards) within upcoming lessons.</span>
+        <span style="font-size:18px; color:rgb(53,59,71); line-height:1.5;">With this forward-looking view, educators can proactively adjust instruction based on what is likely to be a strength or a challenge.</span>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ demoOpen }}">
+    <div onClick="{{ closeDemo }}" style="position:fixed; inset:0; background:rgba(15,23,42,0.45); z-index:200; display:flex; align-items:center; justify-content:center; padding:24px;">
+      <div onClick="{{ stopClose }}" style="width:100%; max-width:1080px; background:rgb(255,255,255); border-radius:8px; box-shadow:0 24px 60px rgba(0,0,0,0.25); display:flex; flex-direction:column;">
+        <div style="display:flex; flex-direction:row; align-items:center; justify-content:center; position:relative; padding:20px 24px; border-bottom:1px solid rgb(213,217,226);">
+          <span style="font-weight:700; font-size:22px; color:rgb(53,59,71);">Demographic Filters</span>
+          <div onClick="{{ closeDemo }}" style="position:absolute; right:20px; top:18px; width:28px; height:28px; display:flex; align-items:center; justify-content:center; color:rgb(53,59,71); cursor:pointer; border-radius:4px;" style-hover="background:rgb(246,247,249);"><svg viewBox="0 0 16 16" width="16" height="16"><path d="M1.5 1.5 L14.5 14.5 M14.5 1.5 L1.5 14.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg></div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:24px; padding:24px; border-bottom:1px solid rgb(213,217,226);">
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <span style="font-size:15px; color:rgb(103,112,125);">English Language Learning</span>
+            <sc-for list="{{ ellOptions }}" as="o" hint-placeholder-count="3">
+              <div onClick="{{ o.onClick }}" style="display:flex; flex-direction:row; align-items:center; gap:12px; cursor:pointer; user-select:none;">
+                <span style="width:22px; height:22px; flex-shrink:0; border-radius:999px; border:2px solid {{ o.ring }}; display:flex; align-items:center; justify-content:center; background:rgb(255,255,255);"><span style="width:11px; height:11px; border-radius:999px; background:{{ o.dot }};"></span></span>
+                <span style="font-size:16px; color:rgb(53,59,71);">{{ o.label }}</span>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <span style="font-size:15px; color:rgb(103,112,125);">Students Supported by IEP</span>
+            <sc-for list="{{ iepOptions }}" as="o" hint-placeholder-count="3">
+              <div onClick="{{ o.onClick }}" style="display:flex; flex-direction:row; align-items:center; gap:12px; cursor:pointer; user-select:none;">
+                <span style="width:22px; height:22px; flex-shrink:0; border-radius:999px; border:2px solid {{ o.ring }}; display:flex; align-items:center; justify-content:center; background:rgb(255,255,255);"><span style="width:11px; height:11px; border-radius:999px; background:{{ o.dot }};"></span></span>
+                <span style="font-size:16px; color:rgb(53,59,71);">{{ o.label }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="height: 20px; display: none"></div>
+      </div>
+    </div>
+  </sc-if>
 </div>
 
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{}">
 class Component extends DCLogic {
-  state = { groupBy: 'grade', tab: 'overall' };
+  state = {
+    groupBy: 'grade', tab: 'overall',
+    demoOpen: false, ell: 'All', iep: 'All', draftEll: 'All', draftIep: 'All',
+    school: 'All Schools', schoolOpen: false, grade: 'All Grades', gradeOpen: false,
+    appliedSchool: 'All Schools', appliedGrade: 'All Grades', appliedEll: 'All', appliedIep: 'All',
+    infoOpen: false, page: 1, stash: {}
+  };
+  // Milestone 1 + Milestone 2 key learning components, per grade (ESQ Curriculum Map).
+  LC = {
+    'Grade 2': [
+      [1, '2.MD.A.1', 'Use an appropriate tool to measure the length, in standard units, of an object'],
+      [1, '2.MD.A.1', 'Select an appropriate tool to measure the length, in standard units, of an object'],
+      [1, '2.MD.A.2', 'Describe how two measurements for the same object relate to the size of the units chosen'],
+      [1, '2.MD.A.4', 'Measure to determine how much longer one object is than another'],
+      [2, '2.NBT.A.1', 'Given the number of hundreds, tens, and/or ones, write a three-digit number'],
+      [2, '2.NBT.A.1', 'Decompose a two-digit number into its tens and ones'],
+      [2, '2.NBT.A.1', 'Decompose a three-digit number into its hundreds, tens, and ones'],
+      [2, '2.NBT.A.4', 'Compare two three-digit numbers by comparing the digits in each place value'],
+      [2, '2.NBT.A.3', 'Read and write numbers to 1,000 by moving between base-ten numerals (standard form) and expanded form'],
+      [2, '2.NBT.A.3', 'Read and write numbers to 1,000 by moving between number names (word form) and expanded form']
+    ],
+    'Grade 3': [
+      [1, '3.OA.A.1', 'Model a multiplication situation, including by writing a multiplication expression'],
+      [1, '3.OA.A.1', 'Identify a multiplication situation based on a given multiplication expression'],
+      [1, '3.OA.A.2', 'Identify a division situation based on a given division expression'],
+      [1, '3.OA.A.2', 'Interpret whole number quotients as the number of objects in each group when a set number of objects is partitioned into equal groups'],
+      [1, '3.OA.B.5', 'Apply the commutative property as a strategy to multiply'],
+      [1, '3.OA.B.5', 'Apply the distributive property as a strategy to multiply'],
+      [2, '3.MD.A.2', 'Use subtraction to solve one-step word problems involving masses or volumes that are given in the same units'],
+      [2, '3.MD.A.2', 'Use multiplication to solve one-step word problems involving masses or volumes that are given in the same units'],
+      [2, '3.NBT.A.1', 'Round whole numbers to the nearest 10'],
+      [2, '3.NBT.A.1', 'Round whole numbers to the nearest 100']
+    ],
+    'Grade 4': [
+      [1, '4.NBT.A.1', 'Apply concepts of place value to recognize quotients and products in multiplication and division problems involving whole numbers and a factor of 10'],
+      [1, '4.NBT.A.1', 'Recognize that in a multi-digit whole number, a digit in one place represents ten times what it represents in the place to its right'],
+      [1, '4.NBT.A.2', 'Read and write multi-digit numbers up to 1,000,000 by moving between base-ten numerals (standard form) and expanded form'],
+      [1, '4.NBT.A.2', 'Compare two multi-digit numbers'],
+      [1, '4.NBT.A.3', 'Round multi-digit whole numbers to any place within 1,000,000'],
+      [2, '4.NBT.B.4', 'Fluently add multi-digit whole numbers (sums to 1,000,000) using the standard algorithm'],
+      [2, '4.NBT.B.4', 'Fluently subtract multi-digit whole numbers (minuend to 1,000,000) using the standard algorithm'],
+      [2, '4.NBT.B.5*', 'Multiply a three-digit number by a one-digit number using strategies based on place value or properties of operations (restricted to multiplication of two-digit numbers by one-digit numbers)']
+    ],
+    'Grade 5': [
+      [1, '5.NBT.B.5', 'Fluently multiply 2-digit by up to 3-digit whole numbers using the standard algorithm'],
+      [1, '5.NBT.B.5', 'Fluently multiply 3-digit by 3-digit whole numbers using the standard algorithm'],
+      [1, '5.NBT.B.5', 'Fluently multiply 3-digit by 4-digit whole numbers using the standard algorithm'],
+      [1, '5.NBT.B.6', 'Find whole number quotients of whole numbers with three-digit dividends and two-digit divisors using strategies based on place value, the properties of operations, and/or the relationship between multiplication and division'],
+      [1, '5.NBT.B.6', 'Find whole number quotients of whole numbers with four-digit dividends and two-digit divisors using strategies based on place value, the properties of operations, and/or the relationship between multiplication and division'],
+      [2, '5.NF.A.1', 'Add fractions with different denominators by using equivalent fractions'],
+      [2, '5.NF.A.1', 'Subtract fractions with different denominators by using equivalent fractions'],
+      [2, '5.NF.A.1', 'Subtract mixed numbers with different denominators by using equivalent fractions'],
+      [2, '5.NF.A.2', 'Solve word problems involving addition of fractions referring to the same whole, including with different denominators'],
+      [2, '5.NF.A.2', 'Solve word problems involving subtraction of fractions referring to the same whole, including with different denominators']
+    ],
+    'Grade 6': [
+      [1, '6.RP.A.1', 'Use ratio language to describe a ratio relationship between two quantities'],
+      [1, '6.RP.A.1', 'Write a ratio to represent the relationship between two quantities'],
+      [1, '6.RP.A.3.a', 'Find missing values in ratio tables'],
+      [1, '6.RP.A.3.a', 'Use tables to compare ratios'],
+      [2, '6.RP.A.3.b', 'Solve unit rate problems including those involving unit pricing and constant speed'],
+      [2, '6.RP.A.3.c', 'Find a percent of a quantity as a rate per 100'],
+      [2, '6.RP.A.3.c', 'Solve problems involving finding the whole when given a part and the percent']
+    ],
+    'Grade 7': [
+      [1, '7.RP.A.2.c', 'Represent proportional relationships with equations'],
+      [1, '7.RP.A.2.b', 'Identify or determine the constant of proportionality (unit rate) in tables of proportional relationships'],
+      [1, '7.RP.A.2.b', 'Identify or determine the constant of proportionality (unit rate) in graphs of proportional relationships'],
+      [1, '7.G.A.1', 'Compute actual lengths from a scale drawing (using proportional reasoning)'],
+      [1, '7.G.A.1', 'Compute actual areas from a scale drawing (using proportional reasoning)'],
+      [2, '7.NS.A.1.b', 'Interpret p + q as the number located a distance |q| from p in the positive or negative direction depending on whether q is positive or negative'],
+      [2, '7.NS.A.1.b', 'Interpret sums of rational numbers (fractions, decimals, and integers) by describing them with real-world contexts'],
+      [2, '7.NS.A.1.d', 'Use properties of operations to add rational numbers'],
+      [2, '7.NS.A.1.d', 'Use properties of operations to subtract rational numbers'],
+      [2, '7.NS.A.1.c', 'Understand p \u2212 q is equivalent to p + (\u2212q)']
+    ],
+    'Grade 8': [
+      [1, '8.EE.A.4', 'Add, subtract, multiply, and divide numbers written in scientific notation'],
+      [1, '8.EE.A.1', 'Use exponent properties to generate equivalent numerical expressions with integer exponents'],
+      [2, '8.EE.A.2', 'Recognize and evaluate the roots of perfect squares and cubes'],
+      [2, '8.EE.A.2', 'Represent the solutions of simple quadratic and cubic expressions by using square and cube roots'],
+      [2, '8.NS.A.1', 'Know that numbers that are not rational are called irrational, and identify irrational numbers'],
+      [2, '8.NS.A.1', 'Understand a rational number to be any number that is the value of a ratio of two integers'],
+      [2, '8.NS.A.1', 'Convert a decimal expansion which repeats eventually into a rational number']
+    ]
+  };
+  FILTER_KEYS = ['school', 'grade', 'ell', 'iep', 'draftEll', 'draftIep',
+    'appliedSchool', 'appliedGrade', 'appliedEll', 'appliedIep', 'page'];
+  tabDefaults(tab) {
+    const grade = tab === 'breakdown' ? 'Grade 2' : 'All Grades';
+    return {
+      school: 'All Schools', appliedSchool: 'All Schools',
+      grade: grade, appliedGrade: grade,
+      ell: 'All', iep: 'All', draftEll: 'All', draftIep: 'All',
+      appliedEll: 'All', appliedIep: 'All', page: 1
+    };
+  }
+  // Each tab keeps its own filter selections; switching parks one set and restores the other.
+  switchTab(next) {
+    this.setState(st => {
+      if (st.tab === next) return null;
+      const parked = {};
+      this.FILTER_KEYS.forEach(k => { parked[k] = st[k]; });
+      const stash = Object.assign({}, st.stash, { [st.tab]: parked });
+      const restore = stash[next] || this.tabDefaults(next);
+      return Object.assign({ tab: next, stash: stash, schoolOpen: false, gradeOpen: false }, restore);
+    });
+  }
+  filterRef = React.createRef();
+  gradeRef = React.createRef();
+  componentDidMount() {
+    this._away = e => {
+      const a = this.filterRef.current, b = this.gradeRef.current;
+      const inside = (a && a.contains(e.target)) || (b && b.contains(e.target));
+      if (!inside && (this.state.schoolOpen || this.state.gradeOpen)) {
+        this.setState({ schoolOpen: false, gradeOpen: false });
+      }
+    };
+    document.addEventListener('mousedown', this._away, true);
+  }
+  componentWillUnmount() { document.removeEventListener('mousedown', this._away, true); }
+  radio(active) {
+    return {
+      ring: active ? 'rgb(23,116,153)' : 'rgb(148,163,184)',
+      dot: active ? 'rgb(23,116,153)' : 'transparent'
+    };
+  }
+  // Deterministic per-(school, grade) cohort, adjusted by the active demographic filters.
+  cells(SCHOOLS, GRADES) {
+    const bias = { 'ANet Demo School': 12, 'Bold Thinking Academy': 4, 'Center Communities School': -8, 'Drive Results Charter': -3 };
+    // Grade trend carried over from the Growth Report: share in the top two performance
+    // quartiles per grade, and that grade's assessed count spread across the schools.
+    const gradeBase = { 'Grade 2': 60, 'Grade 3': 68, 'Grade 4': 28, 'Grade 5': 45, 'Grade 6': 67, 'Grade 7': 55, 'Grade 8': 30 };
+    const gradeSize = { 'Grade 2': 268, 'Grade 3': 274, 'Grade 4': 261, 'Grade 5': 249, 'Grade 6': 243, 'Grade 7': 231, 'Grade 8': 289 };
+    // Students assessed per school, also from the Growth Report; both marginals total 1,815.
+    const schoolSize = { 'ANet Demo School': 512, 'Bold Thinking Academy': 438, 'Center Communities School': 389, 'Drive Results Charter': 476 };
+    const grand = SCHOOLS.reduce((a, s) => a + schoolSize[s], 0);
+    const jitter = (a, b) => {
+      let h = 0, s = a + '|' + b;
+      for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) % 1000;
+      return h;
+    };
+    const ell = this.state.appliedEll, iep = this.state.appliedIep;
+    let share = 1, shift = 0;
+    if (ell === 'ELL') { share *= 0.18; shift -= 14; }
+    if (ell === 'Non-ELL') { share *= 0.82; shift += 3; }
+    if (iep.indexOf('not supported') > -1) { share *= 0.86; shift += 3; }
+    else if (iep !== 'All') { share *= 0.14; shift -= 18; }
+
+    // Largest-remainder apportionment per school row, then a column pass, so both
+    // marginals reproduce the Growth Report's assessed counts exactly.
+    const grid = {};
+    SCHOOLS.forEach(school => {
+      const target = Math.round(schoolSize[school] * share);
+      const raw = GRADES.map(grade => schoolSize[school] * gradeSize[grade] / grand * share);
+      const floors = raw.map(v => Math.floor(v));
+      let left = target - floors.reduce((a, b) => a + b, 0);
+      const order = raw.map((v, i) => ({ i, rem: v - Math.floor(v) }))
+        .sort((a, b) => b.rem - a.rem);
+      for (let k = 0; k < order.length && left > 0; k++, left--) floors[order[k].i]++;
+      grid[school] = floors;
+    });
+    GRADES.forEach((grade, gi) => {
+      const target = Math.round(gradeSize[grade] * share);
+      let diff = target - SCHOOLS.reduce((a, s) => a + grid[s][gi], 0);
+      const step = diff > 0 ? 1 : -1;
+      const bySize = SCHOOLS.slice().sort((a, b) => grid[b][gi] - grid[a][gi]);
+      for (let k = 0; diff !== 0; k++) {
+        const s = bySize[k % bySize.length];
+        if (step < 0 && grid[s][gi] <= 1) continue;
+        grid[s][gi] += step;
+        diff -= step;
+      }
+    });
+
+    const out = [];
+    SCHOOLS.forEach(school => {
+      GRADES.forEach((grade, gi) => {
+        const j = jitter(school, grade);
+        const total = grid[school][gi];
+        const pct = Math.min(94, Math.max(6, gradeBase[grade] + bias[school] + (j % 9) - 4 + shift));
+        out.push({ school, grade, total, green: Math.round(total * pct / 100) });
+      });
+    });
+    return out;
+  }
   renderVals() {
     const g = this.state.groupBy;
-    const active = { bg: 'rgb(34,126,167)', color: 'rgb(255,255,255)', weight: '700' };
-    const idle = { bg: 'rgb(233,236,240)', color: 'rgb(103,112,125)', weight: '400' };
+    const active = { bg: 'rgb(34,126,167)', color: 'rgb(255,255,255)', weight: '500' };
+    const idle = { bg: 'transparent', color: 'rgb(100,116,139)', weight: '500' };
     const s = g === 'school' ? active : idle;
     const gr = g === 'grade' ? active : idle;
-    const gradeRows = [
-      { label: 'Grade 2', pct: '80%' }, { label: 'Grade 3', pct: '41%' },
-      { label: 'Grade 4', pct: '73%' }, { label: 'Grade 5', pct: '21%' },
-      { label: 'Grade 6', pct: '73%' }, { label: 'Grade 7', pct: '41%' },
-      { label: 'Grade 8', pct: '21%' }
-    ];
-    const schoolRows = [
-      { label: 'School A', pct: '80%' }, { label: 'School B', pct: '41%' }, { label: 'School C', pct: '73%' }
-    ];
+    const SCHOOLS = ['ANet Demo School', 'Bold Thinking Academy', 'Center Communities School', 'Drive Results Charter'];
+    const GRADES = ['Grade 2', 'Grade 3', 'Grade 4', 'Grade 5', 'Grade 6', 'Grade 7', 'Grade 8'];
+    const cells = this.cells(SCHOOLS, GRADES);
+
+    const keepSchool = c => this.state.appliedSchool === 'All Schools' || c.school === this.state.appliedSchool;
+    const keepGrade = c => this.state.appliedGrade === 'All Grades' || c.grade === this.state.appliedGrade;
+    const shown = cells.filter(c => keepSchool(c) && keepGrade(c));
+
+    const roll = list => {
+      const total = list.reduce((a, c) => a + c.total, 0);
+      const green = list.reduce((a, c) => a + c.green, 0);
+      return { total, green, pct: total ? Math.round(green / total * 100) : 0 };
+    };
+    const rowFor = (label, list) => {
+      const r = roll(list);
+      return {
+        label, total: r.total, pct: r.pct + '%',
+        assessedText: 'Students Assessed: ' + r.total.toLocaleString(),
+        greenText: r.pct + '% (' + r.green.toLocaleString() + ')',
+        purpleText: (100 - r.pct) + '% (' + (r.total - r.green).toLocaleString() + ')'
+      };
+    };
+    const groups = g === 'school' ? SCHOOLS : GRADES;
+    const key = g === 'school' ? 'school' : 'grade';
+    const rows = groups
+      .map(name => ({ name, list: shown.filter(c => c[key] === name) }))
+      .filter(x => x.list.length)
+      .map(x => rowFor(x.name, x.list));
+
+    const schoolRows = SCHOOLS.map(n => rowFor(n, cells.filter(c => c.school === n)));
+    const gradeRows = GRADES.map(n => rowFor(n, cells.filter(c => c.grade === n)));
+    const agg = roll(shown);
+    const lcAll = this.LC[this.state.appliedGrade] || this.LC['Grade 2'];
+    const PER_PAGE = 10;
+    const pageCount = Math.max(1, Math.ceil(lcAll.length / PER_PAGE));
+    const page = Math.min(this.state.page, pageCount);
+    const pageNums = [];
+    for (let i = 1; i <= pageCount; i++) pageNums.push(i);
+    const lcHash = s => {
+      let h = 0;
+      for (let i = 0; i < s.length; i++) h = (h * 33 + s.charCodeAt(i)) % 9973;
+      return h;
+    };
+    const lcTotal = shown.reduce((a, c) => a + c.total, 0);
+    const lcSeed = this.state.appliedGrade + '|' + this.state.appliedSchool + '|' + this.state.appliedEll + '|' + this.state.appliedIep;
+    const lcBase = lcTotal ? Math.round(shown.reduce((a, c) => a + c.green, 0) / lcTotal * 100) : 50;
+    const pageRows = lcAll.slice((page - 1) * PER_PAGE, page * PER_PAGE).map((r, i) => {
+      const h = lcHash(lcSeed + '|' + ((page - 1) * PER_PAGE + i) + '|' + r[2]);
+      const pct = Math.min(93, Math.max(7, lcBase + (h % 41) - 20));
+      const green = Math.round(lcTotal * pct / 100);
+      return {
+        milestone: 'Milestone ' + r[0], std: r[1], text: r[2],
+        pct: pct + '%',
+        greenText: pct + '% (' + green.toLocaleString() + ')',
+        purpleText: (100 - pct) + '% (' + (lcTotal - green).toLocaleString() + ')'
+      };
+    });
+
     const t = this.state.tab;
+    const demoCount = (this.state.ell !== 'All' ? 1 : 0) + (this.state.iep !== 'All' ? 1 : 0);
     return {
-      rows: g === 'school' ? schoolRows : gradeRows,
-      overallHeadline: 'X% of students (X) are likely to be successful with key learning components during instruction.',
+      rows: rows,
+      overallHeadline: 'After regular instruction, ' + agg.pct + '% of students (' + agg.green.toLocaleString() + ') are likely to be successful',
+      overallPct: agg.pct + '%',
+      overallGreenText: agg.pct + '% of students (' + agg.green.toLocaleString() + ') are likely to be successful',
+      overallPurpleText: (100 - agg.pct) + '% of students (' + (agg.total - agg.green).toLocaleString() + ') are likely to need extra support',
       schoolBg: s.bg, schoolColor: s.color, schoolWeight: s.weight,
       gradeBg: gr.bg, gradeColor: gr.color, gradeWeight: gr.weight,
+      isOverall: t === 'overall',
+      isBreakdown: t === 'breakdown',
+      lcRows: pageRows,
+      pagerNav: [
+        { glyph: '\u00AB', onClick: () => this.setState({ page: 1 }) },
+        { glyph: '\u2039', onClick: () => this.setState(st => ({ page: Math.max(1, st.page - 1) })) }
+      ],
+      pagerNavEnd: [
+        { glyph: '\u203A', onClick: () => this.setState(st => ({ page: Math.min(pageCount, st.page + 1) })) },
+        { glyph: '\u00BB', onClick: () => this.setState({ page: pageCount }) }
+      ],
+      pagerPages: pageNums.map(n => ({
+        label: String(n),
+        weight: page === n ? '700' : '400',
+        color: page === n ? 'rgb(255,255,255)' : 'rgb(100,116,139)',
+        bg: page === n ? '#227EA7' : 'transparent',
+        onClick: () => this.setState({ page: n })
+      })),
+      infoOpen: this.state.infoOpen,
+      openInfo: () => this.setState({ infoOpen: true }),
+      closeInfo: () => this.setState({ infoOpen: false }),
+      demoCount: demoCount,
+      demoBadgeShow: demoCount > 0 ? 'inline-flex' : 'none',
+      resetFilters: e => {
+        e.preventDefault();
+        this.setState({
+          school: 'All Schools', appliedSchool: 'All Schools',
+          grade: this.state.tab === 'breakdown' ? 'Grade 2' : 'All Grades',
+          appliedGrade: this.state.tab === 'breakdown' ? 'Grade 2' : 'All Grades',
+          schoolOpen: false, gradeOpen: false, page: 1,
+          ell: 'All', iep: 'All', draftEll: 'All', draftIep: 'All',
+          appliedEll: 'All', appliedIep: 'All'
+        });
+      },
+      filterRef: this.filterRef,
+      gradeRef: this.gradeRef,
+      schoolText: this.state.school,
+      schoolOpen: this.state.schoolOpen,
+      toggleSchool: () => this.setState(st => ({ schoolOpen: !st.schoolOpen, gradeOpen: false })),
+      schoolOptions: ['All Schools'].concat(schoolRows.map(r => r.label)).map(label => ({
+        label, onClick: () => this.setState({ school: label, schoolOpen: false })
+      })),
+      gradeText: this.state.grade,
+      gradeOpen: this.state.gradeOpen,
+      toggleGrade: () => this.setState(st => ({ gradeOpen: !st.gradeOpen, schoolOpen: false })),
+      gradeOptions: (t === 'breakdown' ? [] : ['All Grades']).concat(gradeRows.map(r => r.label)).map(label => ({
+        label, onClick: () => this.setState({ grade: label, gradeOpen: false })
+      })),
+      demoOpen: this.state.demoOpen,
+      openDemo: () => this.setState({ demoOpen: true }),
+      closeDemo: () => this.setState({ demoOpen: false }),
+      stopClose: e => e.stopPropagation(),
+      ellOptions: ['All', 'ELL', 'Non-ELL'].map(label => Object.assign(
+        { label, onClick: () => this.setState({ ell: label }) },
+        this.radio(this.state.ell === label))),
+      iepOptions: ['All', 'Students supported by IEP\u2019s', 'Students not supported by IEP\u2019s'].map(label => Object.assign(
+        { label, onClick: () => this.setState({ iep: label }) },
+        this.radio(this.state.iep === label))),
       pickSchool: () => this.setState({ groupBy: 'school' }),
       pickGrade: () => this.setState({ groupBy: 'grade' }),
-      pickOverall: () => this.setState({ tab: 'overall' }),
-      pickBreakdown: () => this.setState({ tab: 'breakdown' }),
+      pickOverall: () => this.switchTab('overall'),
+      pickBreakdown: () => this.switchTab('breakdown'),
+      applyFilters: () => this.setState(st => ({
+        appliedSchool: st.school, appliedGrade: st.grade,
+        appliedEll: st.ell, appliedIep: st.iep,
+        schoolOpen: false, gradeOpen: false, page: 1
+      })),
       tabOverallBorder: t === 'overall' ? 'rgb(34,126,167)' : 'transparent',
       tabOverallColor: t === 'overall' ? 'rgb(34,126,167)' : 'rgb(53,59,71)',
       tabOverallWeight: t === 'overall' ? '700' : '400',

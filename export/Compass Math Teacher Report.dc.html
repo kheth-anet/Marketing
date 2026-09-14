@@ -17,10 +17,7 @@
   a { color: rgb(0,120,163); text-decoration: none; }
   a:hover { text-decoration: underline; }
   ol, ul { box-sizing: border-box; }
-  .katex { font-size: 1.05em; }
 </style>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 </helmet>
 <div style="display:flex; flex-direction:column; align-items:center; width:100%; max-width:1600px; margin:0 auto; background:rgb(255,255,255);" data-screen-label="Math Teacher Report">
 
@@ -104,7 +101,7 @@
                 </sc-if>
               </div>
               <!-- PERIOD -->
-              <div style="display: flex; flex-direction: column; gap: 6px; width: 160px; position: relative">
+              <div style="display:flex; flex-direction:column; gap:6px; width:142px; position:relative;">
                 <span style="font-size:14px; color:rgb(103,112,125);">Period</span>
                 <div onClick="{{ togglePeriod }}" style="height:37px; border:1px solid rgb(213,217,226); border-radius:6px; display:flex; align-items:center; justify-content:space-between; padding:0 10px; font-size:16px; cursor:pointer; background:rgb(255,255,255); opacity:{{ periodOpacity }}; transition:border-color 0.15s;" style-hover="border-color:rgb(34,126,167);">
                   <span style="color:{{ periodColor }};">{{ periodText }}</span>
@@ -568,7 +565,7 @@
                       <div style="width:96px; flex-shrink:0; padding:11px 14px; font-weight:700; font-size:14px; color:rgb(53,59,71);">{{ row.std }}</div>
                       <div style="flex:1; padding:11px 14px; font-size:14px; color:rgb(53,59,71); line-height:1.45; border-left:1px solid rgb(235,236,238);">{{ row.lc }}</div>
                       <div style="width:118px; flex-shrink:0; padding:11px 14px; font-size:14px; color:rgb(53,59,71); border-left:1px solid rgb(235,236,238);">{{ row.focus }}</div>
-                      <div style="width:104px; flex-shrink:0; padding:11px 14px; border-left:1px solid rgb(235,236,238); display:flex; align-items:flex-start;"><a href="{{ row.imHref }}" target="{{ row.imTarget }}" rel="noreferrer" onClick="{{ row.imClick }}" style="font-weight:700; font-size:14px; color:rgb(0,120,163); text-decoration:none;" style-hover="color:rgb(0,89,121);">View</a></div>
+                      <div style="width:104px; flex-shrink:0; padding:11px 14px; border-left:1px solid rgb(235,236,238); display:flex; align-items:flex-start;"><a href="#" onClick="{{ stopLink }}" style="font-weight:700; font-size:14px; color:rgb(0,120,163); text-decoration:none;" style-hover="color:rgb(0,89,121);">View</a></div>
                     </div>
                   </sc-for>
                 </div>
@@ -584,68 +581,12 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:900},&quot;classSize&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:24,&quot;min&quot;:1,&quot;max&quot;:40,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Report data&quot;,&quot;unit&quot;:&quot; students&quot;},&quot;strengthThreshold&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:68,&quot;min&quot;:40,&quot;max&quot;:85,&quot;step&quot;:1,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Report data&quot;,&quot;unit&quot;:&quot;%&quot;},&quot;showMisconceptions&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Review Performance&quot;}}">
 class Component extends DCLogic {
-  state = { tab: "prepare", modal: null, qTab: 1, tooltip: true, grade: 3, period: "G3-Period-1", cycle: "Milestone 1", openF: null, report: { grade: 3, milestone: 1, period: "G3-Period-1" }, lcmap: null, lcmapIM: null, diagIM: null, qim: null, lcfull: null, qgen: null };
-
-  // Instructional Moves demo modules, keyed by grade + learning component.
-  IM_LINKS = [
-    { g: 2, lc: "Compare two three-digit numbers by comparing the digits in each place value", url: "https://player.mediadelivery.net/play/722930/9395e742-c946-4300-acbb-1127a30bd69f" },
-    { g: 3, lc: "Round whole numbers to the nearest 100", url: "https://player.mediadelivery.net/play/722930/15193d14-a498-45df-9a0a-d22283f8bd5f" },
-    { g: 4, lc: "Fluently add multi-digit whole numbers (sums to 1,000,000) using the standard algorithm", url: "https://player.mediadelivery.net/play/722930/d97eba3f-d830-4c39-bb4b-9a0f431c716e" },
-    { g: 4, lc: "Generate equivalent fractions using the principle a/b = (n x a)/(n x b)", url: "https://player.mediadelivery.net/play/722930/000b46f5-542b-4c23-b6ce-1e17fbf9747a" },
-    { g: 5, lc: "Subtract mixed numbers with different denominators by using equivalent fractions", url: "https://player.mediadelivery.net/play/722930/96853369-28f8-4165-8ce4-32da80833d25" },
-    { g: 6, lc: "Find a percent of a quantity as a rate per 100", url: "https://player.mediadelivery.net/play/722930/939c6061-d723-48c3-a0ab-f60ba4a8c7d0" },
-    { g: 7, lc: "Interpret p + q as the number located a distance |q| from p in the positive or negative direction depending on whether q is positive or negative", url: "https://player.mediadelivery.net/play/722930/02ef6c46-8b49-4e82-b9b9-058f035ad7aa" },
-    { g: 8, lc: "Represent the solutions of simple quadratic and cubic expressions by using square and cube roots", url: "https://player.mediadelivery.net/play/722930/b5821db3-9cc1-4dc1-b49a-74e1dfa11fdf" }
-  ];
-
-  imLink(grade, lc) {
-    const norm = (s) => String(s || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
-    const t = norm(lc);
-    const hit = this.IM_LINKS.find((e) => String(e.g) === String(grade) && (t === norm(e.lc) || t.endsWith(norm(e.lc))));
-    return hit ? hit.url : "";
-  }
+  state = { tab: "prepare", modal: null, qTab: 1, tooltip: true, grade: 3, period: "G3-Period-1", cycle: "Milestone 1", openF: null, report: { grade: 3, milestone: 1 }, lcmap: null, lcfull: null, qgen: null };
 
   componentDidMount() {
     import("./lcmap.js").then((m) => this.setState({ lcmap: m.LCMAP })).catch(() => {});
-    import("./lcmap_im.js").then((m) => this.setState({ lcmapIM: m.LCMAP_IM, diagIM: m.DIAG_IM })).catch(() => {});
-    import("./qdata_im.js").then((m) => this.setState({ qim: m.QDATA_IM })).catch(() => {});
-    this.waitForKatex();
     import("./lcfullmap.js").then((m) => this.setState({ lcfull: m.LCFULL })).catch(() => {});
-    import("./lcfullmap_im.js").then((m) => this.setState({ lcfullIM: m.LCFULL_IM })).catch(() => {});
     import("./qdata.js").then((m) => this.setState({ qgen: m.QDATA })).catch(() => {});
-  }
-
-  // KaTeX is loaded from a CDN in the helmet; re-render once it is available
-  // so math-bearing items typeset instead of showing raw LaTeX.
-  waitForKatex(tries) {
-    const n = tries || 0;
-    if (typeof window !== "undefined" && window.katex) { this.forceUpdate(); return; }
-    if (n > 40) return;
-    setTimeout(() => this.waitForKatex(n + 1), 150);
-  }
-
-  // Render a LaTeX string as typeset math (falls back to the plain string).
-  math(src, plain) {
-    const k = typeof window !== "undefined" ? window.katex : null;
-    if (!k || !src) return plain != null ? plain : src;
-    try {
-      return React.createElement("span", {
-        dangerouslySetInnerHTML: { __html: k.renderToString(src, { throwOnError: false }) },
-      });
-    } catch (e) {
-      return plain != null ? plain : src;
-    }
-  }
-
-  // Diagnostic baseline for a component — an IM override when one is set,
-  // otherwise the standard predicted value.
-  diagFor(report, lc) {
-    const d = this.state.diagIM;
-    if (this.isIM(report) && d && d[report.grade] && d[report.grade][report.milestone]) {
-      const v = d[report.grade][report.milestone][lc];
-      if (v != null) return v;
-    }
-    return this.diagPct(report.grade, report.milestone, lc);
   }
 
   pct(grade, ms, lc) {
@@ -655,15 +596,13 @@ class Component extends DCLogic {
     return 38 + (h % 55); // 38..92
   }
 
-  // Deterministic per-grade class size in the 20..30 range. The IM period
-  // carries its own roster size.
-  classSizeFor(grade, period) {
-    if (this.isIM({ grade: grade, period: period })) return 30;
+  // Deterministic per-grade class size in the 20..30 range.
+  classSizeFor(grade) {
     return 20 + ((Number(grade) * 7 + 3) % 11);
   }
 
   // A distinct roster of students per grade, sliced from a shared name pool.
-  rosterFor(grade, size, period) {
+  rosterFor(grade, size) {
     const POOL = ["Abe Colon", "Alicia Reed", "Al Oneal", "Chelsea Rush", "Cora Rosario", "Dion Faulkner", "Dion Valentine", "Eugenia Aguilar", "Ezequiel Shields", "Frankie Petersen", "Gloria Cervantes", "Inez Glover", "Joanne Garcia", "Juan Mccall", "Jude Mason", "Kathie Long", "Keisha Conway", "Kimberley Mata", "Lindsey Alvarez", "Liza Sosa", "Marcelino Mercado", "Marcie Lopez", "Rocco Houston", "Socorro Wade", "Bennie Wolfe", "Bernice Salas", "Bradford Nunez", "Carlos Vaughn", "Damien Barr", "Delia Weeks", "Emilio Frost", "Faith Hobbs", "Gerard Buck", "Guadalupe Reid", "Harriet Poole", "Ismael Doyle", "Jocelyn Ware", "Kurt Trevino", "Latoya Berg", "Lonnie Ayala", "Maggie Ortiz", "Nadia Combs", "Neal Riggs", "Ollie Sampson", "Priscilla Kent", "Reginald Dunn", "Rosalie Vega", "Sammy Blevins", "Tcommie Lara", "Vera Cortez", "Wallace Kidd", "Willard Boone", "Yvette Marsh", "Zachary Pruitt", "Adrienne Ott", "Byron Cline", "Cecelia Roy", "Darrell Nash", "Erika Pace", "Freddie Odom", "Grady Lott", "Hilda Vance", "Ivan Mayo", "Jenna Snow", "Kirk Rankin", "Leona Dodd", "Moses Hardin", "Nettie Cain", "Otis Blackwell", "Paulette Dunn", "Quincy Ray", "Roderick Fox", "Selena Beard", "Tobias Nixon", "Ursula Pugh", "Vernon Chase", "Wendy Stark", "Xavier Munoz", "Yolanda Reese", "Zelda Frye"];
     const g0 = Number(grade) || 0;
     // First- and last-name banks derived from the curated roster names.
@@ -680,13 +619,9 @@ class Component extends DCLogic {
     // A candidate is consumed once, so no student is enrolled in two periods;
     // a candidate is skipped if that first name is already used in the grade
     // being filled, so first names are unique within every period.
-    // Additional periods (beyond Period-1) draw from the tail of the sequence,
-    // after every grade's Period-1 roster is filled, so their students appear
-    // in no other period.
-    const extra = this.extraPeriodIndex(period);
     let k = 0, out = [];
     for (let g = 0; g <= 8; g++) {
-      const n = g === g0 && !extra ? size : this.classSizeFor(g);
+      const n = g === g0 ? size : this.classSizeFor(g);
       const firsts = {}, roster = [];
       while (roster.length < n && k < F * L) {
         const name = cand(k++);
@@ -695,52 +630,9 @@ class Component extends DCLogic {
         firsts[f] = 1;
         roster.push(name);
       }
-      if (g === g0 && !extra) out = roster;
-    }
-    for (let e = 1; e <= extra; e++) {
-      const firsts = {}, roster = [];
-      while (roster.length < size && k < F * L) {
-        const name = cand(k++);
-        const f = name.slice(0, name.indexOf(" "));
-        if (firsts[f]) continue;
-        firsts[f] = 1;
-        roster.push(name);
-      }
-      if (e === extra) out = roster;
+      if (g === g0) out = roster;
     }
     return out;
-  }
-
-  // Periods available for a grade. Grade 4 has a second, Illustrative Math
-  // period with its own roster; every other grade has a single period.
-  periodsFor(grade) {
-    const p = ["G" + grade + "-Period-1"];
-    if (Number(grade) === 4) p.push("G4-Period-2 (IM)");
-    return p;
-  }
-
-  // 0 for a grade's first period; 1+ for each additional period.
-  extraPeriodIndex(period) {
-    if (!period) return 0;
-    const m = /-Period-(\d+)/.exec(period);
-    return m ? Math.max(0, parseInt(m[1], 10) - 1) : 0;
-  }
-
-  // The IM (Illustrative Math) period follows its own learning-component map.
-  isIM(report) {
-    return /Period-2 \(IM\)/.test((report && report.period) || "");
-  }
-
-  // Learning components for a report — IM map for the IM period, else the
-  // standard map.
-  lcsFor(report) {
-    if (!report) return [];
-    const im = this.state.lcmapIM;
-    if (this.isIM(report) && im && im[report.grade] && im[report.grade][report.milestone]) {
-      return im[report.grade][report.milestone];
-    }
-    const m = this.state.lcmap;
-    return (m && m[report.grade] && m[report.grade][report.milestone]) || [];
   }
 
   // Question data for Grade 6, Milestone 1 — one item per learning component,
@@ -886,17 +778,7 @@ class Component extends DCLogic {
     const r = this.state.report || {};
     const key = r.grade + "|" + r.milestone;
     const d = this.qData();
-    const base = d[key] || [];
-    if (!this.isIM(r)) return base;
-    const lcs = this.lcsFor(r);
-    // Real IM item bank where we have one (Milestone 1, Form D).
-    const im = (this.state.qim || {})[key];
-    if (im && im.length) {
-      return im.map((q, i) => (lcs[i] ? Object.assign({}, q, { lc: lcs[i] }) : q));
-    }
-    // Otherwise reuse standard items under the IM component labels.
-    if (!base.length || !lcs.length) return base;
-    return lcs.map((lc, i) => Object.assign({}, base[i % base.length], { lc }));
+    return d[key] || [];
   }
 
   norm(s) { return String(s || "").trim().replace(/\.$/, ""); }
@@ -906,19 +788,14 @@ class Component extends DCLogic {
   }
 
   // % of students who demonstrated the learning component = % who answered
-  // the question correctly. For a multi-correct (multiple-select) item a
-  // student demonstrates it only by selecting EVERY correct choice, so count
-  // the students whose selections include all of them and divide by the class.
-  demoPctFor(lc, N) {
+  // the question correctly. For a 2-point (multiple-select) item, that means
+  // selecting BOTH correct choices, so use the item's joint demoPct.
+  demoPctFor(lc) {
     const q = this.qByLc(lc);
     if (!q) return null;
     const correct = q.choices.filter((c) => c.correct);
     if (correct.length > 1) {
-      const r0 = this.state.report || {};
-      const total = N || (this.isIM(r0) ? this.classSizeFor(r0.grade, r0.period) : (this.props.classSize || this.classSizeFor(r0.grade)));
-      if (!total) return null;
-      const demoCount = this.buildBreakdown(q, total, [""]).demoCount;
-      return Math.round((demoCount / total) * 100);
+      return q.demoPct != null ? q.demoPct : Math.min.apply(null, correct.map((c) => c.pct));
     }
     return correct.length ? correct[0].pct : null;
   }
@@ -949,10 +826,9 @@ class Component extends DCLogic {
     const rnd = (s) => hash(s) / 4294967296;
     const cols = items.map((x) => x.lc);
     const rows = roster.map((name) => {
-      // "Not Assessed" describes the milestone assessment, not the diagnostic:
-      // these students still carry diagnostic prediction scores, so they are
-      // shown blank in the table but still counted in the class distribution.
-      const absent = hash(name + "|abs|" + grade) % 100 < 8;
+      if (hash(name + "|abs|" + grade) % 100 < 8) {
+        return { name, total: "Not Assessed", assessed: false, avg: null, cells: items.map(() => "na"), scores: items.map(() => null) };
+      }
       const ability = (rnd(name + "|abil|" + grade) * 2 - 1) * 24;
       let succCount = 0, sum = 0, cnt = 0;
       const scores = [], cells = [];
@@ -966,16 +842,7 @@ class Component extends DCLogic {
         if (score >= T) { succCount++; cells.push(partial ? "succ_p" : "succ"); }
         else cells.push(partial ? "extra_p" : "extra");
       });
-      // Every student gets a prediction average, so the class distribution
-      // always totals the full roster.
-      let predAvg = cnt ? sum / cnt : null;
-      if (predAvg == null && items.length) {
-        predAvg = items.reduce((a, it) => a + it.d, 0) / items.length + ability;
-      }
-      if (absent) {
-        return { name, total: "Not Assessed", assessed: false, avg: null, predAvg, cells: items.map(() => "na"), scores: items.map(() => null) };
-      }
-      return { name, total: String(succCount), assessed: true, avg: cnt ? sum / cnt : null, predAvg, cells, scores };
+      return { name, total: String(succCount), assessed: true, avg: cnt ? sum / cnt : null, cells, scores };
     });
     rows.sort((a, b) => a.name.localeCompare(b.name));
     return { cols, rows };
@@ -987,18 +854,7 @@ class Component extends DCLogic {
   // demonstrated count of students appear under BOTH correct choices.
   buildBreakdown(q, N, ROSTER) {
     const ch = q.choices;
-    const counts = (function () {
-      // Largest-remainder rounding so per-choice counts total the class exactly
-      // (single-answer items) instead of drifting by one.
-      const raw = ch.map((c) => (c.pct / 100) * N);
-      const base = raw.map((v) => Math.max(0, Math.floor(v)));
-      const single = ch.filter((c) => c.correct).length < 2;
-      if (!single) return raw.map((v) => Math.max(0, Math.round(v)));
-      let short = N - base.reduce((a, b) => a + b, 0);
-      const order = raw.map((v, i) => [v - Math.floor(v), i]).sort((a, b) => b[0] - a[0]);
-      for (let i = 0; short > 0 && i < order.length; i++) { base[order[i][1]]++; short--; }
-      return base;
-    })();
+    const counts = ch.map((c) => Math.max(0, Math.round((c.pct / 100) * N)));
     const cIdx = ch.map((c, i) => (c.correct ? i : -1)).filter((i) => i >= 0);
     const groups = ch.map(() => []);
     const name = (x) => ROSTER[x % ROSTER.length];
@@ -1009,22 +865,21 @@ class Component extends DCLogic {
       const breakdown = ch.map((c, i) => ({ header: c.L + "(" + counts[i] + ")", names: groups[i].map(name).sort((a, b) => a.localeCompare(b)) }));
       return { breakdown, demoCount: cIdx.length ? counts[cIdx[0]] : 0 };
     }
-    // multiple-select: each student may select AT MOST as many choices as the
-    // item has correct answers. B students select every correct choice (they
-    // demonstrated the component); the rest are distributed across the
-    // remaining capacity.
-    const K = cIdx.length;
-    const cCounts = cIdx.map((i) => counts[i]);
-    let B = q.demoPct != null ? Math.round((q.demoPct / 100) * N) : Math.min.apply(null, cCounts);
-    B = Math.max(0, Math.min.apply(null, [B].concat(cCounts)));
+    // multiple-select (two correct): each student may select AT MOST two
+    // choices. B students select both correct choices (they demonstrated the
+    // component); every remaining student is given at most two selections so
+    // no one is ever listed under more than two choices.
+    const c1 = cIdx[0], c2 = cIdx[1];
+    let B = q.demoPct != null ? Math.round((q.demoPct / 100) * N) : Math.min(counts[c1], counts[c2]);
+    B = Math.max(0, Math.min(B, counts[c1], counts[c2]));
     const rem = counts.slice();            // remaining capacity per choice
     const sel = [];                        // sel[studentIdx] = [choiceIdx,...]
-    for (let k = 0; k < B; k++) { sel.push(cIdx.slice()); cIdx.forEach((i) => rem[i]--); }
+    for (let k = 0; k < B; k++) { sel.push([c1, c2]); rem[c1]--; rem[c2]--; }
     for (let s = B; s < N; s++) {
       const avail = rem.map((v, i) => [v, i]).filter((x) => x[0] > 0).sort((a, b) => b[0] - a[0]);
-      const picks = avail.slice(0, K).map((x) => x[1]);
-      picks.forEach((i) => rem[i]--);
-      sel.push(picks);
+      if (avail.length >= 2) { const i = avail[0][1], j = avail[1][1]; sel.push([i, j]); rem[i]--; rem[j]--; }
+      else if (avail.length === 1) { const i = avail[0][1]; sel.push([i]); rem[i]--; }
+      else { sel.push([]); }
     }
     sel.forEach((picks, si) => picks.forEach((ci) => groups[ci].push(si)));
     const breakdown = ch.map((c, i) => ({ header: c.L + "(" + groups[i].length + ")", names: groups[i].map(name).sort((a, b) => a.localeCompare(b)) }));
@@ -1038,19 +893,18 @@ class Component extends DCLogic {
 
     const THRESHOLD = this.props.strengthThreshold ?? 68;
     const report = this.state.report;
-    // A period with its own roster size wins over the global classSize tweak.
-    const CLASS_TOTAL = this.isIM(report) ? this.classSizeFor(report.grade, report.period) : (this.props.classSize ?? this.classSizeFor(report.grade));
+    const CLASS_TOTAL = this.props.classSize ?? this.classSizeFor(report.grade);
     const lcmap = this.state.lcmap;
-    const rawLcs = this.lcsFor(report);
-    const hasQ = this.qList().length > 0;
+    const rawLcs = (lcmap && lcmap[report.grade] && lcmap[report.grade][report.milestone]) || [];
+    const hasQ = !!this.qData()[report.grade + "|" + report.milestone];
     const items = rawLcs.map((lc, i) => {
-      let p = hasQ ? this.demoPctFor(lc, CLASS_TOTAL) : null;
+      let p = hasQ ? this.demoPctFor(lc) : null;
       if (p == null) p = this.pct(report.grade, report.milestone, lc);
-      return { lc, p, d: this.diagFor(report, lc), q: i + 1 };
+      return { lc, p, d: this.diagPct(report.grade, report.milestone, lc), q: i + 1 };
     });
     // Prepare for Instruction runs off the prior diagnostic's per-student
     // prediction scores — the same matrix the Preview report uses.
-    const ROSTER = this.rosterFor(report.grade, CLASS_TOTAL, report.period);
+    const ROSTER = this.rosterFor(report.grade, CLASS_TOTAL);
     const SP = this.studentPred(report, items, ROSTER);
     items.forEach((it, j) => {
       let s = 0, n = 0;
@@ -1072,9 +926,8 @@ class Component extends DCLogic {
         open: () => this.setState({ modal: "questions", qTab: Math.max(1, Math.min(x.q, QUESTIONS.length)) }),
       };
     });
-    // Class distribution: share of the class whose AVERAGE prediction score
-    // across the report's LCs is at or above the threshold.
-    // Students marked "Not Assessed" in the student table are excluded.
+    // Class distribution: share of assessed students whose AVERAGE prediction
+    // score across the report's LCs is at or above the threshold.
     const assessedRows = SP.rows.filter((r) => r.assessed && r.avg != null);
     const assessedN = assessedRows.length;
     const successN = assessedRows.filter((r) => r.avg >= THRESHOLD).length;
@@ -1112,14 +965,14 @@ class Component extends DCLogic {
       }) : null,
       src: b.src || "",
       imgWidth: b.imgWidth || "260px",
-      text: b.tex ? React.createElement(React.Fragment, null, b.text || "", b.text ? "  " : "", this.math(b.tex)) : (b.text || ""),
+      text: b.text || "",
       rows: b.rows || [],
       tRows: (b.rows || []).map((row, ri) => ({ cells: row, isHeader: !!b.header && ri === 0, notHeader: !(!!b.header && ri === 0) })),
       tables: b.tables || [],
     }));
     const qChoices = activeQ.choices.map((c, i, arr) => ({
       L: c.L,
-      text: c.tex ? this.math(c.tex, c.text) : c.text,
+      text: c.text,
       bg: c.correct ? "rgb(252,252,222)" : "rgb(245,245,245)",
       borderLeft: c.correct ? "6px solid rgb(4,120,87)" : "none",
       borderBottom: i === arr.length - 1 ? "none" : "1px solid rgb(222,226,230)",
@@ -1133,7 +986,7 @@ class Component extends DCLogic {
       badgeBg: c.correct ? "rgb(167,243,208)" : "rgb(255,203,206)",
       badgeColor: c.correct ? "rgb(4,120,87)" : "rgb(155,28,28)",
       correct: c.correct,
-      answerText: c.tex ? this.math(c.tex, c.text) : c.text,
+      answerText: c.text,
       answerWeight: c.correct ? "400" : "700",
       rationale: c.dr,
       borderBottom: i === arr.length - 1 ? "none" : "1px dashed rgb(213,217,226)",
@@ -1167,19 +1020,19 @@ class Component extends DCLogic {
       onClick: () => this.setState({ grade: g, period: null, cycle: null, openF: null }),
     }));
     const periodOptions = grade
-      ? this.periodsFor(grade).map((p) => ({
-          label: p,
-          onClick: () => this.setState({ period: p, cycle: null, openF: null }),
-        }))
+      ? [{
+          label: "G" + grade + "-Period-1",
+          onClick: () => this.setState({ period: "G" + grade + "-Period-1", cycle: null, openF: null }),
+        }]
       : [];
     const cycleOptions = [1, 2].map((c) => ({
       label: "Milestone " + c,
       onClick: () => this.setState({ cycle: "Milestone " + c, openF: null }),
     }));
 
-    // Full Learning Component Map document. The IM period shows the IM 360
-    // map; every other period shows the standard one.
-    const lcfull = (this.isIM(report) && this.state.lcfullIM) || this.state.lcfull;
+    // Full Learning Component Map document — every grade and milestone,
+    // parsed verbatim from the source PDF.
+    const lcfull = this.state.lcfull;
     const resDoc = lcfull ? Object.keys(lcfull).sort((a, b) => a - b).map((g) => ({
       grade: g,
       title: "Grade " + g + " Learning Component Map",
@@ -1196,9 +1049,6 @@ class Component extends DCLogic {
             }
             return {
             std: std, lc: lc, focus: r.focus,
-            imHref: this.imLink(g, lc) || "#",
-            imTarget: this.imLink(g, lc) ? "_blank" : "",
-            imClick: this.imLink(g, lc) ? ((e) => { if (e && e.stopPropagation) e.stopPropagation(); }) : ((e) => { if (e && e.preventDefault) e.preventDefault(); }),
             rowBorder: (i > 0 && std !== "") ? "1px solid rgb(206,212,218)" : "1px solid rgb(235,236,238)",
           };
           }),
@@ -1269,7 +1119,7 @@ class Component extends DCLogic {
           const g = s.grade;
           const ms = s.cycle ? parseInt(String(s.cycle).replace("Milestone ", ""), 10) : null;
           if (!g || !ms) return { tooltip: false, openF: null };
-          return { report: { grade: g, milestone: ms, period: s.period }, tooltip: false, openF: null };
+          return { report: { grade: g, milestone: ms }, tooltip: false, openF: null };
         });
       },
       stop: (e) => { if (e && e.stopPropagation) e.stopPropagation(); },
