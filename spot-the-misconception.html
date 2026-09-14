@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<title>Spot the Misconception — Compass Math</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
+<script charset="utf-8" type="text/javascript" src="https://js.hsforms.net/forms/embed/v2.js"></script>
+
+<style>
+  /* ---------------------------------------------------------------
+     DESIGN TOKENS — pulled from the live Compass Math report build
+     (Compass Math Teacher Report.dc.html) so this matches the
+     product exactly. Change here to re-theme the whole activity.
+  --------------------------------------------------------------- */
+  :root{
+    --ink:        #353B47;
+    --muted:      #67707D;
+    --border:     #D5D9E2;
+    --card:       #F6F7F9;
+    --page:       #E2E6EC;
+    --white:      #FFFFFF;
+    --brand:      #227EA7;
+    --brand-light:#66BBDC;
+    --brand-dark: #005979;
+    --brand-tint: #E5F2F9;
+    --good:       #047857;
+    --good-tint:  #E4F5EE;
+    --bad:        #B3261E;
+    --bad-tint:   #FCEBEA;
+    --gold:       #E8A33D;
+    --radius:     14px;
+    --radius-sm:  10px;
+  }
+
+  *{ box-sizing:border-box; }
+  html,body{ height:100%; overscroll-behavior:none; }
+  body{
+    margin:0;
+    background:var(--page);
+    font-family:"Lato",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    color:var(--ink);
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    touch-action: manipulation;
+    overscroll-behavior: none;
+    user-select:none;
+  }
+  #stage{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+
+  /* ---------- header ---------- */
+  header{
+    align-self:stretch;
+    background:var(--white);
+    border-bottom:1px solid var(--border);
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:14px 20px;
+  }
+  header img.logo{ height:38px; width:auto; display:block; }
+  header .divider{ width:1px; height:24px; background:var(--border); }
+  header .title{ font-weight:700; font-size:16px; color:var(--ink); white-space:nowrap; }
+  header .spacer{ flex:1; }
+  /* ---------- generic layout ---------- */
+  main{
+    flex:1;
+    align-self:stretch;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:32px 20px 60px;
+  }
+  .wrap{ width:100%; max-width:640px; display:flex; flex-direction:column; gap:20px; }
+
+  /* ---------- start screen ---------- */
+  .hero{ text-align:center; padding:20px 8px 4px; }
+  .hero h1{
+    margin:0 0 12px;
+    font-size:34px;
+    line-height:1.15;
+    font-weight:900;
+    color:var(--ink);
+    letter-spacing:-0.01em;
+  }
+  .hero p{
+    margin:0 auto; max-width:46ch;
+    font-size:16px; line-height:1.55; color:var(--muted);
+  }
+  .grade-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:14px;
+    margin-top:8px;
+  }
+  .grade-tile{
+    aspect-ratio:1;
+    background:var(--white);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:4px;
+    cursor:pointer;
+    transition:transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+  }
+  .grade-tile:active{ transform:scale(.96); }
+  .grade-tile:hover{ border-color:var(--brand-light); box-shadow:0 4px 14px rgba(102,187,220,.3); }
+  .grade-tile .num{ font-size:36px; font-weight:900; color:var(--brand-light); line-height:1; }
+  .grade-tile .lbl{ font-size:12px; color:var(--muted); font-weight:700; }
+  .grade-tile .count{ font-size:11px; color:var(--muted); }
+
+  /* ---------- question screen ---------- */
+  .progress-row{ display:flex; align-items:center; gap:10px; }
+  .progress-row .meta{ font-size:13px; color:var(--muted); font-weight:700; white-space:nowrap; }
+  .progress-dots{ display:flex; gap:6px; flex:1; }
+  .dot{ height:6px; border-radius:3px; flex:1; background:var(--border); }
+  .dot.done{ background:var(--brand); }
+  .dot.current{ background:var(--gold); }
+
+  .card{
+    background:var(--white);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:24px;
+  }
+  .eyebrow{ font-size:13px; font-weight:700; color:var(--brand-light); margin:0 0 8px; }
+  .q-text{ font-size:19px; line-height:1.5; font-weight:700; color:var(--ink); margin:0; }
+
+  .picked-block{
+    margin-top:18px;
+    background:var(--bad-tint);
+    border:1px dashed #E4A6A1;
+    border-radius:var(--radius-sm);
+    padding:14px 16px;
+    display:flex; gap:12px; align-items:flex-start;
+  }
+  .picked-block .avatar{
+    flex-shrink:0; width:34px; height:34px; border-radius:50%;
+    background:var(--bad); color:var(--white); font-weight:900; font-size:15px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .picked-block .who{ font-size:12px; font-weight:700; color:var(--bad); margin:0 0 2px; }
+  .picked-block .ans{ font-size:15px; color:var(--ink); margin:0; }
+  .picked-block .letter{
+    display:inline-flex; width:20px; height:20px; border-radius:50%;
+    background:var(--white); border:1px solid var(--bad); color:var(--bad);
+    font-size:12px; font-weight:800; align-items:center; justify-content:center;
+    margin-right:6px; vertical-align:middle;
+  }
+
+  .prompt{ margin:20px 0 12px; font-size:15px; font-weight:700; color:var(--ink); }
+
+  .option{
+    display:block; width:100%; text-align:left;
+    background:var(--card); border:1px solid var(--border); border-radius:var(--radius-sm);
+    padding:14px 16px; margin-bottom:10px;
+    font-family:inherit; font-size:14.5px; line-height:1.45; color:var(--ink);
+    cursor:pointer; transition:border-color .12s ease, background .12s ease, transform .08s ease;
+  }
+  .option:hover{ border-color:var(--brand); }
+  .option:active{ transform:scale(.99); }
+  .option.correct{ background:var(--good-tint); border-color:var(--good); color:#0B3D2E; }
+  .option.incorrect{ background:var(--bad-tint); border-color:var(--bad); color:#5C1B16; }
+  .option.reveal-correct{ background:var(--good-tint); border-color:var(--good); }
+  .option[disabled]{ cursor:default; }
+  .option .tag{ display:block; font-size:11px; font-weight:800; letter-spacing:.02em; margin-bottom:4px; }
+  .option.correct .tag{ color:var(--good); }
+  .option.incorrect .tag{ color:var(--bad); }
+  .option.reveal-correct .tag{ color:var(--good); }
+
+  .feedback{
+    margin-top:14px; padding:14px 16px; border-radius:var(--radius-sm);
+    font-size:14.5px; line-height:1.5;
+  }
+  .feedback.good{ background:var(--good-tint); color:#0B3D2E; }
+  .feedback.bad{ background:var(--bad-tint); color:#5C1B16; }
+
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center;
+    background:var(--brand); color:var(--white); border:none; border-radius:999px;
+    font-family:inherit; font-weight:800; font-size:15px; padding:14px 26px;
+    cursor:pointer; transition:background .12s ease, transform .08s ease;
+  }
+  .btn:hover{ background:var(--brand-dark); }
+  .btn:active{ transform:scale(.97); }
+  .btn.block{ width:100%; }
+  .btn.ghost{ background:transparent; color:var(--brand); border:1px solid var(--brand); }
+  .btn.gold{ background:var(--gold); color:#4A3200; }
+  .btn.gold:hover{ background:#D6922F; }
+  .btn[disabled]{ opacity:.45; cursor:default; }
+
+  .next-row{ margin-top:18px; display:flex; justify-content:flex-end; }
+
+  /* ---------- result screen ---------- */
+  .result-hero{ text-align:center; padding:8px 8px 0; }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    background:var(--brand-tint); color:var(--brand-dark);
+    border-radius:999px; padding:8px 18px; font-weight:800; font-size:14px; margin-bottom:14px;
+  }
+  .score-big{ font-size:52px; font-weight:900; color:var(--ink); line-height:1; margin:4px 0; }
+  .score-sub{ font-size:15px; color:var(--muted); }
+
+  .section-label{ font-size:13px; font-weight:800; color:var(--muted); text-transform:none; margin:6px 0 2px; }
+
+  .hubspot-shell{
+    background:var(--white); border:1px solid var(--border); border-radius:var(--radius);
+    padding:20px;
+  }
+  .hubspot-placeholder{
+    border:1.5px dashed var(--border); border-radius:var(--radius-sm);
+    padding:26px 18px; text-align:center; color:var(--muted); font-size:13.5px; line-height:1.6;
+  }
+
+  .prize-shell{
+    background:var(--white); border:1px solid var(--border); border-radius:var(--radius);
+    padding:22px; text-align:center;
+  }
+  .prize-reveal{
+    min-height:64px; display:flex; align-items:center; justify-content:center;
+    font-size:22px; font-weight:900; color:var(--ink); gap:10px; margin-bottom:14px;
+  }
+  .prize-note{ font-size:12.5px; color:var(--muted); margin-top:10px; }
+  .spin .prize-reveal{ animation:none; }
+
+  .footer-actions{ display:flex; gap:12px; }
+  .footer-actions .btn{ flex:1; }
+
+  @media (max-width:380px){
+    .hero h1{ font-size:28px; }
+    .grade-tile .num{ font-size:30px; }
+  }
+
+  /* ---------- iPad (portrait ~768-834px, landscape ~1024-1194px) ---------- */
+  @media (min-width:700px){
+    .wrap{ max-width:760px; gap:26px; }
+    main{ padding:52px 32px 80px; }
+    header{ padding:18px 32px; }
+    header img.logo{ height:44px; }
+    header .title{ font-size:19px; }
+
+    .hero h1{ font-size:44px; }
+    .hero p{ font-size:18px; max-width:52ch; }
+
+    .grade-grid{ gap:18px; }
+    .grade-tile .num{ font-size:44px; }
+    .grade-tile .lbl{ font-size:14px; }
+    .grade-tile .count{ font-size:12.5px; }
+
+    .card{ padding:32px; }
+    .hubspot-shell{ padding:28px; }
+    .prize-shell{ padding:28px; }
+    .prize-reveal{ font-size:26px; }
+    .q-text{ font-size:22px; }
+    .eyebrow{ font-size:14px; }
+    .prompt{ font-size:17px; }
+    .option{ font-size:16px; padding:18px 20px; }
+    .picked-block{ padding:18px 20px; }
+    .picked-block .ans{ font-size:16.5px; }
+
+    .btn{ font-size:17px; padding:18px 30px; }
+    .score-big{ font-size:64px; }
+    .badge{ font-size:15px; padding:10px 20px; }
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+  <header>
+    <img src="assets/compass-by-anet.png" alt="Compass by ANet" class="logo">
+    <div class="divider"></div>
+    <span class="title">Spot the Misconception</span>
+    <div class="spacer"></div>
+  </header>
+  <main><div class="wrap" id="app"></div></main>
+</div>
+
+<script>
+/* =====================================================================
+   QUESTION BANK
+   Source: genqdata.json, filtered to the 31 questions that don't
+   depend on a diagram/image (13 image-based questions were excluded —
+   see chat for why). Each question already carries real Compass
+   Review Performance data: answer choice text, % of students who
+   picked it, and the distractor rationale (why a student would pick
+   that wrong answer).
+===================================================================== */
+const QDATA = {"2|1":[{"lc":"Use an appropriate tool to measure the length, in standard units, of an object","blocks":[{"kind":"text","text":"Sam is measuring a toy house. What is the length of the toy house, in centimeters?"},{"kind":"image","text":"Image shows a toy house being measured with a ruler. The toy house is aligned to the ruler, with its left edge at 4 cm and its right edge at 24 cm, giving a total measured length of 20 cm."}],"choices":[{"L":"A","text":"20","pct":18,"correct":true,"dr":"Correct."},{"L":"B","text":"21","pct":11,"correct":false,"dr":"Student counted the number of marked intervals instead of measuring the total length based on unit divisions."},{"L":"C","text":"24","pct":71,"correct":false,"dr":"Student chose the number on the ruler aligned to the end of the object being measured and did not account for the measurement not starting at zero."}],"img":"assets/g2_dollhouse.png"},{"lc":"Select an appropriate tool to measure the length, in standard units, of an object","blocks":[{"kind":"text","text":"Which unit would be the best unit for measuring the length of a book?"}],"choices":[{"L":"A","text":"yards","pct":17,"correct":false,"dr":"Student chose a unit that is too large for the object's length, perhaps thought it was a smaller unit of measurement."},{"L":"B","text":"meters","pct":36,"correct":false,"dr":"Student chose a unit that is too large for the object's length, perhaps thought it was a similar unit with a smaller scale."},{"L":"C","text":"centimeters","pct":47,"correct":true,"dr":"Correct."}]},{"lc":"Measure to determine how much longer one object is than another","blocks":[{"kind":"text","text":"Use the ruler in the picture to answer the question below. How many centimeters longer is the paintbrush than the tube of paint?"},{"kind":"image","text":"Image shows a ruler with a paintbrush and a tube of paint placed beneath it. The paintbrush measures 16 cm and the tube of paint measures 9 cm, for a difference of 7 cm."}],"choices":[{"L":"A","text":"7","pct":31,"correct":true,"dr":"Correct."},{"L":"B","text":"16","pct":61,"correct":false,"dr":"Student identified the length of one object but did not compare it to the other measurement."},{"L":"C","text":"25","pct":8,"correct":false,"dr":"Student added the lengths of the two objects instead of subtracting."}],"img":"assets/g2_paintbrush.png"}],"2|2":[{"lc":"Given the number of hundreds, tens, and/or ones, write a threedigit number","blocks":[{"kind":"text","text":"Which number represents the same amount as 7 tens, 4 ones, and 6 hundreds?"}],"choices":[{"L":"A","text":"476","pct":7,"correct":false,"dr":"Student reversed the place values of the largest and smallest units, treating the smallest unit as the leftmost digit and the largest unit as the rightmost digit."},{"L":"B","text":"674","pct":58,"correct":true,"dr":"Correct."},{"L":"C","text":"746","pct":35,"correct":false,"dr":"Student listed the digits in the given order instead of ordering the digits according to their place value."}]},{"lc":"Decompose a two-digit number into its tens and ones","blocks":[{"kind":"text","text":"Which amount is equal to 40?"}],"choices":[{"L":"A","text":"4 ones","pct":17,"correct":false,"dr":"Student misinterpreted the place values in the number, treating the larger place value as the smaller place value."},{"L":"B","text":"40 ones","pct":52,"correct":true,"dr":"Correct."},{"L":"C","text":"40 tens","pct":31,"correct":false,"dr":"Student misinterpreted the given number as the number of units of the largest place value."}]},{"lc":"Decompose a three-digit number into its hundreds, tens, and ones","blocks":[{"kind":"text","text":"Which of the following is equal to 307?"}],"choices":[{"L":"A","text":"3 hundreds + 7 tens","pct":20,"correct":false,"dr":"Student represented the non-zero digits of the original number, assigning them descending place values."},{"L":"B","text":"3 hundreds + 7 ones","pct":60,"correct":true,"dr":"Correct."},{"L":"C","text":"30 hundreds + 7 ones","pct":20,"correct":false,"dr":"Student attributed the first two digits of the given number to the highest place value of the number rather than separating them, likely because the second digit is a zero."}]},{"lc":"Compare two three-digit numbers by comparing the digits in each place value","blocks":[{"kind":"text","text":"Which symbol can be used in the blank to make a true sentence? 5 ones + 3 hundreds + 4 tens ___ 4 hundreds + 8 ones"}],"choices":[{"L":"A","text":"<","pct":52,"correct":true,"dr":"Correct."},{"L":"B","text":">","pct":24,"correct":false,"dr":"Student compared the numbers as if they were single values rather than considering their place values, OR misinterpreted the meaning of the comparison symbol."},{"L":"C","text":"=","pct":23,"correct":false,"dr":"Student added the digits on each side of the comparison without accounting for the place value of the digits."}]},{"lc":"Read and write numbers to 1,000 by moving between base-ten numerals (standard form) and expanded form","blocks":[{"kind":"text","text":"Which shows the number 403 in expanded form?"}],"choices":[{"L":"A","text":"40 + 3","pct":19,"correct":false,"dr":"Student misinterpreted how to decompose a number, combining two place values into a single value based on the digits rather than their place value."},{"L":"B","text":"400 + 3","pct":74,"correct":true,"dr":"Correct."},{"L":"C","text":"400 + 30","pct":7,"correct":false,"dr":"Student misinterpreted a non-zero digit with an adjacent zero digit as the value of the place value of the non-zero digit."}]},{"lc":"Read and write numbers to 1,000 by moving between number names (word form) and expanded form","blocks":[{"kind":"text","text":"What is another way to write the expression below? 20 + 7 + 600"}],"choices":[{"L":"A","text":"Two hundred sixty-seven","pct":13,"correct":false,"dr":"Student confused the tens place with the hundreds place."},{"L":"B","text":"Two hundred seventy-six","pct":16,"correct":false,"dr":"Student ignored place value and put the first digit of each addend in order from left to right."},{"L":"C","text":"Six hundred twenty-seven","pct":71,"correct":true,"dr":"Correct."}]}],"4|1":[{"lc":"Apply concepts of place value to recognize quotients and products in multiplication and division problems involving whole numbers and a factor of 10","blocks":[{"kind":"text","text":"Select two equations in which a 10 can be used in the blank to make the equation true."}],"choices":[{"L":"A","text":"200 \u00f7 ___ = 2","pct":28,"correct":false,"dr":"Student confused a difference of two orders of magnitude with a difference of one order of magnitude."},{"L":"B","text":"500 \u00f7 ___ = 50","pct":65,"correct":true,"dr":"Correct."},{"L":"C","text":"800 \u00f7 ___ = 8,000","pct":22,"correct":false,"dr":"Student misunderstood how division affects magnitude; may have thought that dividing by a value greater than 1 increases the result, similar to the effect of multiplication."},{"L":"D","text":"9,000 \u00f7 900 = ___","pct":42,"correct":true,"dr":"Correct."},{"L":"E","text":"40,000 \u00f7 400 = ___","pct":12,"correct":false,"dr":"Student confused a difference of two orders of magnitude with a difference of one order of magnitude."}],"typeLabel":"Multiple Select","points":"2"},{"lc":"Recognize that in a multi-digit whole number, a digit in one place represents ten times what it represents in the place to its right","blocks":[{"kind":"text","text":"Which statement can be placed in the blank to make the sentence true? The value of the 6 in 56,780 is ___ the value of the 6 in 8,630."}],"choices":[{"L":"A","text":"the same as","pct":10,"correct":false,"dr":"Student may have thought that the value of a digit is unaffected by its place value."},{"L":"B","text":"10 times as much as","pct":52,"correct":true,"dr":"Correct."},{"L":"C","text":"100 times as much as","pct":13,"correct":false,"dr":"Student may have thought that the value of a digit is 100 times greater when it appears one place to the left, without considering the actual place value positions of the digits."},{"L":"D","text":"1,000 times as much as","pct":25,"correct":false,"dr":"Student may have thought that the value of a digit is 1,000 times greater when it appears one place to the left, without considering the actual place value positions of the digits."}]},{"lc":"Read and write multi-digit numbers up to 1,000,000 by moving between base-ten numerals (standard form) and expanded form","blocks":[{"kind":"text","text":"Which values represent 750,804? Select two that apply."}],"choices":[{"L":"A","text":"700 + 50 + 800 + 4","pct":22,"correct":false,"dr":"Student viewed the number as two separate parts separated by the comma."},{"L":"B","text":"4 + 50,000 + 80 + 700,000","pct":14,"correct":false,"dr":"Student confused the place value of the 8 as the tens place instead of the hundreds place."},{"L":"C","text":"800 + 4 + 700,000 + 50,000","pct":56,"correct":true,"dr":"Correct."},{"L":"D","text":"Seventy-five thousand, eight hundred four","pct":23,"correct":false,"dr":"Student confused 750,000 with 75,000."},{"L":"E","text":"Seven hundred fifty thousand, eighty-four","pct":13,"correct":false,"dr":"Student confused the place value of the 8 as the tens place instead of the hundreds place."},{"L":"F","text":"Seven hundred fifty thousand, eight hundred four","pct":56,"correct":true,"dr":"Correct."}],"typeLabel":"Multiple Select","points":"2"},{"lc":"Compare two multi-digit numbers","blocks":[{"kind":"text","text":"Which statement is true?"}],"choices":[{"L":"A","text":"4,076 > 4,000 + 700 + 6","pct":27,"correct":false,"dr":"Student did not compare the digits in the hundreds places correctly."},{"L":"B","text":"4,076 < 4,000 + 700 + 6","pct":39,"correct":true,"dr":"Correct."},{"L":"C","text":"4,760 < 4,000 + 700 + 6","pct":10,"correct":false,"dr":"Student did not compare the digits in the tens places correctly."},{"L":"D","text":"4,760 = 4,000 + 700 + 6","pct":24,"correct":false,"dr":"Student misinterpreted the value of a digit by incorrectly identifying its place value."}]},{"lc":"Round multi-digit whole numbers to any place within 1,000,000","blocks":[{"kind":"text","text":"Select three numbers that round to 29,000 when rounded to the nearest thousand."}],"choices":[{"L":"A","text":"29,465","pct":66,"correct":true,"dr":"Correct."},{"L":"B","text":"28,477","pct":29,"correct":false,"dr":"Student may have incorrectly used a digit in the tens or ones place to round the number up to the next thousand."},{"L":"C","text":"29,763","pct":28,"correct":false,"dr":"Student may have truncated the number at the given place value rather than rounding to the given place value."},{"L":"D","text":"29,299","pct":72,"correct":true,"dr":"Correct."},{"L":"E","text":"28,632","pct":61,"correct":true,"dr":"Correct."}],"typeLabel":"Multiple Select","points":"2"}],"4|2":[{"lc":"Fluently add multi-digit whole numbers (sums to 1,000,000) using the standard algorithm","blocks":[{"kind":"text","text":"Solve. 26,957 + 347,082 = ?"}],"choices":[{"L":"A","text":"364,039","pct":17,"correct":false,"dr":"Student did not regroup from the thousands place to the ten thousands place."},{"L":"B","text":"373,039","pct":16,"correct":false,"dr":"Student did not regroup from the hundreds place to the thousands place."},{"L":"C","text":"373,939","pct":10,"correct":false,"dr":"Student did not regroup from the tens place to the hundreds place."},{"L":"D","text":"374,039","pct":56,"correct":true,"dr":"Correct."}]},{"lc":"Fluently subtract multi-digit whole numbers (minuend to 1,000,000) using the standard algorithm","blocks":[{"kind":"text","text":"Solve. 3,361 - 2,945 = ?"}],"choices":[{"L":"A","text":"416","pct":58,"correct":true,"dr":"Correct."},{"L":"B","text":"624","pct":6,"correct":false,"dr":"Student correctly subtracted the smaller digit from the larger digit in the ones and hundreds places but incorrectly reduced the digit in the thousands place, even though no regrouping was needed there."},{"L":"C","text":"1,426","pct":10,"correct":false,"dr":"Student attempted to regroup but did not correctly adjust the value in the adjacent higher place value column."},{"L":"D","text":"1,624","pct":25,"correct":false,"dr":"Student subtracted the smaller digit from the larger digit in each place value without considering the need to regroup from the next higher place value."}]},{"lc":"Multiply a three-digit number by a one-digit number using strategies based on place value or properties of operations","blocks":[{"kind":"text","text":"Multiply. 36 \u00d7 4 = ?"}],"choices":[{"L":"A","text":"54","pct":9,"correct":false,"dr":"Student only multiplied the digits that shared a place value across both numbers and then added the value of the other digit."},{"L":"B","text":"124","pct":17,"correct":false,"dr":"Student did not regroup after each partial product."},{"L":"C","text":"144","pct":69,"correct":true,"dr":"Correct."},{"L":"D","text":"252","pct":5,"correct":false,"dr":"Student left-aligned digits when multiplying and treated the left-most digit of the multi-digit number as the units place."}]}],"5|1":[{"lc":"Fluently multiply 2-digit by up to 3-digit whole numbers using the standard algorithm","blocks":[{"kind":"text","text":"What is the product? 729 \u00d7 63 = ?"}],"choices":[{"L":"A","text":"6,561","pct":19,"correct":false,"dr":"Student did not account for place value while multiplying the first factor by the value in the tens place of the second factor while performing the standard algorithm for multiplication."},{"L":"B","text":"44,407","pct":18,"correct":false,"dr":"Student did not account for the \"carried\" digits while performing the standard algorithm for multiplication."},{"L":"C","text":"45,927","pct":56,"correct":true,"dr":"Correct."},{"L":"D","text":"68,667","pct":7,"correct":false,"dr":"Student added the \"carried\" digits before multiplying rather than after while performing the standard algorithm for multiplication."}]},{"lc":"Fluently multiply 3-digit by 3-digit whole numbers using the standard algorithm","blocks":[{"kind":"text","text":"Multiply. 689 \u00d7 716 = ?"}],"choices":[{"L":"A","text":"9,646","pct":12,"correct":false,"dr":"Student multiplied by single-digit values instead of correctly accounting for the place value of each digit when finding partial products."},{"L":"B","text":"59,254","pct":25,"correct":false,"dr":"Student miscalculated the place value and multiplied by ten times less than the correct value when finding partial products."},{"L":"C","text":"436,874","pct":22,"correct":false,"dr":"Student did not regroup when multiplying, but did regroup when adding partial products."},{"L":"D","text":"493,324","pct":42,"correct":true,"dr":"Correct."}]},{"lc":"Fluently multiply 3-digit by 4-digit whole numbers using the standard algorithm","blocks":[{"kind":"text","text":"Solve. 1,469 \u00d7 374 = ?"}],"choices":[{"L":"A","text":"20,566","pct":17,"correct":false,"dr":"Student multiplied by single-digit values instead of correctly accounting for the place value of each digit when finding partial products."},{"L":"B","text":"411,576","pct":32,"correct":false,"dr":"Student did not regroup when multiplying, but regrouped when adding."},{"L":"C","text":"547,306","pct":14,"correct":false,"dr":"Student correctly found each partial product, but did not regroup when adding the partial products."},{"L":"D","text":"549,406","pct":38,"correct":true,"dr":"Correct."}]},{"lc":"Find whole number quotients of whole numbers with three-digit dividends and two-digit divisors using strategies based on place value, the properties of operations, and/or the relationship between multiplication and division 5.1.14,","blocks":[{"kind":"text","text":"Divide. 608 \u00f7 19 = ?"}],"choices":[{"L":"A","text":"30","pct":13,"correct":false,"dr":"Student rounded the dividend to the nearest hundred and the divisor to the nearest ten then divided."},{"L":"B","text":"32","pct":60,"correct":true,"dr":"Correct."},{"L":"C","text":"38","pct":13,"correct":false,"dr":"Student interpreted the amount remaining after removing multiples of 10 through partial quotients as the quotient."},{"L":"D","text":"50","pct":14,"correct":false,"dr":"Student left-aligned the partial quotients, resulting in a place value error when adding them together."}]},{"lc":"Find whole number quotients of whole numbers with four-digit dividends and two-digit divisors using strategies based on place value, the properties of operations, and/or the relationship between multiplication and division","blocks":[{"kind":"text","text":"Divide. 2,752 \u00f7 16 = ?"}],"choices":[{"L":"A","text":"103","pct":17,"correct":false,"dr":"Student incorrectly used partial quotients by combining the results as separate digits to form the final answer, rather than adding them, and ignored the remainder."},{"L":"B","text":"172","pct":64,"correct":true,"dr":"Correct."},{"L":"C","text":"1,072","pct":11,"correct":false,"dr":"Student miscalculated the product of the divisor and the partial quotient, leading to an incorrect initial estimate in the division process."},{"L":"D","text":"1,720","pct":9,"correct":false,"dr":"Student incorrectly determined the number of digits in the quotient, assuming it should match the number of digits in the dividend."}]}],"6|1":[{"lc":"Use ratio language to describe a ratio relationship between two quantities","blocks":[{"kind":"text","text":"In the 7th grade, there are 84 students who are either gymnasts or hockey players. 24 of the students are gymnasts, and the rest are hockey players. Which statement is true?"}],"choices":[{"L":"A","text":"For every 5 hockey players, there are 2 gymnasts.","pct":42,"correct":true,"dr":"Correct."},{"L":"B","text":"For every 5 gymnasts, there are 2 hockey players.","pct":12,"correct":false,"dr":"Student reversed the order of the quantities in the ratio."},{"L":"C","text":"For every 7 hockey players, there are 2 gymnasts.","pct":34,"correct":false,"dr":"Student incorrectly used the total of the quantities as one part of the ratio and then correctly simplified an incorrect ratio."},{"L":"D","text":"For every 7 gymnasts, there are 5 hockey players.","pct":11,"correct":false,"dr":"Student incorrectly used the total of the quantities as one part of the ratio, but determined the other quantity correctly and then correctly simplified an incorrect ratio."}]},{"lc":"Write a ratio to represent the relationship between two quantities","blocks":[{"kind":"text","text":"A committee of teachers and students is meeting with the school board to request funding for extracurricular activities. The committee is creating posters for the meeting using a box of markers. The box contains 28 black markers and 16 red markers. What is the ratio of black markers to red markers?"},{"kind":"image","text":"Image shows a committee meeting with teachers and students working together at tables creating posters."}],"choices":[{"L":"A","text":"4:7","pct":16,"correct":false,"dr":"Student confused the roles of the given values in setting up a ratio and found the reverse ratio."},{"L":"B","text":"4:11","pct":8,"correct":false,"dr":"Student interpreted the context as requiring a ratio of part to whole instead of part to part."},{"L":"C","text":"7:4","pct":68,"correct":true,"dr":"Correct."},{"L":"D","text":"7:11","pct":8,"correct":false,"dr":"Student interpreted the context as requiring a ratio of part to whole instead of part to part."}],"img":"assets/g6_committee.png"}],"7|1":[{"lc":"Represent proportional relationships with equations","blocks":[{"kind":"text","text":"Which relationships can be represented by the equation y = 1/5 x? Select all that apply."}],"choices":[{"L":"A","text":"A. One water jug holds 5 quarts. Let x represent the number of water jugs and y represent the number of quarts.","pct":50,"correct":false,"dr":"Student chose a situation which is represented by an equation that contains the inverse unit rate of the equation given (y = 5x); thought a ratio of 1:5 could be represented as (1/5)x."},{"L":"B","text":"B. Bananas are on sale for $0.20 per banana. Let x represent the number of bananas and y represent the total cost, in dollars. [CORRECT]","pct":45,"correct":true,"dr":"Correct."},{"L":"C","text":"C. David runs at a constant rate. He runs 15 miles in 3 hours. Let x represent the number of hours and y represent the number of miles.","pct":39,"correct":false,"dr":"Student chose a situation which is represented by an equation that contains the inverse unit rate of the equation given (y = 5x); may have confused a relationship of 15 to 3 as 3 to 15, or reversed the variables."},{"L":"D","text":"D. For every 10 gallons of water, Jasmine adds 2 cups of soap. Let x represent the gallons of water and y represent the cups of soap. [CORRECT]","pct":39,"correct":true,"dr":"Correct."},{"L":"E","text":"E. The library charges a fee at a rate of $5 for every 10 days a book is late. Let x represent the number of days late and y represent the fee, in dollars.","pct":39,"correct":false,"dr":"Student found a situation representing y = (1/2)x; may have found a difference of 5 and tried to use this to represent a multiplicative relationship."}],"typeLabel":"Multiple Select","points":"2"},{"lc":"Identify or determine the constant of proportionality (unit rate) in graphs of proportional relationships","blocks":[{"kind":"text","text":"The graph below represents the number of pages a printer can print over time. How many pages does the printer print per minute?"},{"kind":"image","text":"Graph titled 'Printing Rate' with x-axis showing Time (minutes) from 0 to 50 and y-axis showing Number of Pages from 0 to 500. A straight line passes through points showing a constant rate, including (10, 150) and (30, 450)."}],"choices":[{"L":"A","text":"5","pct":14,"correct":false,"dr":"Student interpreted the first labeled interval on the horizontal axis as the rate of change instead of determining the actual unit rate."},{"L":"B","text":"10","pct":46,"correct":false,"dr":"Student selected a point from the graph to find the unit rate but used only the horizontal value instead of performing the necessary calculation."},{"L":"C","text":"15","pct":24,"correct":true,"dr":"Correct."},{"L":"D","text":"50","pct":16,"correct":false,"dr":"Student interpreted the first labeled interval on the vertical axis as the rate of change instead of determining the actual unit rate."}],"img":"assets/g7_printing.png"},{"lc":"Compute actual lengths from a scale drawing (using proportional reasoning)","blocks":[{"kind":"text","text":"Two students made scale drawings, in inches, of the same road. \u2022 Anna used a scale of 1:600, where 1 inch of her drawing represents 600 feet. \u2022 Anna's scale drawing was 6 inches long. \u2022 Greg used a scale of 1:300, where 1 inch represents 300 feet. How long, in inches, was Greg's scale drawing?"}],"choices":[{"L":"A","text":"2","pct":8,"correct":false,"dr":"Student divided the scale values and did not understand how to use this value to determine the length of the drawing."},{"L":"B","text":"3","pct":34,"correct":false,"dr":"Student did not first determine the actual length being represented before applying the new scale, leading to incorrect proportional reasoning, OR student thought that halving the scale factor meant halving the corresponding length."},{"L":"C","text":"12","pct":50,"correct":true,"dr":"Correct."},{"L":"D","text":"50","pct":9,"correct":false,"dr":"Student applied division within the given scale rather than using proportional reasoning to adjust the length according to the new scale, possibly confusing the scale factor with the conversion process."}]},{"lc":"Compute actual areas from a scale drawing (using proportional reasoning)","blocks":[{"kind":"text","text":"The large rectangle below was created from the small rectangle using a scale factor of 2.5. What is the area of the large rectangle, in square centimeters?"},{"kind":"image","text":"Two rectangles shown. Small rectangle: 6 cm \u00d7 4 cm. Large rectangle is scaled up by factor of 2.5."}],"choices":[{"L":"A","text":"26.5","pct":29,"correct":false,"dr":"Student added the scale factor to the original area rather than multiplying each dimension by the scale factor."},{"L":"B","text":"55.25","pct":8,"correct":false,"dr":"Student added the scale factor to each dimension before calculating the area, rather than multiplying each dimension by the scale factor."},{"L":"C","text":"60","pct":17,"correct":false,"dr":"Student applied the scale factor to the area rather than recognizing that the scale factor must be applied to each dimension separately."},{"L":"D","text":"150","pct":47,"correct":true,"dr":"Correct."}],"img":"assets/g7_rectangles.png"}],"7|2":[{"lc":"Interpret sums of rational numbers (fractions, decimals, and integers) by describing them with real-world contexts","blocks":[{"kind":"text","text":"Omar is a climate change expert studying the relationship between rising ocean levels and floods in low-income communities. He conducts a simulation where the elevation of an object in the ocean begins at -75 feet. Overnight, the object rises 33 feet. Which statement is true about the elevation of the object after it rises?"}],"choices":[{"L":"A","text":"The elevation of the object will be less than -75 feet.","pct":21,"correct":false,"dr":"Student interpreted the positive change as moving further in the negative direction, OR thought a result closer to zero was less than the initial negative value."},{"L":"B","text":"The elevation of the object will be greater than 33 feet.","pct":23,"correct":false,"dr":"Student did not recognize that adding a negative value to a positive value results in a sum less than the positive value."},{"L":"C","text":"The elevation of the object will be between 0 and 33 feet.","pct":9,"correct":false,"dr":"Student thought that adding a positive value would result in a positive sum without considering that the starting negative value had a greater absolute value."},{"L":"D","text":"The elevation of the object will be between -75 and 0 feet.","pct":46,"correct":true,"dr":"Correct."}]},{"lc":"Use properties of operations to add rational numbers","blocks":[{"kind":"text","text":"Which expression can be used to find the value of the expression below? (-7/10) + 2/8 + 1/10 + (-4/8)"}],"choices":[{"L":"A","text":"8/10 + 6/8","pct":10,"correct":false,"dr":"Student used the commutative property to add fractions with like denominators but did not apply the rules of adding and subtracting negative numbers, making the fractions positive, instead of negative."},{"L":"B","text":"(-6/10) + 2/8","pct":18,"correct":false,"dr":"Student combined the fractions with like denominators but kept the sign of the fractions that came first in the original expression."},{"L":"C","text":"(-6/10) + (-2/8)","pct":57,"correct":true,"dr":"Correct."},{"L":"D","text":"(-8/10) + (-6/8)","pct":15,"correct":false,"dr":"Student tried to apply the commutative property to add fractions with like denominators but added the absolute values of each fraction together and made them negative; student may not know properties of adding and subtracting positive and negative rational numbers."}]},{"lc":"Use properties of operations to subtract rational numbers","blocks":[{"kind":"text","text":"Which expression can be used to find the value of the expression below? -9.5 - (-4.1) - 3.3"}],"choices":[{"L":"A","text":"-9.5 - 4.1 - 3.3","pct":21,"correct":false,"dr":"Student treated subtracting a negative value as subtracting a positive value, OR may have confused parentheses with absolute value symbols."},{"L":"B","text":"(-9.5 + -4.1) + 3.3","pct":31,"correct":false,"dr":"Student attempted to apply the additive inverse but changed the operations without correctly adjusting the signs."},{"L":"C","text":"(-9.5 + -3.3) + 4.1","pct":34,"correct":true,"dr":"Correct."},{"L":"D","text":"(4.1 - 3.3) - (-9.5)","pct":13,"correct":false,"dr":"Student rearranged the terms and subtracted in a different order but incorrectly subtracted the negative value instead of adding the opposite; perhaps thought the subtraction operation applied to all terms."}]},{"lc":"Understand p - q is equivalent to p + (-q)","blocks":[{"kind":"text","text":"The temperature at noon was -4\u00b0C. By midnight, the temperature dropped 8\u00b0C. Which expression represents the temperature at midnight?"}],"choices":[{"L":"A","text":"-4 + 8","pct":18,"correct":false,"dr":"Student represented an increase instead of a decrease; may have attempted to use an additive inverse but did not apply it correctly."},{"L":"B","text":"-4 + (-8)","pct":61,"correct":true,"dr":"Correct."},{"L":"C","text":"-4 - (-8)","pct":14,"correct":false,"dr":"Student represented the decrease as subtracting a negative value, not recognizing that subtracting a negative results in an increase."},{"L":"D","text":"-4 - 8","pct":7,"correct":false,"dr":"Student may have interpreted the change in value as the final value and represented the difference between the initial value and the change in value."}]}],"8|1":[{"lc":"Add, subtract, multiply, and divide numbers written in scientific notation","blocks":[{"kind":"text","text":"Light travels at a speed of 1.9 x 10^5 miles per second. How far, in miles, does light travel in 30 seconds?"}],"choices":[{"L":"A","text":"5.7 x 10^1","pct":8,"correct":false,"dr":"Student multiplied the coefficient and the multiplier but did not apply the exponent when performing the calculation."},{"L":"B","text":"5.7 x 10^4","pct":17,"correct":false,"dr":"Student mistakenly used a negative exponent instead of a positive exponent when working with powers of ten, leading to an incorrect place value adjustment."},{"L":"C","text":"5.7 x 10^6","pct":67,"correct":true,"dr":"Correct."},{"L":"D","text":"5.7 x 10^7","pct":8,"correct":false,"dr":"Student thought the exponent meant how many zeros to add when converting to standard form."}]},{"lc":"Use exponent properties to generate equivalent numerical expressions with integer exponents","blocks":[{"kind":"text","text":"Which expression is equivalent to the one below? 4/(4^2)^5"}],"choices":[{"L":"A","text":"4^-10","pct":43,"correct":false,"dr":"Student correctly simplified the power to a power but thought the exponent in the numerator was 0 and subtracted instead of recognizing the existing exponent."},{"L":"B","text":"4^-9","pct":37,"correct":true,"dr":"Correct."},{"L":"C","text":"4^-7","pct":11,"correct":false,"dr":"Student added the exponents in the denominator instead of multiplying, did not account for the base in the numerator, and rewrote the fraction that had an exponent in the denominator using a negative exponent."},{"L":"D","text":"4^11","pct":9,"correct":false,"dr":"Student correctly simplified the power to a power but added the exponents in the numerator and denominator instead of subtracting."}]}],"8|2":[{"lc":"Recognize and evaluate the roots of perfect squares and cubes","blocks":[{"kind":"text","text":"Evaluate. Cube root of 8"}],"choices":[{"L":"A","text":"1/512","pct":18,"correct":false,"dr":"Student confused taking the cube root of a number with raising that number to a negative exponent."},{"L":"B","text":"2","pct":27,"correct":true,"dr":"Correct."},{"L":"C","text":"2 2/3","pct":27,"correct":false,"dr":"Student confused taking the cube root with dividing by 3."},{"L":"D","text":"512","pct":27,"correct":false,"dr":"Student confused taking the cube root with raising a number to the 3rd power."}]},{"lc":"Represent the solutions of simple quadratic and cubic expressions by using square and cube roots","blocks":[{"kind":"text","text":"Which values are solutions to the equation below? b^2 = 12 Select all that apply."}],"choices":[{"L":"A","text":"-6","pct":0,"correct":false,"dr":"Student confused the concept of taking a square root with dividing by 2 and taking the opposite."},{"L":"B","text":"6","pct":41,"correct":false,"dr":"Student confused the concept of taking a square root with dividing by 2."},{"L":"C","text":"-\u221a12","pct":36,"correct":true,"dr":"Correct."},{"L":"D","text":"\u221a12","pct":50,"correct":true,"dr":"Correct."},{"L":"E","text":"-144","pct":9,"correct":false,"dr":"Student confused the concept of taking a square root with squaring and taking the opposite."},{"L":"F","text":"144","pct":27,"correct":false,"dr":"Student confused the concept of taking a square root with squaring."}],"typeLabel":"Multiple Select","points":"2"},{"lc":"Know that numbers that are not rational are called irrational, and identify irrational numbers","blocks":[{"kind":"text","text":"Which numbers are irrational? Select all that apply."},{"kind":"image","text":"No image present. Text-only question."}],"choices":[{"L":"A","text":"-29/3","pct":48,"correct":false,"dr":"Student thought that negative improper fractions are irrational."},{"L":"B","text":"-2.19\u0304","pct":38,"correct":false,"dr":"Student thought that repeating decimals are irrational."},{"L":"C","text":"3.728459...","pct":57,"correct":true,"dr":"Correct."},{"L":"D","text":"\u221a27","pct":38,"correct":true,"dr":"Correct."},{"L":"E","text":"\u221a81","pct":19,"correct":false,"dr":"Student thought that only square roots of even numbers are rational, OR student thought that perfect squares are irrational."}],"typeLabel":"Multiple Select","points":"2"},{"lc":"Understand a rational number to be any number that is the value of a ratio of two integers","blocks":[{"kind":"text","text":"Which set contains only rational numbers?"},{"kind":"image","text":"No image present. Text-only question."}],"choices":[{"L":"A","text":"{-2, \u221a16, -2/38, 0.37\u0304}","pct":36,"correct":true,"dr":"Correct."},{"L":"B","text":"{1, 4 5/7, -15.23, \u221a38}","pct":27,"correct":false,"dr":"Student thought that the square root of a non-perfect square is rational."},{"L":"C","text":"{2/5, -5.769, \u221a2, 3/5}","pct":18,"correct":false,"dr":"Student thought that the square root of a non-perfect square is rational."},{"L":"D","text":"{\u221a25, 5/6, -42.5, 0.2736...}","pct":18,"correct":false,"dr":"Student thought that a non-terminating, non-repeating decimal is rational."}]},{"lc":"Convert a decimal expansion which repeats eventually into a rational number","blocks":[{"kind":"text","text":"What is 3.8\u03043 written as a fraction?"},{"kind":"image","text":"No image present. Text-only question."}],"choices":[{"L":"A","text":"3 3/8","pct":55,"correct":false,"dr":"Student used digits from the decimal to form a fraction without applying the correct steps to convert the decimal with a repeating digit to a fraction."},{"L":"B","text":"3 83/100","pct":27,"correct":false,"dr":"Student converted the decimal with a repeating digit to a fraction as if it did not have a repeating digit."},{"L":"C","text":"3 5/6","pct":5,"correct":true,"dr":"Correct."},{"L":"D","text":"3 83/99","pct":14,"correct":false,"dr":"Student converted a decimal with just the last digit repeating to a fraction as if all decimal digits were repeating."}]}],"3|1":[{"lc":"Model a multiplication situation, including by writing a multiplication expression","blocks":[{"kind":"text","text":"Valentina makes a painting that has 5 rows of stars and 9 stars in each row, shown below. Which expression represents the number of stars on Valentina's painting?"},{"kind":"image","src":"assets/g3_i184964_stars.png","imgWidth":"300px","text":"A painting on an easel with 5 rows of stars, 9 stars in each row."}],"choices":[{"L":"A","text":"5 + 5 + 5","pct":12,"correct":false,"dr":"Student may have thought that only repeated addition, and not multiplication, can represent arrays; chose an expression in which a factor is repeatedly added an incorrect number of times."},{"L":"B","text":"5 \u00d7 9","pct":77,"correct":true,"dr":"Correct."},{"L":"C","text":"9 + 5","pct":3,"correct":false,"dr":"Student may not have understood how an array relates to multiplication; chose an expression in which the factors are added rather than multiplied."},{"L":"D","text":"9 \u00f7 5","pct":8,"correct":false,"dr":"Student confused a context calling for multiplication with one calling for division; divided instead of multiplying the factors."}],"img":"assets/g3_i184964_stars.png"},{"lc":"Identify a multiplication situation based on a given multiplication expression","blocks":[{"kind":"text","text":"Felipe wrote this number sentence to solve a problem: 8 \u00d7 4 = ? Which problem was Felipe most likely trying to solve?"}],"choices":[{"L":"A","text":"Jimena has 8 bracelets. She buys 4 more. How many bracelets does Jimena have?","pct":16,"correct":false,"dr":"Student identified a context illustrating addition as one that would illustrate multiplication."},{"L":"B","text":"Jimena has 8 muffins. She separates the muffins into 4 groups. How many muffins are in each group?","pct":18,"correct":false,"dr":"Student identified a context illustrating division as one that would illustrate multiplication."},{"L":"C","text":"Jimena has 8 bags of grapes. There are 4 grapes in each bag. How many grapes does Jimena have?","pct":60,"correct":true,"dr":"Correct."},{"L":"D","text":"Jimena has 8 stickers. Her friend has 4 stickers. How many more stickers does Jimena have than her friend?","pct":7,"correct":false,"dr":"Student identified a context illustrating subtraction as one that would illustrate multiplication."}]},{"lc":"Identify a division situation based on a given division expression","typeLabel":"Multiple Select","points":"2","demoPct":38,"blocks":[{"kind":"text","text":"Select two statements that can be represented by the expression 15 \u00f7 3."}],"choices":[{"L":"A","text":"Duncan buys 15 pencils. He gives away 3 pencils.","pct":21,"correct":false,"dr":"Student identified a situation requiring subtraction as one requiring division."},{"L":"B","text":"Jaleel receives 15 stickers from each of 3 of his classmates.","pct":30,"correct":false,"dr":"Student identified a situation requiring multiplication as one requiring division."},{"L":"C","text":"Natasha has 15 colored tiles. She places them in 3 equal rows.","pct":50,"correct":true,"dr":"Correct."},{"L":"D","text":"Kevin has 15 students in his class. The class gains 3 new students.","pct":18,"correct":false,"dr":"Student identified a situation requiring addition as one requiring division."},{"L":"E","text":"Olivia gives a total of 15 muffins away. She gives the same number of muffins to each of 3 friends.","pct":42,"correct":true,"dr":"Correct."}]},{"lc":"Interpret whole number quotients as the number of objects in each group when a set number of objects is partitioned into equal groups","blocks":[{"kind":"text","text":"Which equation describes how the toy cars are divided?"},{"kind":"image","src":"assets/g3_i184997_toycars.png","imgWidth":"240px","text":"18 toy cars divided into 6 groups with 3 cars in each group."}],"choices":[{"L":"A","text":"3 \u00f7 6 = 18","pct":13,"correct":false,"dr":"Student used a division symbol as if it were a multiplication symbol."},{"L":"B","text":"6 \u00f7 3 = 18","pct":14,"correct":false,"dr":"Student used a division symbol as if it were a multiplication symbol."},{"L":"C","text":"6 \u00f7 18 = 3","pct":4,"correct":false,"dr":"Student confused the dividend and divisor when representing an equation."},{"L":"D","text":"18 \u00f7 6 = 3","pct":70,"correct":true,"dr":"Correct."}],"img":"assets/g3_i184997_toycars.png"},{"lc":"Apply the commutative property as a strategy to multiply","blocks":[{"kind":"text","text":"In the expressions below, d represents an unknown number. Which expression is equivalent to 5 \u00d7 d?"}],"choices":[{"L":"A","text":"d + 5","pct":9,"correct":false,"dr":"Student misunderstood the relationship between multiplication and addition; thought that multiplying two factors is equivalent to adding them in the reverse order."},{"L":"B","text":"d \u00d7 5","pct":63,"correct":true,"dr":"Correct."},{"L":"C","text":"5 \u00f7 d","pct":19,"correct":false,"dr":"Student misunderstood the relationship between multiplication and division; may have thought they were equivalent operations."},{"L":"D","text":"d \u00f7 5","pct":9,"correct":false,"dr":"Student misunderstood the relationship between multiplication and division; chose an expression that represents the product a x b as equal to the quotient b / a."}]},{"lc":"Apply the distributive property as a strategy to multiply","blocks":[{"kind":"text","text":"What is another way of expressing 3 \u00d7 9?"}],"choices":[{"L":"A","text":"(5 \u00d7 4) + 3","pct":18,"correct":false,"dr":"Student decomposed the multiplier into the right values but related those values with multiplication and then added the multiplicand."},{"L":"B","text":"(3 \u00d7 5) + 4","pct":21,"correct":false,"dr":"Student correctly decomposed the multiplier, but only distributed the multiplicand to one of the resulting terms."},{"L":"C","text":"(3 \u00d7 5) + (3 \u00d7 4)","pct":53,"correct":true,"dr":"Correct."},{"L":"D","text":"(3 + 5) \u00d7 (3 + 4)","pct":9,"correct":false,"dr":"Student attempted to rewrite a multiplication expression using the distributive property, but mistakenly switched the addition and multiplication symbols."}]}],"3|2":[{"lc":"Round whole numbers to the nearest 10","typeLabel":"Multiple Select","points":"2","demoPct":41,"blocks":[{"kind":"text","text":"Select two numbers that round to 200 when rounded to the nearest ten."}],"choices":[{"L":"A","text":"178","pct":27,"correct":false,"dr":"Student may have rounded to the nearest hundred, as 178 rounds to 200 when rounded to the nearest hundred."},{"L":"B","text":"196","pct":58,"correct":true,"dr":"Correct."},{"L":"C","text":"203","pct":46,"correct":true,"dr":"Correct."},{"L":"D","text":"208","pct":20,"correct":false,"dr":"Student may have attended to the hundreds and tens place only, not realizing 208 rounds to 210 when rounded to the nearest ten."},{"L":"E","text":"211","pct":23,"correct":false,"dr":"Student may have rounded to the nearest hundred, as 211 rounds to 200 when rounded to the nearest hundred."}]},{"lc":"Round whole numbers to the nearest 100","blocks":[{"kind":"text","text":"What is 354 rounded to the nearest hundred?"}],"choices":[{"L":"A","text":"300","pct":16,"correct":false,"dr":"Student rounded the correct place value, but rounded down when they should have rounded up."},{"L":"B","text":"350","pct":21,"correct":false,"dr":"Student rounded to the nearest ten instead of the nearest hundred."},{"L":"C","text":"360","pct":2,"correct":false,"dr":"Student identified the correct rule for how to round the given number, but applied that rule to the wrong place value."},{"L":"D","text":"400","pct":61,"correct":true,"dr":"Correct."}]}]}
+;
+
+const GRADE_ORDER = ["2","3","4","5","6","7","8"];
+const GRADE_LABELS = { "2":"2nd Grade","3":"3rd Grade","4":"4th Grade","5":"5th Grade","6":"6th Grade","7":"7th Grade","8":"8th Grade" };
+
+function letterBadge(l){ return l; }
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+// Flat pool of every "why a student picked this" rationale, across
+// every question. Used only as a fallback when a question doesn't
+// have two other wrong choices of its own to draw decoys from.
+const ALL_DRS = [];
+
+// PRIZES — events team: edit this list any time. The booth button
+// picks one at random each time a teacher finishes. Keep 2-6 items.
+const PRIZES = [
+  { name: "ANet pen" },
+  { name: "$5 Starbucks card" },
+  { name: "Choice of Sticker" },
+];
+
+// HUBSPOT FORM — real embed, wired to render into #hubspotTarget
+// once the result screen is shown (see renderHubspotForm below).
+const HUBSPOT_CONFIG = {
+  portalId: "39623185",
+  formId: "8d854f82-b1f3-48b9-b891-957e7a3fe94f",
+  region: "na1",
+};
+
+Object.values(QDATA).forEach(list => list.forEach(q => {
+  q.choices.forEach(c => { if(!c.correct && c.dr) ALL_DRS.push(c.dr); });
+}));
+
+function questionsForGrade(grade){
+  const pools = Object.keys(QDATA).filter(k => k.split("|")[0] === grade);
+  let out = [];
+  pools.forEach(k => out = out.concat(QDATA[k]));
+  return out;
+}
+
+// Round length is fixed to Quick mode (1 question) for the booth.
+// Change this constant if you ever want a longer round.
+const ROUND_LENGTH = 1;
+
+const state = {
+  roundLen: ROUND_LENGTH,
+  screen: "start",
+  grade: null,
+  round: [],
+  idx: 0,
+  score: 0,
+  answered: false,
+};
+
+function pickRound(grade, len){
+  const pool = shuffle(questionsForGrade(grade));
+  return pool.slice(0, Math.min(len, pool.length));
+}
+
+// For each question, choose which wrong answer "the student" picked —
+// the most commonly selected incorrect choice (highest pct), which is
+// the real, most-teachable misconception for that item.
+function pickedWrongChoice(q){
+  const wrong = q.choices.filter(c => !c.correct);
+  return wrong.reduce((a,b) => (b.pct > a.pct ? b : a), wrong[0]);
+}
+
+function buildOptions(q, pickedChoice){
+  const correctText = pickedChoice.dr;
+
+  // Primary source: the OTHER wrong-answer rationales on this same
+  // question — these are the most plausible decoys since they're
+  // real misconceptions for this exact item.
+  const sameQuestionDecoys = shuffle(
+    q.choices.filter(c => !c.correct && c !== pickedChoice && c.dr).map(c => c.dr)
+  ).slice(0, 2);
+
+  // Fallback: if a question only has one other wrong choice, top up
+  // from the global rationale pool so there are always 3 options.
+  let decoys = sameQuestionDecoys;
+  if(decoys.length < 2){
+    const used = new Set([correctText, ...decoys]);
+    const fallback = shuffle(ALL_DRS.filter(dr => !used.has(dr)));
+    decoys = decoys.concat(fallback.slice(0, 2 - decoys.length));
+  }
+
+  return shuffle([{ text: correctText, correct: true }, ...decoys.map(d => ({ text: d, correct: false }))]);
+}
+
+function render(){
+  const app = document.getElementById("app");
+  app.innerHTML = "";
+  if(state.screen === "start") renderStart(app);
+  else if(state.screen === "question") renderQuestion(app);
+  else if(state.screen === "result") renderResult(app);
+}
+
+function renderStart(app){
+  const hero = document.createElement("div");
+  hero.className = "hero";
+  hero.innerHTML = `
+    <h1>Can you spot the&nbsp;misconception?</h1>
+    <p>These are real Compass Math questions and real wrong answers. Pick a grade, then see if you can think like the student who missed it.</p>
+  `;
+  app.appendChild(hero);
+
+  const grid = document.createElement("div");
+  grid.className = "grade-grid";
+  GRADE_ORDER.forEach(g => {
+    const count = questionsForGrade(g).length;
+    const tile = document.createElement("div");
+    tile.className = "grade-tile";
+    if(count === 0){
+      tile.style.opacity = "0.35";
+      tile.style.cursor = "default";
+      tile.innerHTML = `<div class="num">${g}</div><div class="lbl">Coming soon</div>`;
+    } else {
+      tile.innerHTML = `<div class="num">${g}</div><div class="lbl">${GRADE_LABELS[g]}</div>`;
+      tile.onclick = () => startRound(g);
+    }
+    grid.appendChild(tile);
+  });
+  app.appendChild(grid);
+}
+
+function startRound(grade){
+  const round = pickRound(grade, state.roundLen);
+  state.grade = grade;
+  state.round = round;
+  state.idx = 0;
+  state.score = 0;
+  state.screen = "question";
+  state.answered = false;
+  render();
+}
+
+function renderQuestion(app){
+  const q = state.round[state.idx];
+  const total = state.round.length;
+
+  const progress = document.createElement("div");
+  progress.className = "progress-row";
+  let dots = "";
+  for(let i=0;i<total;i++){
+    dots += `<div class="dot ${i < state.idx ? "done" : i === state.idx ? "current" : ""}"></div>`;
+  }
+  progress.innerHTML = `<span class="meta">Grade ${state.grade} &middot; Q${state.idx+1}/${total}</span><div class="progress-dots">${dots}</div>`;
+  app.appendChild(progress);
+
+  const card = document.createElement("div");
+  card.className = "card";
+
+  const picked = pickedWrongChoice(q);
+  const questionText = q.blocks.filter(b => b.kind === "text").map(b => b.text).join(" ");
+  const imageHtml = q.img ? `<img src="${q.img}" alt="" style="display:block; max-width:100%; height:auto; border:1px solid var(--border); border-radius:var(--radius-sm); margin-top:14px;">` : "";
+
+  card.innerHTML = `
+    <p class="eyebrow">${q.lc}</p>
+    <p class="q-text">${questionText}</p>
+    ${imageHtml}
+    <div class="picked-block">
+      <div class="avatar">🤔</div>
+      <div>
+        <p class="who">What a real student answered</p>
+        <p class="ans"><span class="letter">${picked.L}</span>${picked.text}</p>
+      </div>
+    </div>
+    <p class="prompt">Why do you think this student picked that answer?</p>
+    <div id="options"></div>
+    <div id="feedbackSlot"></div>
+    <div class="next-row" id="nextSlot"></div>
+  `;
+  app.appendChild(card);
+
+  const options = buildOptions(q, picked);
+  const optWrap = card.querySelector("#options");
+  options.forEach(opt => {
+    const b = document.createElement("button");
+    b.className = "option";
+    b.innerHTML = opt.text;
+    b.onclick = () => selectOption(opt, options, optWrap, card);
+    optWrap.appendChild(b);
+  });
+}
+
+function selectOption(chosen, options, optWrap, card){
+  if(state.answered) return;
+  state.answered = true;
+
+  const buttons = Array.from(optWrap.children);
+  buttons.forEach((b, i) => {
+    b.disabled = true;
+    const opt = options[i];
+    if(opt.correct) b.classList.add(opt === chosen ? "correct" : "reveal-correct");
+    else if(opt === chosen) b.classList.add("incorrect");
+  });
+
+  const feedbackSlot = card.querySelector("#feedbackSlot");
+  if(chosen.correct){
+    state.score += 1;
+    feedbackSlot.innerHTML = `<div class="feedback good">That's it — that's the misconception behind this wrong answer.</div>`;
+  } else {
+    feedbackSlot.innerHTML = `<div class="feedback bad">Close, but not quite — the real reason is highlighted above.</div>`;
+  }
+
+  const nextSlot = card.querySelector("#nextSlot");
+  const isLast = state.idx >= state.round.length - 1;
+  const btn = document.createElement("button");
+  btn.className = "btn";
+  btn.textContent = isLast ? "Get My Prize" : "Next question";
+  btn.onclick = () => {
+    if(isLast){ state.screen = "result"; render(); }
+    else { state.idx += 1; state.answered = false; render(); }
+  };
+  nextSlot.appendChild(btn);
+}
+
+let hubspotFormCounter = 0;
+function renderHubspotForm(container){
+  container.innerHTML = "";
+  const el = document.createElement("div");
+  el.id = "hsForm" + (++hubspotFormCounter);
+  container.appendChild(el);
+
+  const create = () => {
+    window.hbspt.forms.create({
+      portalId: HUBSPOT_CONFIG.portalId,
+      formId: HUBSPOT_CONFIG.formId,
+      region: HUBSPOT_CONFIG.region,
+      target: "#" + el.id,
+    });
+  };
+
+  // The HubSpot embed library loads asynchronously from the script
+  // tag in <head>. If it isn't ready yet, poll briefly rather than
+  // failing silently.
+  if(window.hbspt && window.hbspt.forms){
+    create();
+  } else {
+    let tries = 0;
+    const waitForHubspot = setInterval(() => {
+      tries++;
+      if(window.hbspt && window.hbspt.forms){
+        clearInterval(waitForHubspot);
+        create();
+      } else if(tries > 50){ // ~10s
+        clearInterval(waitForHubspot);
+        el.innerHTML = `<div class="hubspot-placeholder">Form couldn't load — check your connection and try again.</div>`;
+      }
+    }, 200);
+  }
+}
+
+function renderResult(app){
+  const total = state.round.length;
+  const pct = total ? state.score / total : 0;
+  let badge = "Keep practicing";
+  if(pct === 1) badge = "Misconception master";
+  else if(pct >= 0.5) badge = "Sharp eye";
+
+  const hero = document.createElement("div");
+  hero.className = "result-hero";
+  hero.innerHTML = `
+    <div class="badge">${badge}</div>
+    <div class="score-big">${state.score}/${total}</div>
+    <div class="score-sub">misconceptions spotted &middot; grade ${state.grade}</div>
+  `;
+  app.appendChild(hero);
+
+  const explain = document.createElement("div");
+  explain.className = "card";
+  explain.innerHTML = `
+    <p class="eyebrow">How Compass Math thinks about this</p>
+    <p class="q-text" style="font-weight:400; font-size:15.5px;">Every wrong answer in Compass Math is developed around a specific common student misconception. <strong>So every answer is a signal.</strong> Compass Math helps teachers understand their students' thinking and address common misconceptions that are blocking understanding.</p>
+  `;
+  app.appendChild(explain);
+
+  const hs = document.createElement("div");
+  hs.className = "hubspot-shell";
+  hs.innerHTML = `
+    <p class="section-label">Learn more about Compass Math</p>
+    <p style="font-size:14px; color:var(--muted); margin:0 0 14px;">Drop your email and we'll send you the grade ${state.grade} misconceptions guide.</p>
+    <div id="hubspotTarget"></div>
+  `;
+  app.appendChild(hs);
+  const target = hs.querySelector("#hubspotTarget");
+  renderHubspotForm(target);
+
+  const prizeShell = document.createElement("div");
+  prizeShell.className = "prize-shell";
+  prizeShell.innerHTML = `
+    <div class="prize-reveal" id="prizeReveal">Tap to reveal a prize</div>
+    <button class="btn gold block" id="prizeBtn">Get My Prize</button>
+  `;
+  app.appendChild(prizeShell);
+  prizeShell.querySelector("#prizeBtn").onclick = () => spinPrize(prizeShell);
+
+  const footer = document.createElement("div");
+  footer.className = "footer-actions";
+  footer.innerHTML = `<button class="btn ghost block" id="againBtn">Play again</button>`;
+  app.appendChild(footer);
+  footer.querySelector("#againBtn").onclick = () => { state.screen = "start"; render(); };
+}
+
+function spinPrize(shell){
+  const reveal = shell.querySelector("#prizeReveal");
+  const btn = shell.querySelector("#prizeBtn");
+  btn.disabled = true;
+  let ticks = 0;
+  const maxTicks = 12;
+  const timer = setInterval(() => {
+    const p = PRIZES[Math.floor(Math.random()*PRIZES.length)];
+    reveal.textContent = p.name;
+    ticks++;
+    if(ticks >= maxTicks){
+      clearInterval(timer);
+      const final = PRIZES[Math.floor(Math.random()*PRIZES.length)];
+      reveal.textContent = final.name;
+      btn.disabled = false;
+      btn.textContent = "Spin again";
+    }
+  }, 90);
+}
+
+render();
+</script>
+</body>
+</html>
