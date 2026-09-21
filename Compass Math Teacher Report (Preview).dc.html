@@ -341,17 +341,25 @@
                         <sc-if value="{{ studentHead.down }}"><svg viewBox="0 0 9 12" width="100%" height="100%"><path d="M4.5 9 L1 5 L8 5 Z" fill="rgb(34,126,167)"></path></svg></sc-if>
                       </span>
                     </div>
-                    <div onClick="{{ totalHead.onClick }}" style="width:150px; flex-shrink:0; background:{{ totalHead.bg }}; border-right:1px solid rgb(235,235,235); border-bottom:1px solid rgb(213,217,226); padding:14px; min-height:152px; display:flex; flex-direction:row; gap:6px; align-items:flex-end; cursor:pointer; user-select:none;" style-hover="background:{{ totalHead.bgHover }};">
-                      <span style="font-weight:700; font-size:16px; color:rgb(53,59,71);">Total Successful</span>
-                      <span style="width:9px; height:12px; flex-shrink:0; display:inline-flex; align-items:center;">
-                        <sc-if value="{{ totalHead.both }}"><svg viewBox="0 0 9 12" width="100%" height="100%"><path d="M4.5 0 L8 4 L1 4 Z" fill="rgb(109,109,109)"></path><path d="M4.5 12 L1 8 L8 8 Z" fill="rgb(109,109,109)"></path></svg></sc-if>
-                        <sc-if value="{{ totalHead.up }}"><svg viewBox="0 0 9 12" width="100%" height="100%"><path d="M4.5 3 L8 7 L1 7 Z" fill="rgb(34,126,167)"></path></svg></sc-if>
-                        <sc-if value="{{ totalHead.down }}"><svg viewBox="0 0 9 12" width="100%" height="100%"><path d="M4.5 9 L1 5 L8 5 Z" fill="rgb(34,126,167)"></path></svg></sc-if>
-                      </span>
-                    </div>
                     <sc-for list="{{ tableCols }}" as="col" hint-placeholder-count="3">
                       <div onClick="{{ col.onClick }}" style="width:224px; flex-shrink:0; background:{{ col.bg }}; border-right:1px solid rgb(235,235,235); border-bottom:1px solid rgb(213,217,226); padding:14px; min-height:152px; display:flex; flex-direction:row; gap:6px; align-items:flex-end; cursor:pointer; user-select:none;" style-hover="background:{{ col.bgHover }};">
-                        <span style="flex:1; font-weight:700; font-size:16px; color:rgb(53,59,71); line-height:1.3;">{{ col.label }}</span>
+                        <div style="flex:1; min-width:0; display:flex; flex-direction:column; gap:10px;">
+                          <span style="font-weight:700; font-size:16px; color:rgb(53,59,71); line-height:1.3;">{{ col.label }}</span>
+                          <sc-if value="{{ col.weak }}">
+                            <div style="position:relative; display:flex; flex-direction:row; align-items:center; gap:6px;">
+                              <span style="font-weight: 700; font-size: 14px; color: #65686D">Weaker Signal</span>
+                              <span onClick="{{ col.toggleWeakTip }}" onMouseEnter="{{ col.openWeakTip }}" onMouseLeave="{{ col.closeWeakTip }}" onFocus="{{ col.openWeakTip }}" onBlur="{{ col.closeWeakTip }}" tabindex="0" role="button" aria-label="Why is this a weaker signal?" style="width:16px; height:16px; flex-shrink:0; border-radius:50%; border:1px solid rgb(103,112,125); color:rgb(103,112,125); display:inline-flex; align-items:center; justify-content:center; font-weight:700; font-size:11px; font-style:italic; line-height:1; cursor:pointer;" style-hover="border-color:rgb(53,59,71); color:rgb(53,59,71);">i</span>
+                              <sc-if value="{{ col.weakTipOpen }}">
+                                <div onMouseEnter="{{ col.keepWeakTip }}" onMouseLeave="{{ col.closeWeakTip }}" style="position:fixed; top:{{ col.weakTipTop }}; left:{{ col.weakTipLeft }}; z-index:60; padding-top:2px; display:flex; flex-direction:column; align-items:flex-start;">
+                                  <span style="margin-left:{{ col.weakTipArrow }}; width:0; height:0; border-left:6px solid transparent; border-right:6px solid transparent; border-bottom:7px solid rgb(68,78,96);"></span>
+                                  <div style="width:252px; border-radius:8px; background:rgb(68,78,96); box-shadow:0px 4px 6px -1px rgba(0,0,0,0.1), 0px 2px 4px -2px rgba(0,0,0,0.1); padding:14px 16px;">
+                                    <span style="font-size:15px; line-height:1.45; color:rgb(255,255,255); text-wrap:pretty; cursor:default;">Predictions are based on limited data for this learning component. Use alongside other data sources to guide instruction.</span>
+                                  </div>
+                                </div>
+                              </sc-if>
+                            </div>
+                          </sc-if>
+                        </div>
                         <span style="width:9px; height:12px; flex-shrink:0; display:inline-flex; align-items:center; margin-bottom:2px;">
                           <sc-if value="{{ col.both }}"><svg viewBox="0 0 9 12" width="100%" height="100%"><path d="M4.5 0 L8 4 L1 4 Z" fill="rgb(109,109,109)"></path><path d="M4.5 12 L1 8 L8 8 Z" fill="rgb(109,109,109)"></path></svg></sc-if>
                           <sc-if value="{{ col.up }}"><svg viewBox="0 0 9 12" width="100%" height="100%"><path d="M4.5 3 L8 7 L1 7 Z" fill="rgb(34,126,167)"></path></svg></sc-if>
@@ -370,18 +378,9 @@
                       <div style="width:200px; flex-shrink:0; position:sticky; left:0; z-index:2; background:rgb(255,255,255); border-right:1px solid rgb(213,217,226); border-bottom:1px solid rgb(235,235,235); padding:14px; min-height:48px; display:flex; align-items:center;">
                         <span style="font-weight:700; font-size:16px; color:rgb(53,59,71);">{{ r.name }}</span>
                       </div>
-                      <div style="width:150px; flex-shrink:0; background:rgb(255,255,255); border-right:1px solid rgb(235,235,235); border-bottom:1px solid rgb(235,235,235); padding:14px; min-height:48px; display:flex; align-items:center;">
-                        <span style="font-size:16px; color:{{ r.totalColor }};">{{ r.total }}</span>
-                      </div>
                       <sc-for list="{{ r.cells }}" as="cell" hint-placeholder-count="3">
                         <div onMouseEnter="{{ cell.onEnter }}" onMouseLeave="{{ onCellLeave }}" style="position:relative; width:224px; flex-shrink:0; min-height:48px; background:{{ cell.bg }}; border-right:1px solid rgb(213,217,226); border-bottom:1px solid rgb(213,217,226); display:flex; flex-direction:row; gap:8px; padding:10.5px 14px; align-items:center; cursor:default;">
                           <span style="flex-grow:1; font-size:16px; color:{{ cell.color }};">{{ cell.text }}</span>
-                          <sc-if value="{{ cell.iconEmpty }}">
-                            <span style="width:16px; height:16px; flex-shrink:0; color:rgb(53,59,71); display:inline-flex; align-items:center;"><svg viewBox="0 0 16 11.333" width="16" height="11.333"><path d="M 8 11.333 L 0 3.333 C 1.056 2.256 2.275 1.431 3.658 0.858 C 5.042 0.286 6.489 0 8 0 C 9.511 0 10.958 0.286 12.342 0.858 C 13.725 1.431 14.944 2.256 16 3.333 L 8 11.333 Z M 8 9.433 L 14.067 3.367 C 13.189 2.7 12.233 2.194 11.2 1.85 C 10.167 1.506 9.1 1.333 8 1.333 C 6.9 1.333 5.833 1.506 4.8 1.85 C 3.767 2.194 2.811 2.7 1.933 3.367 L 8 9.433 Z" fill="currentColor" fill-rule="nonzero"></path></svg></span>
-                          </sc-if>
-                          <sc-if value="{{ cell.iconPartial }}">
-                            <span style="width:16px; height:16px; flex-shrink:0; color:rgb(53,59,71); display:inline-flex; align-items:center;"><svg viewBox="0 0 16 11.333" width="16" height="11.333"><path d="M 8 11.333 L 0 3.333 C 1.067 2.244 2.289 1.417 3.667 0.85 C 5.044 0.283 6.489 0 8 0 C 9.522 0 10.972 0.283 12.35 0.85 C 13.728 1.417 14.944 2.244 16 3.333 L 8 11.333 Z M 4.983 6.417 C 5.406 6.106 5.872 5.864 6.383 5.692 C 6.894 5.519 7.433 5.433 8 5.433 C 8.567 5.433 9.106 5.519 9.617 5.692 C 10.128 5.864 10.594 6.106 11.017 6.417 L 14.067 3.367 C 13.2 2.711 12.253 2.208 11.225 1.858 C 10.197 1.508 9.122 1.333 8 1.333 C 6.878 1.333 5.803 1.508 4.775 1.858 C 3.747 2.208 2.8 2.711 1.933 3.367 L 4.983 6.417 Z" fill="currentColor" fill-rule="nonzero"></path></svg></span>
-                          </sc-if>
                           <sc-if value="{{ cell.showTip }}">
                             <div style="position:absolute; left:50%; top:-40px; transform:translateX(-50%); z-index:10; display:flex; flex-direction:column; align-items:center; pointer-events:none;">
                               <div style="border-radius:8px; background:rgb(68,78,96); box-shadow:0px 4px 6px -1px rgba(0,0,0,0.1), 0px 2px 4px -2px rgba(0,0,0,0.1); padding:7px 11px;">
@@ -755,7 +754,6 @@ class Component extends DCLogic {
       const scores = [], cells = [];
       items.forEach((it) => {
         const conf = hash(name + "|c|" + it.lc) % 100;
-        if (conf < 8) { scores.push(null); cells.push("null"); return; } // insufficient data → —
         const partial = conf < 28;                                       // ~20% partial confidence
         const noise = (rnd(name + "|s|" + it.lc) * 2 - 1) * 9;
         const score = Math.max(3, Math.min(99, Math.round(it.d + ability + noise)));
@@ -781,12 +779,12 @@ class Component extends DCLogic {
 
   cellDef(key) {
     const D = {
-      na:      { bg: "rgb(255,255,255)", hoverBg: "rgb(255,255,255)", text: "Not Assessed", color: "rgb(109,109,109)", icon: null, tip: null },
+      na:      { bg: "rgb(255,255,255)", hoverBg: "rgb(255,255,255)", text: "N/A", color: "rgb(109,109,109)", icon: null, tip: null },
       "null":  { bg: "rgb(255,255,255)", hoverBg: "rgb(213,217,226)", text: "—", color: "rgb(53,59,71)", icon: "empty", tip: "Not enough data for a prediction" },
       succ:    { bg: "rgb(209,250,229)", hoverBg: "rgb(209,250,229)", text: "Successful", color: "rgb(53,59,71)", icon: null, tip: null },
       extra:   { bg: "rgb(247,236,244)", hoverBg: "rgb(247,236,244)", text: "Extra Support", color: "rgb(53,59,71)", icon: null, tip: null },
-      succ_p:  { bg: "rgb(209,250,229)", hoverBg: "rgb(167,243,208)", text: "Successful", color: "rgb(53,59,71)", icon: "partial", tip: "Prediction is weak due to limited data" },
-      extra_p: { bg: "rgb(247,236,244)", hoverBg: "rgb(241,217,236)", text: "Extra Support", color: "rgb(53,59,71)", icon: "partial", tip: "Prediction is weak due to limited data" },
+      succ_p:  { bg: "rgb(209,250,229)", hoverBg: "rgb(209,250,229)", text: "Successful", color: "rgb(53,59,71)", icon: null, tip: null },
+      extra_p: { bg: "rgb(247,236,244)", hoverBg: "rgb(247,236,244)", text: "Extra Support", color: "rgb(53,59,71)", icon: null, tip: null },
     };
     return D[key] || D.na;
   }
@@ -820,7 +818,34 @@ class Component extends DCLogic {
     return hit ? hit.url : "";
   }
 
+  weakTipPosFrom(el) {
+    const r = el.getBoundingClientRect();
+    const W = 252, M = 12;
+    const cx = r.left + r.width / 2;
+    const left = Math.max(M, Math.min(cx - 40, window.innerWidth - W - M));
+    return { top: r.bottom + 10, left: left, arrow: Math.max(10, Math.min(cx - left - 6, W - 22)) };
+  }
+
+  syncWeakTip = () => {
+    const el = this.weakIconEl;
+    if (this.state.weakTip == null || !el || !el.isConnected) return;
+    const r = el.getBoundingClientRect();
+    // Icon scrolled out of the table's visible area → dismiss instead of floating.
+    const host = document.getElementById("sp-head");
+    const hr = host ? host.getBoundingClientRect() : null;
+    if (hr && (r.right < hr.left + 4 || r.left > hr.right - 4)) { this.setState({ weakTip: null }); return; }
+    this.setState({ weakTipPos: this.weakTipPosFrom(el) });
+  };
+
+  componentWillUnmount() {
+    clearTimeout(this.weakTipTimer);
+    window.removeEventListener("scroll", this.syncWeakTip, true);
+    window.removeEventListener("resize", this.syncWeakTip);
+  }
+
   componentDidMount() {
+    window.addEventListener("scroll", this.syncWeakTip, true);
+    window.addEventListener("resize", this.syncWeakTip);
     import("./lcmap.js").then((m) => this.setState({ lcmap: m.LCMAP })).catch(() => {});
     import("./lcmap_im.js").then((m) => this.setState({ lcmapIM: m.LCMAP_IM, diagIM: m.DIAG_IM })).catch(() => {});
     import("./qdata_im.js").then((m) => this.setState({ qim: m.QDATA_IM })).catch(() => {});
@@ -1442,7 +1467,44 @@ class Component extends DCLogic {
       return at < 0 ? 1000 + i : at;
     };
     const colOrder = SP.cols.map((label, i) => i).sort((a, b) => rank(a) - rank(b));
-    const tableCols = colOrder.map((i) => Object.assign({ label: SP.cols[i] }, caret("c" + i)));
+    // Columns flagged as low-confidence predictions (grade → milestone → display index).
+    const WEAK = {
+      2: { 1: [2], 2: [1] },
+      3: { 1: [1], 2: [3] },
+      4: { 1: [3], 2: [2] },
+      5: { 1: [2], 2: [1] },
+      6: { 1: [1], 2: [2] },
+      7: { 1: [3], 2: [1] },
+      8: { 1: [2], 2: [3] }
+    };
+    const weakIdx = (((WEAK[report.grade] || {})[report.milestone]) || [])
+      .map((n) => Math.min(n, colOrder.length - 1))
+      .filter((n) => n >= 0);
+    const tableCols = colOrder.map((i, di) => Object.assign({
+      label: SP.cols[i],
+      weak: weakIdx.indexOf(di) >= 0,
+      weakTipOpen: this.state.weakTip === di,
+      // Fixed positioning: the sticky header clips absolutely-positioned children.
+      weakTipTop: (this.state.weakTipPos || {}).top + "px",
+      weakTipLeft: (this.state.weakTipPos || {}).left + "px",
+      weakTipArrow: (this.state.weakTipPos || {}).arrow + "px",
+      // Click is inert (hover/focus only) but must not reach the sort handler.
+      toggleWeakTip: (e) => { if (e && e.stopPropagation) e.stopPropagation(); },
+      openWeakTip: (e) => {
+        clearTimeout(this.weakTipTimer);
+        const el = e && e.currentTarget;
+        this.weakIconEl = el;
+        this.setState({ weakTip: di, weakTipPos: el ? this.weakTipPosFrom(el) : { top: 0, left: 0, arrow: 10 } });
+      },
+      keepWeakTip: () => clearTimeout(this.weakTipTimer),
+      // Grace period so the pointer can travel from the icon onto the bubble.
+      closeWeakTip: () => {
+        clearTimeout(this.weakTipTimer);
+        this.weakTipTimer = setTimeout(() => {
+          this.setState((s) => (s.weakTip === di ? { weakTip: null } : null));
+        }, 180);
+      },
+    }, caret("c" + i)));
     const tableRows = sortedRows.map((row, ri) => ({
       name: row.name,
       total: row.total,
@@ -1473,11 +1535,11 @@ class Component extends DCLogic {
       noStrengths: items.length > 0 && strengths.length === 0,
       noChallenges: items.length > 0 && challenges.length === 0,
       reportTitle: "Math Teacher Report: Milestone " + report.milestone,
-      overallText: "After regular instruction, " + overallPct + "% of your class (" + successN + ") is likely to be successful",
+      overallText: supportN + (supportN === 1 ? " student is" : " students are") + " likely to need extra support with regular instruction",
       successBarPct: overallPct + "%",
       supportBarPct: (100 - overallPct) + "%",
-      successLegend: overallPct + "% of your class (" + successN + ") is likely to be successful",
-      supportLegend: (100 - overallPct) + "% of your class (" + supportN + ") is likely to need extra support",
+      successLegend: "Likely to be successful with regular instruction: " + successN,
+      supportLegend: "Likely to need extra support with regular instruction: " + supportN,
       qTab: this.state.qTab,
       gradeOptions, periodOptions, cycleOptions,
       gradeText: grade ? "Grade " + grade : "Select",
