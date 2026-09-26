@@ -229,7 +229,7 @@
     padding:22px; text-align:center;
   }
   .prize-prompt{ font-size:16px; font-weight:800; color:var(--ink); margin:0 0 4px; }
-  .prize-subprompt{ font-size:13.5px; color:var(--muted); margin:0 0 18px; }
+  .prize-disclaimer{ font-size:12px; color:var(--muted); margin:16px auto 0; max-width:32ch; line-height:1.5; }
 
   .mystery-row{ display:flex; gap:12px; justify-content:center; }
   .mystery-card{
@@ -249,7 +249,7 @@
     padding:10px; text-align:center;
   }
   .mystery-card-front{
-    background:var(--brand); color:var(--white); font-size:34px; font-weight:900;
+    background:var(--brand); color:var(--white); font-size:16px; font-weight:800; line-height:1.3;
   }
   .mystery-card-back{
     background:var(--gold-tint); border:2px solid var(--gold);
@@ -286,7 +286,7 @@
     .hubspot-shell{ padding:28px; }
     .prize-shell{ padding:28px; }
     .mystery-card{ max-width:160px; }
-    .mystery-card-front{ font-size:44px; }
+    .mystery-card-front{ font-size:19px; }
     .mystery-card-back{ font-size:16px; }
     .q-text{ font-size:22px; }
     .eyebrow{ font-size:14px; }
@@ -352,13 +352,9 @@ function shuffle(arr){
 // have two other wrong choices of its own to draw decoys from.
 const ALL_DRS = [];
 
-// PRIZES — events team: edit this list any time. The booth button
-// picks one at random each time a teacher finishes. Keep 2-6 items.
-const PRIZES = [
-  { name: "ANet pen" },
-  { name: "$5 Starbucks card" },
-  { name: "Choice of Sticker" },
-];
+// PRIZE — events team: every visitor gets this same prize. Edit the
+// text below any time (e.g. for a different event's giveaway item).
+const PRIZE_NAME = "$5 for Coffee";
 
 // HUBSPOT FORM — real embed, wired to render into #hubspotTarget
 // once the result screen is shown (see renderHubspotForm below).
@@ -632,24 +628,16 @@ function renderResult(app){
   prizeShell.className = "prize-shell";
   prizeShell.innerHTML = `
     <p class="prize-prompt">Get My Prize</p>
-    <p class="prize-subprompt">Tap a card to reveal it</p>
     <div class="mystery-row">
       <div class="mystery-card" data-idx="0"><div class="mystery-card-inner">
-        <div class="mystery-card-face mystery-card-front">?</div>
-        <div class="mystery-card-face mystery-card-back"></div>
-      </div></div>
-      <div class="mystery-card" data-idx="1"><div class="mystery-card-inner">
-        <div class="mystery-card-face mystery-card-front">?</div>
-        <div class="mystery-card-face mystery-card-back"></div>
-      </div></div>
-      <div class="mystery-card" data-idx="2"><div class="mystery-card-inner">
-        <div class="mystery-card-face mystery-card-front">?</div>
-        <div class="mystery-card-face mystery-card-back"></div>
+        <div class="mystery-card-face mystery-card-front">Tap to reveal</div>
+        <div class="mystery-card-face mystery-card-back">${PRIZE_NAME}</div>
       </div></div>
     </div>
+    <p class="prize-disclaimer">Your digital gift card will be sent to the email above in the next 24 hours!</p>
   `;
   app.appendChild(prizeShell);
-  setupMysteryCards(prizeShell);
+  setupPrizeCard(prizeShell);
 
   const footer = document.createElement("div");
   footer.className = "footer-actions";
@@ -658,24 +646,12 @@ function renderResult(app){
   footer.querySelector("#againBtn").onclick = () => { state.screen = "start"; render(); };
 }
 
-function setupMysteryCards(shell){
-  const cards = Array.from(shell.querySelectorAll(".mystery-card"));
-  let revealed = false;
-
-  cards.forEach(card => {
-    card.onclick = () => {
-      if(revealed) return;
-      revealed = true;
-
-      const prize = PRIZES[Math.floor(Math.random() * PRIZES.length)];
-      card.querySelector(".mystery-card-back").textContent = prize.name;
-      card.classList.add("flipped");
-
-      // Lock out the other two cards so the mystery stays a mystery —
-      // they never reveal what they would have been.
-      cards.forEach(c => { if(c !== card) c.classList.add("disabled"); c.onclick = null; });
-    };
-  });
+function setupPrizeCard(shell){
+  const card = shell.querySelector(".mystery-card");
+  card.onclick = () => {
+    card.classList.add("flipped");
+    card.onclick = null;
+  };
 }
 
 render();
