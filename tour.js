@@ -17,6 +17,7 @@ let currentStep = 0;
 let iframeDoc = null;
 let iframeWin = null;
 let raf = null;
+let modalOpenedBy = null; // tracks which step (if any) has an in-report modal open
 
 const overlay = document.getElementById("tour-overlay");
 const spotlight = document.getElementById("tour-spotlight");
@@ -65,10 +66,22 @@ function switchTab(tab) {
   return new Promise((resolve) => setTimeout(resolve, 250));
 }
 
+function closeAnyOpenModal() {
+  // All in-report modals (Questions, Predicted Strengths/Challenges info, etc.)
+  // share this same backdrop wrapper, and React only ever mounts the one that's
+  // currently open — so this reliably targets "whatever's open right now"
+  // without needing to know which specific modal it is.
+  const backdrop = iframeDoc.querySelector(
+    '[style*="position:fixed; inset:0; z-index:50"]'
+  );
+  if (backdrop) backdrop.click();
+}
+
 function runBeforeShow(step) {
   if (step.beforeShow === "openQuestionModal") {
     const q = iframeDoc.querySelector("[data-q]");
     if (q) q.click();
+    modalOpenedBy = step.id;
     return new Promise((resolve) => setTimeout(resolve, 250));
   }
   return Promise.resolve();
@@ -110,18 +123,39 @@ function positionModal(target) {
   }
   let left = frameRect.left + rect.left;
   left = Math.min(Math.max(left, 20), window.innerWidth - modalRect.width - 20);
+  // Hard clamp as a fallback — even if scrollIntoView or a future edge case
+  // produces a bad `top`, the modal can never render fully off-screen.
+  top = Math.min(Math.max(top, 20), window.innerHeight - modalRect.height - 20);
   modal.style.top = `${Math.max(top, 20)}px`;
   modal.style.left = `${left}px`;
 }
 
 async function renderStep(index) {
   const step = TOUR_STEPS[index];
+
+  // Close any modal a previous step opened — this was the step-5 bug: the
+  // Questions modal from step 3 stayed open and blocked everything after it.
+  if (modalOpenedBy && modalOpenedBy !== step.id) {
+    closeAnyOpenModal();
+    modalOpenedBy = null;
+    await new Promise((resolve) => setTimeout(resolve, 200));
+  }
+
   currentStep = index;
 
   await switchTab(step.tab);
   await runBeforeShow(step);
 
   const target = findTarget(step);
+
+  // Bring the target into view inside the iframe before measuring its position —
+  // without this, a target below the fold produces off-screen coordinates and
+  // the modal renders off-screen along with it. This was the step-5 bug.
+  if (target && target.scrollIntoView) {
+    target.scrollIntoView({ block: "center", inline: "nearest" });
+    await new Promise((resolve) => setTimeout(resolve, 200));
+  }
+
   positionSpotlight(target);
   positionModal(target);
 
