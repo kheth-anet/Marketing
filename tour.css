@@ -1,0 +1,113 @@
+/* Placeholder tokens — swap for exact values from Anna's design system before shipping */
+:root {
+  --tour-navy: #1c2b3b;
+  --tour-navy-text: #24303d;
+  --tour-orange: #d98a3d;
+  --tour-border-radius: 12px;
+  --tour-font: "Lato", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+html, body {
+  margin: 0;
+  height: 100%;
+  font-family: var(--tour-font);
+  background: rgb(226, 230, 236);
+}
+
+#report-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+#tour-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999998;
+  background: transparent; /* dimming comes from the spotlight's box-shadow */
+}
+
+#tour-spotlight {
+  position: absolute;
+  display: none;
+  border-radius: 8px;
+  border: 3px solid var(--tour-orange);
+  box-shadow: 0 0 0 9999px rgba(15, 23, 32, 0.6);
+  transition: top 0.25s ease, left 0.25s ease, width 0.25s ease, height 0.25s ease;
+  z-index: 999999;
+  pointer-events: auto;
+}
+
+#tour-modal {
+  position: fixed;
+  width: 420px;
+  max-width: calc(100vw - 40px);
+  background: #ffffff;
+  border-radius: var(--tour-border-radius);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+  padding: 28px 28px 24px;
+  z-index: 1000000;
+  transition: top 0.25s ease, left 0.25s ease;
+}
+
+#tour-step-count {
+  color: var(--tour-orange);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+#tour-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--tour-navy-text);
+  margin: 12px 0 12px;
+  line-height: 1.25;
+}
+
+#tour-body {
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--tour-navy-text);
+  margin-bottom: 20px;
+}
+
+#tour-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 20px;
+}
+
+#tour-back {
+  background: none;
+  border: none;
+  color: #5b6472;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+#tour-next {
+  background: var(--tour-navy);
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+#tour-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #8a94a3;
+  cursor: pointer;
+}

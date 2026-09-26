@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Compass Math: Guided Tour</title>
+<link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tour.css">
+
+<!--
+  HubSpot tracking (anonymous, no gate). Uncomment and set the real portal ID
+  when ready — tour.js already no-ops safely if this isn't present.
+
+  <script type="text/javascript" id="hs-script-loader" async defer
+    src="//js.hs-scripts.com/REPLACE_ME.js"></script>
+-->
+</head>
+<body>
+
+  <!-- The real report, loaded directly from the repo root — not a copy.
+       Any update Alicia (or you) push to that file is picked up automatically,
+       no re-sync step required. -->
+  <iframe id="report-frame" src="Compass%20Math%20Teacher%20Report%20(Preview).dc.html" title="Compass Math Teacher Report"></iframe>
+
+  <!-- Click-blocking scrim -->
+  <div id="tour-overlay"></div>
+
+  <!-- Spotlight cutout, positioned over whatever the current step targets -->
+  <div id="tour-spotlight"></div>
+
+  <!-- The approved modal (Option 3) -->
+  <div id="tour-modal">
+    <button id="tour-close" aria-label="Close tour">&times;</button>
+    <div id="tour-step-count">STEP 1 OF 8</div>
+    <div id="tour-title"></div>
+    <div id="tour-body"></div>
+    <div id="tour-footer">
+      <button id="tour-back">Back</button>
+      <button id="tour-next">Start</button>
+    </div>
+  </div>
+
+  <script src="tour-steps.js"></script>
+  <script src="tour.js"></script>
+</body>
+</html>
