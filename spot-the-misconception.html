@@ -229,7 +229,6 @@
     padding:22px; text-align:center;
   }
   .prize-prompt{ font-size:16px; font-weight:800; color:var(--ink); margin:0 0 4px; }
-  .prize-disclaimer{ font-size:12px; color:var(--muted); margin:16px auto 0; max-width:32ch; line-height:1.5; }
 
   .mystery-row{ display:flex; gap:12px; justify-content:center; }
   .mystery-card{
@@ -358,10 +357,19 @@ const PRIZE_NAME = "$5 for Coffee";
 
 // HUBSPOT FORM — real embed, wired to render into #hubspotTarget
 // once the result screen is shown (see renderHubspotForm below).
+//
+// Reads portal/form/region from the page URL first, so one file can
+// serve multiple events with different lead-gen forms. Falls back to
+// the default (TFA) form when no URL parameters are present.
+//   e.g. yoursite.netlify.app/booth?form=7353cce0-3666-46e0-abcc-b3dddde4c09f
+// To add a new event: get its embed code from HubSpot (Marketing >
+// Forms > Share > Embed code), then build a URL with its formId (and
+// portal/region too, if either ever differs from the default).
+const urlParams = new URLSearchParams(window.location.search);
 const HUBSPOT_CONFIG = {
-  portalId: "39623185",
-  formId: "8d854f82-b1f3-48b9-b891-957e7a3fe94f",
-  region: "na1",
+  portalId: urlParams.get("portal") || "39623185",
+  formId: urlParams.get("form") || "8d854f82-b1f3-48b9-b891-957e7a3fe94f",
+  region: urlParams.get("region") || "na1",
 };
 
 Object.values(QDATA).forEach(list => list.forEach(q => {
@@ -613,17 +621,6 @@ function renderResult(app){
   `;
   app.appendChild(explain);
 
-  const hs = document.createElement("div");
-  hs.className = "hubspot-shell";
-  hs.innerHTML = `
-    <p class="section-label">Thanks for playing with ANet!</p>
-    <p style="font-size:14px; color:var(--muted); margin:0 0 14px;">Claim your prize after this short form.</p>
-    <div id="hubspotTarget"></div>
-  `;
-  app.appendChild(hs);
-  const target = hs.querySelector("#hubspotTarget");
-  renderHubspotForm(target);
-
   const prizeShell = document.createElement("div");
   prizeShell.className = "prize-shell";
   prizeShell.innerHTML = `
@@ -634,10 +631,20 @@ function renderResult(app){
         <div class="mystery-card-face mystery-card-back">${PRIZE_NAME}</div>
       </div></div>
     </div>
-    <p class="prize-disclaimer">Your digital gift card will be sent to the email above in the next 24 hours!</p>
   `;
   app.appendChild(prizeShell);
   setupPrizeCard(prizeShell);
+
+  const hs = document.createElement("div");
+  hs.className = "hubspot-shell";
+  hs.innerHTML = `
+    <p class="section-label">Thanks for playing with ANet!</p>
+    <p style="font-size:14px; color:var(--muted); margin:0 0 14px;">Your digital gift card will be emailed in the next 24 hours.</p>
+    <div id="hubspotTarget"></div>
+  `;
+  app.appendChild(hs);
+  const target = hs.querySelector("#hubspotTarget");
+  renderHubspotForm(target);
 
   const footer = document.createElement("div");
   footer.className = "footer-actions";
