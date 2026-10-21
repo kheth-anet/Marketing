@@ -104,7 +104,7 @@
                 </sc-if>
               </div>
               <div style="display:flex; flex-direction:column; gap:6px; width:150px; position:relative;">
-                <span style="font-size:14px; color:rgb(103,112,125);">Cycle</span>
+                <span style="font-size:14px; color:rgb(103,112,125);">Report</span>
                 <div onClick="{{ toggleCycle }}" style="height:37px; border:1px solid rgb(213,217,226); border-radius:6px; display:flex; align-items:center; justify-content:space-between; gap:8px; padding:0 10px; font-size:16px; background:rgb(255,255,255); cursor:pointer;" style-hover="border-color:rgb(34,126,167);"><span style="color:rgb(53,59,71); white-space:nowrap;">{{ cycleText }}</span><span style="width:11px; height:11px; flex-shrink:0; color:rgb(109,109,109); display:inline-flex;"><svg viewBox="0 0 14 14" width="100%" height="100%"><path d="M 1.28 0.22 C 0.987 -0.073 0.513 -0.073 0.22 0.22 C -0.073 0.513 -0.073 0.987 0.22 1.28 L 5.22 6.28 C 5.513 6.573 5.987 6.573 6.28 6.28 L 11.28 1.28 C 11.573 0.987 11.573 0.513 11.28 0.22 C 10.987 -0.073 10.513 -0.073 10.22 0.22 L 5.75 4.689 L 1.28 0.22 Z" fill="currentColor" transform="matrix(1 0 0 1 1.25 3.75)"></path></svg></span></div>
                 <sc-if value="{{ cycleOpen }}">
                   <div style="position:absolute; top:65px; left:0; width:180px; background:rgb(255,255,255); border:1px solid rgb(213,217,226); border-radius:6px; box-shadow:0 6px 16px rgba(0,0,0,0.14); z-index:40; padding:4px 0;">
@@ -321,7 +321,7 @@ function tiltsFor(key, cycle, greenBoostIdx) {
 
 // Per-grade growth/EYP for one school at one cycle, anchored to that school's total.
 function gradeRowsFor(school, cycle, total) {
-  const boost = cycle === "Milestone 8" ? 2.2 : cycle === "Milestone 5" ? 1.6 : 1;
+  const boost = cycle === "Report 3" ? 2.2 : cycle === "Report 2" ? 1.6 : 1;
   const soft = v => v > 0 ? v + 0.5 : 0; // authored zeros stay zero through the fit
   const growthTilts = GRADES.map(g => {
     const green = GREEN_GROWTH_GRADES.indexOf(g.name) !== -1 ? boost : 1;
@@ -357,13 +357,13 @@ function gradeRowsFor(school, cycle, total) {
 const GREEN_GROWTH_GRADES = ["Grade 3", "Grade 6"];
 
 const CYCLES = {
-  "Milestone 2": { growth: [1, 1, 1], green: [1, 1, 1], eyp: [1, 1, 1, 1] },
-  "Milestone 5": { growth: [0.74, 1.28, 0.92], green: [0.78, 1.02, 1.22], eyp: [0.84, 1.02, 1.1, 1.04] },
-  "Milestone 8": { growth: [0.55, 1.45, 0.88], green: [0.6, 1.0, 1.5], eyp: [0.66, 1.0, 1.24, 1.12] }
+  "Report 1": { growth: [1, 1, 1], green: [1, 1, 1], eyp: [1, 1, 1, 1] },
+  "Report 2": { growth: [0.74, 1.28, 0.92], green: [0.78, 1.02, 1.22], eyp: [0.84, 1.02, 1.1, 1.04] },
+  "Report 3": { growth: [0.55, 1.45, 0.88], green: [0.6, 1.0, 1.5], eyp: [0.66, 1.0, 1.24, 1.12] }
 };
 
 function applyCycle(row, cycle, greenGrowth) {
-  const c = CYCLES[cycle] || CYCLES["Milestone 2"];
+  const c = CYCLES[cycle] || CYCLES["Report 1"];
   const g = greenGrowth ? c.green : c.growth;
   const [below, meeting, exceeding] = norm([
     row.below * g[0], row.meeting * g[1], row.exceeding * g[2]
@@ -377,19 +377,19 @@ function applyCycle(row, cycle, greenGrowth) {
 // Hand-set school totals for specific cycles (override the modeled numbers).
 const SCHOOL_CYCLE_OVERRIDES = {
   "ANet Demo School": {
-    "Milestone 5": { below: 9, meeting: 86, exceeding: 5 },
-    "Milestone 8": { below: 2, meeting: 93, exceeding: 5 }
+    "Report 2": { below: 9, meeting: 86, exceeding: 5 },
+    "Report 3": { below: 2, meeting: 93, exceeding: 5 }
   },
   "Bold Thinking Academy": {
-    "Milestone 8": { below: 0, meeting: 100, exceeding: 0 }
+    "Report 3": { below: 0, meeting: 100, exceeding: 0 }
   },
   "Center Communities School": {
-    "Milestone 5": { below: 0, meeting: 93, exceeding: 7 },
-    "Milestone 8": { below: 0, meeting: 90, exceeding: 10 }
+    "Report 2": { below: 0, meeting: 93, exceeding: 7 },
+    "Report 3": { below: 0, meeting: 90, exceeding: 10 }
   },
   "Drive Results Charter": {
-    "Milestone 5": { below: 4, meeting: 90, exceeding: 6 },
-    "Milestone 8": { below: 4, meeting: 80, exceeding: 16 }
+    "Report 2": { below: 4, meeting: 90, exceeding: 6 },
+    "Report 3": { below: 4, meeting: 80, exceeding: 16 }
   }
 };
 
@@ -457,7 +457,7 @@ class Component extends DCLogic {
     growthBy: "Grade", eypBy: "Grade",
     school: "All Schools", pendingSchool: "All Schools", schoolOpen: false,
     grade: "All Grades", pendingGrade: "All Grades", gradeOpen: false,
-    cycle: "Milestone 2", pendingCycle: "Milestone 2", cycleOpen: false,
+    cycle: "Report 1", pendingCycle: "Report 1", cycleOpen: false,
     demoOpen: false,
     ell: "All", iep: "All",
     draftEll: "All", draftIep: "All"
@@ -591,7 +591,7 @@ class Component extends DCLogic {
         this.setState({
           school: "All Schools", pendingSchool: "All Schools", schoolOpen: false,
           grade: "All Grades", pendingGrade: "All Grades", gradeOpen: false,
-          cycle: "Milestone 2", pendingCycle: "Milestone 2", cycleOpen: false,
+          cycle: "Report 1", pendingCycle: "Report 1", cycleOpen: false,
           demoOpen: false, ell: "All", iep: "All", draftEll: "All", draftIep: "All"
         });
       },
